@@ -7,7 +7,7 @@
 set}
 \format{
 A \code{sbo_preds} object. Contains prediction tables of a 3-gram
-Stupid Backoff model trained on the example training set
+Stupid Back-off model trained on the example training set
 \code{\link[sbo]{twitter_train}}.
 }
 \usage{

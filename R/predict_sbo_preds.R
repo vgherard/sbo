@@ -1,6 +1,6 @@
-#' Predict method for Stupid Backoff text predictor.
+#' Predict method for Stupid Back-off text predictor
 #'
-#' Predicted text based on Stupid Backoff \eqn{latex}{n}-gram model.
+#' Predicted text based on Stupid Back-off \eqn{latex}{n}-gram model.
 #'
 #' @export
 #'
@@ -15,7 +15,7 @@
 #' @return A character vector if \code{length(newdata) == 1}, otherwise a
 #' character matrix.
 #' @examples
-#' # Predict from Stupid Backoff n-gram model
+#' # Predict from Stupid Back-off n-gram model
 #' predict(twitter_sbo, "i love")
 #' @importFrom utils head
 #' @importFrom utils tail
@@ -23,10 +23,10 @@
 predict.sbo_preds <- function(object, newdata, L = object$L, ...){
         stopifnot(is.character(newdata))
         stopifnot(is.integer(L) & length(L) == 1 & L <= object$L)
-        n <- object$n
+        N <- object$N
         dict <- object$dict
         V <- length(dict) + 3
-        wrap <- c(paste0(rep("_BOS_", n-1), collapse = " "), "")
+        wrap <- c(paste0(rep("_BOS_", N-1), collapse = " "), "")
 
         if(length(newdata) > 1)
                 return(sapply(newdata,
@@ -37,11 +37,11 @@ predict.sbo_preds <- function(object, newdata, L = object$L, ...){
                 preprocess(split_sent = ".", omit_empty = F, wrap = wrap) %>%
                 last %>%
                 get_words(dict) %>%
-                tail(n-1) %>%
-                `names<-`(paste0("w",1:(n-1)))
+                tail(N-1) %>%
+                `names<-`(paste0("w",1:(N-1)))
 
         FUN <- function(x){ x == newdata[[cur_column()]] }
-        for(k in n:1){
+        for(k in N:1){
                 preds <- object$preds[[k]] %>%
                         filter( across(starts_with("w"), FUN) ) %>%
                         select(starts_with("pred"))

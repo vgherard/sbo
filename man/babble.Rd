@@ -22,10 +22,10 @@ which to sample (see details).}
 A character vector of length one.
 }
 \description{
-Generate random text based on Stupid Backoff language model.
+Generate random text based on Stupid Back-off language model.
 }
 \details{
-This function generates random text from a Stupid Backoff language
+This function generates random text from a Stupid Back-off language
 model.
 \code{babble} randomly samples one of the top \eqn{latex}{L} next word
 predictions. Text generation stops when an End-Of-Sentence token is

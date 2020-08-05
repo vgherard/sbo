@@ -2,7 +2,7 @@
 % Please edit documentation in R/eval_sbo_preds.R
 \name{eval_sbo_preds}
 \alias{eval_sbo_preds}
-\title{Evaluate Stupid Backoff next-word predictions}
+\title{Evaluate Stupid Back-off next-word predictions}
 \usage{
 eval_sbo_preds(model, test, L = model$L)
 }
@@ -15,28 +15,28 @@ eval_sbo_preds(model, test, L = model$L)
 (maximum allowed is \code{model$L})}
 }
 \value{
-A tibble, containing the input $(n-1)$-grams, the true completions,
+A tibble, containing the input $(N-1)$-grams, the true completions,
 the predicted completions and a column indicating whether one of the
 predictions were correct or not.
 }
 \description{
-Evaluate next-word predictions based on Stupid Backoff \eqn{latex}{n}-gram
+Evaluate next-word predictions based on Stupid Back-off \eqn{latex}{N}-gram
 model on a test corpus.
 }
 \details{
-This function allows to obtain information on Stupid Backoff model
+This function allows to obtain information on Stupid Back-off model
 predictions, such as next-word prediction accuracy, or the word-rank
 distribution of correct prediction, by direct test against a test set corpus.
 
 \code{eval_sbo_preds} performs the following operations:
 \enumerate{
-\item Sample a single $n$-gram from each sentence of test corpus.
-\item Predict next words from the $(n-1)$-gram prefix.
+\item Sample a single $N$-gram from each sentence of test corpus.
+\item Predict next words from the $(N-1)$-gram prefix.
 \item Return all predictions, together with the true word completions.
 }
 }
 \examples{
-# Evaluating next-word predictions from a Stupid Backoff n-gram model
+# Evaluating next-word predictions from a Stupid Back-off N-gram model
 
 set.seed(840) # Set seed for reproducibility
 eval <- # May take ~ 2 or 3 minutes!

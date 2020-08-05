@@ -4,7 +4,7 @@
 \alias{get_kgram_freqs}
 \title{\eqn{latex}{k}-gram frequency tables}
 \usage{
-get_kgram_freqs(text, dict, n)
+get_kgram_freqs(text, dict, N)
 }
 \arguments{
 \item{text}{a character vector. The training corpus from which to extract
@@ -13,32 +13,32 @@ k-gram frequencies.}
 \item{dict}{a character vector. The language model fixed dictionary (see
 details), sorted by word frequency.}
 
-\item{n}{a length one integer. The maximum order of \eqn{latex}{k}-grams
+\item{N}{a length one integer. The maximum order of \eqn{latex}{k}-grams
 for which frequencies are sought.}
 }
 \value{
 A \code{kgram_freqs} object, containing the \eqn{latex}{k}-gram
-frequency tables for \eqn{latex}{k = 1, 2, ..., n}.
+frequency tables for \eqn{latex}{k = 1, 2, ..., N}.
 }
 \description{
 Get \eqn{latex}{k}-gram frequency tables from a training corpus.
 }
 \details{
 This function extracts all k-gram frequency tables from a text
-corpus up to a specified \eqn{latex}{k}-gram order \eqn{latex}{n}. These are
-the building blocks to train any \eqn{latex}{n}-gram model.
+corpus up to a specified \eqn{latex}{k}-gram order \eqn{latex}{N}. These are
+the building blocks to train any \eqn{latex}{N}-gram model.
 
 \code{get_kgram_freqs} employs a fixed (user specified) dictionary; any
 out-of-vocabulary word gets effectively replaced by an "unknown word" token.
 
 The return value is a "\code{kgram_freqs}" object, i.e. a list containing:
 \itemize{
-\item The highest order of \eqn{latex}{k}-grams, \eqn{latex}{n}.
+\item The highest order of \eqn{latex}{N}-grams, \eqn{latex}{N}.
 \item The reference dictionary, sorted by word frequency. This can be obtained
 using \code{\link[sbo]{get_word_freqs}}.
 \item A list of n tibbles, storing frequency counts for each
 \eqn{latex}{k}-gram observed in the training corpus, for
-\eqn{latex}{k = 1, 2, ..., n}. In these tibbles, words are represented by
+\eqn{latex}{k = 1, 2, ..., N}. In these tibbles, words are represented by
 integer numbers corresponding to their position in the
 reference dictionary. The special codes \code{0},
 \code{length(dictionary)+1} and \code{length(dictionary)+2}
@@ -48,8 +48,8 @@ and "Unknown word" tokens, respectively.
 }
 \examples{
 # Obtain k-gram frequency table from corpus
-## Get k-gram frequencies, up to k = n = 3.
-freqs <- get_kgram_freqs(twitter_train, twitter_dict, n = 3)
+## Get k-gram frequencies, up to k = N = 3.
+freqs <- get_kgram_freqs(twitter_train, twitter_dict, N = 3)
 ## Print result
 freqs
 }

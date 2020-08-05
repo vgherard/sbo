@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Text prediction via n-gram Stupid Backoff models • sbo</title>
+<title>Text prediction via N-gram Stupid Back-off models • sbo</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Text prediction via n-gram Stupid Backoff models">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Text prediction via N-gram Stupid Back-off models">
 <meta property="og:description" content="sbo">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -70,12 +70,12 @@
       </header><script src="sbo_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Text prediction via n-gram Stupid Backoff models</h1>
+      <h1 data-toc-skip>Text prediction via N-gram Stupid Back-off models</h1>
                         <h4 class="author">Valerio Gherardi</h4>
                   <a class="author_email" href="mailto:#"></a><a href="mailto:vgherard@sissa.it" class="email">vgherard@sissa.it</a>
       
                   
-            <h4 class="date">2020-08-02</h4>
+            <h4 class="date">2020-08-05</h4>
       
       <small class="dont-index">Source: <a href="http://github.com/vgherard/sbo/blob/master/vignettes/sbo.Rmd"><code>vignettes/sbo.Rmd</code></a></small>
       <div class="hidden name"><code>sbo.Rmd</code></div>
@@ -87,7 +87,7 @@
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
-<p>The <code>sbo</code> package provides utilities for building and evaluating next-word prediction functions based on <a href="https://www.aclweb.org/anthology/D07-1090.pdf">Stupid Backoff</a> <a href="https://en.wikipedia.org/wiki/N-gram">n-gram models</a> in R. In this vignette, I illustrate the functions and classes exported by <code>sbo</code>, the typical workflow for building a text predictor from a given training corpus, and the evaluation of next-word predictions through a test corpus. In the last section, I list some upcoming features in a future version of <code>sbo</code>.</p>
+<p>The <code>sbo</code> package provides utilities for building and evaluating next-word prediction functions based on <a href="https://www.aclweb.org/anthology/D07-1090.pdf">Stupid Back-off</a> <a href="https://en.wikipedia.org/wiki/N-gram">N-gram models</a> in R. In this vignette, I illustrate the functions and classes exported by <code>sbo</code>, the typical workflow for building a text predictor from a given training corpus, and the evaluation of next-word predictions through a test corpus. In the last section, I list some upcoming features in a future version of <code>sbo</code>.</p>
 <div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">sbo</span>)</pre></body></html></div>
 </div>
 <div id="functions-and-classes" class="section level2">
@@ -96,7 +96,7 @@
 <p>The <code>sbo</code> package pivots around two (S3) object classes:</p>
 <ul>
 <li>
-<code>kgram_freqs</code>: A collection of <span class="math inline">\(k\)</span>-gram frequency tables, with <span class="math inline">\(k\)</span> up to a given order <span class="math inline">\(n\)</span>.</li>
+<code>kgram_freqs</code>: A collection of <span class="math inline">\(k\)</span>-gram frequency tables, with <span class="math inline">\(k\)</span> up to a given order <span class="math inline">\(N\)</span>.</li>
 <li>
 <code>sbo_preds</code>: A collection of tables employed to store and retrieve next-word predictions in a compact and efficient way.</li>
 </ul>
@@ -123,10 +123,10 @@
 <span class="co">#&gt; [1] "the" "to"  "i"   "a"   "you" "and"</span></pre></body></html></div>
 <p>Alternatively, one may use a predefined dictionary.</p>
 <p><em>Step 1</em>. Get <span class="math inline">\(k\)</span>-gram frequencies from training corpus:</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r">( <span class="no">freqs</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/get_kgram_freqs.html">get_kgram_freqs</a></span>(<span class="no">train</span>, <span class="no">dict</span>, <span class="kw">n</span> <span class="kw">=</span> <span class="fl">3</span>) ) <span class="co"># 'n' is the order of n-grams</span>
+<div class="sourceCode" id="cb5"><html><body><pre class="r">( <span class="no">freqs</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/get_kgram_freqs.html">get_kgram_freqs</a></span>(<span class="no">train</span>, <span class="no">dict</span>, <span class="kw">N</span> <span class="kw">=</span> <span class="fl">3</span>) ) <span class="co"># 'N' is the order of n-grams</span>
 <span class="co">#&gt; k-gram frequency table </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Order (n): 3 </span>
+<span class="co">#&gt; Order (N): 3 </span>
 <span class="co">#&gt; Dictionary size: 1000  words</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; # of unique 1-grams: 1002 </span>
@@ -140,7 +140,7 @@
 <div class="sourceCode" id="cb6"><html><body><pre class="r">( <span class="no">sbo</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/build_sbo_preds.html">build_sbo_preds</a></span>(<span class="no">freqs</span>) )
 <span class="co">#&gt; Next-word prediction table for Stupid Backoff n-gram model </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Order (n): 3 </span>
+<span class="co">#&gt; Order (N): 3 </span>
 <span class="co">#&gt; Dictionary size: 1000  words</span>
 <span class="co">#&gt; Backoff penalization (lambda): 0.4 </span>
 <span class="co">#&gt; Maximum number of predictions (L): 3 </span>
@@ -185,8 +185,8 @@
 <a href="#evaluating-next-word-predictions" class="anchor"></a>Evaluating next-word predictions</h2>
 <p>Once we have built our next-word predictor, we may want to directly test its predictions on an independent corpus. For this purpose, <code>sbo</code> offers the function <code>eval_sbo_preds</code>, which performs the following test:</p>
 <ol style="list-style-type: decimal">
-<li>Sample a single <span class="math inline">\(n\)</span>-gram from each sentence of test corpus.</li>
-<li>Predict next words from the <span class="math inline">\((n-1)\)</span>-gram prefix.</li>
+<li>Sample a single <span class="math inline">\(N\)</span>-gram from each sentence of test corpus.</li>
+<li>Predict next words from the <span class="math inline">\((N-1)\)</span>-gram prefix.</li>
 <li>Return all predictions, together with the true word completions.</li>
 </ol>
 <p>As a concrete example, we test the text-predictor trained in the previous section over the Twitter (independent) test set.</p>
@@ -206,8 +206,8 @@
 <span class="co">#&gt;  9 " thanks"        for       &lt;chr [3]&gt;    TRUE   </span>
 <span class="co">#&gt; 10 "concert wasn't" over      &lt;chr [3]&gt;    TRUE   </span>
 <span class="co">#&gt; # … with 18,305 more rows</span></pre></body></html></div>
-<p>As it is seen, <code>eval_sbo_preds</code> returns a tibble containing the input <span class="math inline">\((n-1)\)</span>-grams, the true completions, the predicted completions and a column indicating whether one of the predictions were correct or not.</p>
-<p>We can estimate predictive accuracy as follows (the uncertainty in the estimate is approximated by the binomial formula <span class="math inline">\(\sigma = \sqrt{\frac{p(1-p)}{N}}\)</span>):</p>
+<p>As it is seen, <code>eval_sbo_preds</code> returns a tibble containing the input <span class="math inline">\((N-1)\)</span>-grams, the true completions, the predicted completions and a column indicating whether one of the predictions were correct or not.</p>
+<p>We can estimate predictive accuracy as follows (the uncertainty in the estimate is approximated by the binomial formula <span class="math inline">\(\sigma = \sqrt{\frac{p(1-p)}{M}}\)</span>, where <span class="math inline">\(M\)</span> is the number of trials):</p>
 <div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">eval</span> <span class="kw">%&gt;%</span> <span class="fu">summarise</span>(<span class="kw">accuracy</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">correct</span>)/<span class="fu">n</span>(),
                    <span class="kw">uncertainty</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span>( <span class="no">accuracy</span>*(<span class="fl">1</span>-<span class="no">accuracy</span>) / <span class="fu">n</span>() )
                    )
@@ -215,7 +215,7 @@
 <span class="co">#&gt;   accuracy uncertainty</span>
 <span class="co">#&gt;      &lt;dbl&gt;       &lt;dbl&gt;</span>
 <span class="co">#&gt; 1    0.353     0.00353</span></pre></body></html></div>
-<p>We may want to exclude from the test <span class="math inline">\(n\)</span>-grams ending by the End-Of-Sentence token (here represented by <code>"."</code>):</p>
+<p>We may want to exclude from the test <span class="math inline">\(N\)</span>-grams ending by the End-Of-Sentence token (here represented by <code>"."</code>):</p>
 <div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">eval</span> <span class="kw">%&gt;%</span> <span class="co"># Accuracy for in-sentence predictions</span>
         <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="no">true</span> <span class="kw">!=</span> <span class="st">"."</span>) <span class="kw">%&gt;%</span>
         <span class="fu">summarise</span>(<span class="kw">accuracy</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">correct</span>)/<span class="fu">n</span>(),
@@ -235,17 +235,6 @@
 <span class="co">#&gt; Carico il pacchetto richiesto: ggplot2</span></pre></body></html></div>
 <p><img src="sbo_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
 <p>Apparently, the large majority of correct predictions come from the first ~ 300 words of the dictionary, so that if we prune the dictionary excluding words with rank greater than, <em>e.g.</em>, 500 we can reduce the size of our model without seriously affecting its prediction accuracy.</p>
-</div>
-<div id="upcoming-features---todo-list" class="section level2">
-<h2 class="hasAnchor">
-<a href="#upcoming-features---todo-list" class="anchor"></a>Upcoming features - ToDo list</h2>
-<p>Here I list some desired features for the next version of <code>sbo</code>:</p>
-<ul>
-<li>Implement a compressed (trie?) data structure for <code>kgram_freqs</code> and <code>sbo_preds</code> class objects.</li>
-<li>Add a <code>chunk_size</code> option in <code>get_kgram_freqs</code>, for extracting <span class="math inline">\(k\)</span>-gram frequency in chunks (current, fully vectorized, version is too expensive from the memory point of view).</li>
-<li>Add a <code>preprocessor</code> and <code>tokenizer</code> argument to <code>kgram_freqs</code>, to allow for user-defined preprocessor and tokenizer functions.</li>
-<li>Vectorize <code>eval_sbo_preds</code> to allow for rapid evaluation on large test sets (current version employs a slow <code>for</code> loop to get its multiple predictions).</li>
-</ul>
 </div>
   </div>
 

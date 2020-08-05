@@ -1,5 +1,5 @@
 ---
-title: "Text prediction via n-gram Stupid Backoff models"
+title: "Text prediction via N-gram Stupid Back-off models"
 author: 
 - name: Valerio Gherardi
   email: vgherard@sissa.it
@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
-The `sbo` package provides utilities for building and evaluating next-word prediction functions based on [Stupid Backoff](https://www.aclweb.org/anthology/D07-1090.pdf) [n-gram models](https://en.wikipedia.org/wiki/N-gram) in R. In this vignette, I illustrate the functions and classes exported by `sbo`, the typical workflow for building a text predictor from a given training corpus, and the evaluation of next-word predictions through a test corpus. In the last section, I list some upcoming features in a future version of `sbo`.
+The `sbo` package provides utilities for building and evaluating next-word prediction functions based on [Stupid Back-off](https://www.aclweb.org/anthology/D07-1090.pdf) [N-gram models](https://en.wikipedia.org/wiki/N-gram) in R. In this vignette, I illustrate the functions and classes exported by `sbo`, the typical workflow for building a text predictor from a given training corpus, and the evaluation of next-word predictions through a test corpus. In the last section, I list some upcoming features in a future version of `sbo`.
 
 ```{r setup, warning=FALSE, message=FALSE}
 library(sbo)
@@ -30,7 +30,7 @@ library(sbo)
 
 The `sbo` package pivots around two (S3) object classes: 
 
-* `kgram_freqs`: A collection of $k$-gram frequency tables, with $k$ up to a given order $n$. 
+* `kgram_freqs`: A collection of $k$-gram frequency tables, with $k$ up to a given order $N$. 
 * `sbo_preds`: A collection of tables employed to store and retrieve next-word predictions in a compact and efficient way.
 
 The functions `get_word_freqs` and `get_kgram_freqs` are used to extract word and $k$-gram frequency tables from a training corpus, and the function `build_sbo_preds` constructs a next-word prediction table from a `kgram_freqs` object. I illustrate the entire process of building a text-prediction function from a training corpus in the next section.
@@ -63,7 +63,7 @@ Alternatively, one may use a predefined dictionary.
 
 *Step 1*. Get $k$-gram frequencies from training corpus:
 ```{r, cache=TRUE}
-( freqs <- get_kgram_freqs(train, dict, n = 3) ) # 'n' is the order of n-grams
+( freqs <- get_kgram_freqs(train, dict, N = 3) ) # 'N' is the order of n-grams
 ```
 
 *Step 2*. Build next-word prediction tables:
@@ -110,8 +110,8 @@ Words (including the Begin/End-Of-Sentence tokens) are thus tokenized by splitti
 
 Once we have built our next-word predictor, we may want to directly test its predictions on an independent corpus. For this purpose, `sbo` offers the function `eval_sbo_preds`, which performs the following test:
 
-1. Sample a single $n$-gram from each sentence of test corpus.
-1. Predict next words from the $(n-1)$-gram prefix.
+1. Sample a single $N$-gram from each sentence of test corpus.
+1. Predict next words from the $(N-1)$-gram prefix.
 1. Return all predictions, together with the true word completions.
 
 As a concrete example, we test the text-predictor trained in the previous section over the Twitter (independent) test set.
@@ -121,9 +121,9 @@ set.seed(840)
 ( eval <- eval_sbo_preds(sbo, test) )
 ```
 
-As it is seen, `eval_sbo_preds` returns a tibble containing the input $(n-1)$-grams, the true completions, the predicted completions and a column indicating whether one of the predictions were correct or not.
+As it is seen, `eval_sbo_preds` returns a tibble containing the input $(N-1)$-grams, the true completions, the predicted completions and a column indicating whether one of the predictions were correct or not.
 
-We can estimate predictive accuracy as follows (the uncertainty in the estimate is approximated by the binomial formula $\sigma = \sqrt{\frac{p(1-p)}{N}}$):
+We can estimate predictive accuracy as follows (the uncertainty in the estimate is approximated by the binomial formula $\sigma = \sqrt{\frac{p(1-p)}{M}}$, where $M$ is the number of trials):
 
 ```{r}
 eval %>% summarise(accuracy = sum(correct)/n(), 
@@ -131,7 +131,7 @@ eval %>% summarise(accuracy = sum(correct)/n(),
                    )
 ```
 
-We may want to exclude from the test $n$-grams ending by the End-Of-Sentence token (here represented by `"."`):
+We may want to exclude from the test $N$-grams ending by the End-Of-Sentence token (here represented by `"."`):
 
 ```{r}
 eval %>% # Accuracy for in-sentence predictions
@@ -153,13 +153,3 @@ if(require(ggplot2)){
 ```
 
 Apparently, the large majority of correct predictions come from the first ~ 300 words of the dictionary, so that if we prune the dictionary excluding words with rank greater than, *e.g.*, 500 we can reduce the size of our model without seriously affecting its prediction accuracy.
-
-
-## Upcoming features - ToDo list
-
-Here I list some desired features for the next version of `sbo`:
-
-- Implement a compressed (trie?) data structure for `kgram_freqs` and `sbo_preds` class objects.
-- Add a `chunk_size` option in `get_kgram_freqs`, for extracting $k$-gram frequency in chunks (current, fully vectorized, version is too expensive from the memory point of view).
-- Add a `preprocessor` and `tokenizer` argument to `kgram_freqs`, to allow for user-defined  preprocessor and tokenizer functions.
-- Vectorize `eval_sbo_preds` to allow for rapid evaluation on large test sets (current version employs a slow `for` loop to get its multiple predictions).

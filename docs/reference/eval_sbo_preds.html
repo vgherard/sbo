@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Evaluate Stupid Backoff next-word predictions — eval_sbo_preds • sbo</title>
+<title>Evaluate Stupid Back-off next-word predictions — eval_sbo_preds • sbo</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Evaluate Stupid Backoff next-word predictions — eval_sbo_preds" />
-<meta property="og:description" content="Evaluate next-word predictions based on Stupid Backoff \(latex\)-gram
+<meta property="og:title" content="Evaluate Stupid Back-off next-word predictions — eval_sbo_preds" />
+<meta property="og:description" content="Evaluate next-word predictions based on Stupid Back-off \(latex\)-gram
 model on a test corpus." />
 
 
@@ -112,13 +112,13 @@ model on a test corpus." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Evaluate Stupid Backoff next-word predictions</h1>
+    <h1>Evaluate Stupid Back-off next-word predictions</h1>
     <small class="dont-index">Source: <a href='http://github.com/vgherard/sbo/blob/master/R/eval_sbo_preds.R'><code>R/eval_sbo_preds.R</code></a></small>
     <div class="hidden name"><code>eval_sbo_preds.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Evaluate next-word predictions based on Stupid Backoff \(latex\)-gram
+    <p>Evaluate next-word predictions based on Stupid Back-off \(latex\)-gram
 model on a test corpus.</p>
     </div>
 
@@ -144,23 +144,23 @@ model on a test corpus.</p>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tibble, containing the input $(n-1)$-grams, the true completions,
+    <p>A tibble, containing the input $(N-1)$-grams, the true completions,
 the predicted completions and a column indicating whether one of the
 predictions were correct or not.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This function allows to obtain information on Stupid Backoff model
+    <p>This function allows to obtain information on Stupid Back-off model
 predictions, such as next-word prediction accuracy, or the word-rank
 distribution of correct prediction, by direct test against a test set corpus.</p>
 <p><code>eval_sbo_preds</code> performs the following operations:</p><ol>
-<li><p>Sample a single $n$-gram from each sentence of test corpus.</p></li>
-<li><p>Predict next words from the $(n-1)$-gram prefix.</p></li>
+<li><p>Sample a single $N$-gram from each sentence of test corpus.</p></li>
+<li><p>Predict next words from the $(N-1)$-gram prefix.</p></li>
 <li><p>Return all predictions, together with the true word completions.</p></li>
 </ol>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Evaluating next-word predictions from a Stupid Backoff n-gram model</span>
+    <pre class="examples"><div class='input'><span class='co'># Evaluating next-word predictions from a Stupid Back-off N-gram model</span>
 
 <span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>840</span>) <span class='co'># Set seed for reproducibility</span>
 <span class='no'>eval</span> <span class='kw'>&lt;-</span> <span class='co'># May take ~ 2 or 3 minutes!</span>

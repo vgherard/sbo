@@ -9,14 +9,14 @@
 
 `sbo` provides utilities for building and evaluating next-word
 prediction functions based on [Stupid
-Backoff](https://www.aclweb.org/anthology/D07-1090.pdf) [n-gram
+Back-off](https://www.aclweb.org/anthology/D07-1090.pdf) [N-gram
 models](https://en.wikipedia.org/wiki/N-gram) in R. It includes
 functions such as:
 
   - `get_kgram_freqs()`: Extract \(k\)-gram frequency tables from a text
     corpus
   - `build_sbo_preds()`: Build next-word prediction tables from Stupid
-    Backoff \(n\)-gram model. Allows compact and efficient
+    Back-off \(N\)-gram model. Allows compact and efficient
     storage/retrieval of a text prediction function.
   - `eval_sbo_preds()`: Test model predictions against an independent
     corpus.
@@ -41,10 +41,10 @@ text-predictor with `sbo`:
 
 ``` r
 library(sbo)
-## Train a next-word prediction function based on 3-gram Stupid Backoff. 
+## Train a next-word prediction function based on 3-gram Stupid Back-off. 
 train <- sbo::twitter_train # 100k tweets, example dataset from sbo
 dict <- get_word_freqs(train) %$% word[1:1000] # Build rank-sorted dictionary
-freqs <- get_kgram_freqs(train, dict, n = 3) # Get k-gram frequencies (up to 3-grams)
+freqs <- get_kgram_freqs(train, dict, N = 3) # Get k-gram frequencies (up to 3-grams)
 sbo <- build_sbo_preds(freqs) # Build prediction tables
 ```
 

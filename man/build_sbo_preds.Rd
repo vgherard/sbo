@@ -2,7 +2,7 @@
 % Please edit documentation in R/build_sbo_preds.R
 \name{build_sbo_preds}
 \alias{build_sbo_preds}
-\title{Stupid Backoff predictions.}
+\title{Stupid Back-off predictions.}
 \usage{
 build_sbo_preds(freqs, lambda = 0.4, L = 3L, filtered = "_UNK_")
 }
@@ -11,7 +11,7 @@ build_sbo_preds(freqs, lambda = 0.4, L = 3L, filtered = "_UNK_")
 frequencies extracted from a training corpus.}
 
 \item{lambda}{a length one numeric. Penalization \eqn{latex}{\lambda} in the
-Stupid Backoff algorithm.}
+Stupid Back-off algorithm.}
 
 \item{L}{a length one integer. Maximum number of next-word predictions
 for a given input.}
@@ -22,17 +22,17 @@ for a given input.}
 A \code{sbo_preds} object.
 }
 \description{
-Build Stupid Backoff prediction tables from \eqn{latex}{k}-gram
+Build Stupid Back-off prediction tables from \eqn{latex}{k}-gram
 frequencies observed in a training corpus.
 }
 \details{
 This function compiles "prediction tables" from which top-scoring
-next-word predictions of a Stupid Backoff language model can be read off.
+next-word predictions of a Stupid Back-off language model can be read off.
 This is done with the purposes of memory compression and efficiency.
 
 The return value is a \code{sbo_preds} object, i.e. a list containing:
 \enumerate{
-\item The order of the underlying \eqn{latex}{n}-gram model, "\code{n}".
+\item The order of the underlying \eqn{latex}{N}-gram model, "\code{N}".
 \item The maximum number of next-word predictions for a given text input.
 \item The model dictionary.
 \item A list of tibbles storing prediction tables. These are for internal use
@@ -40,8 +40,8 @@ in the \code{\link[sbo]{predict.sbo_preds}} method.
 }
 }
 \examples{
-# Train an n-gram model
-## Get Stupid Backoff prediction tables
+# Train an N-gram model
+## Get Stupid Back-off prediction tables
 sbo <- build_sbo_preds(twitter_freqs)
 ## Print result
 sbo

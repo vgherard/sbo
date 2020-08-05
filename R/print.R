@@ -8,13 +8,13 @@ print.kgram_freqs <- function(x, ...){
         "k-gram frequency table" %>%
                 format_title %>%
                 cat(., "\n\n")
-        "Order (n):" %>%
+        "Order (N):" %>%
                 format_item %>%
-                cat(., x$n, "\n")
+                cat(., x$N, "\n")
         "Dictionary size:" %>%
                 format_item %>%
                 cat(., length(x$dict), " words\n\n")
-        for(i in 1:x$n){
+        for(i in 1:x$N){
                 paste0("# of unique ", i, "-grams:") %>%
                         format_item %>%
                         cat(., nrow( x$counts[[i]] ), "\n")
@@ -33,16 +33,16 @@ print.sbo_preds <- function(x, ...){
         format_title <- . %>% (cli::style_underline) %>% (cli::style_bold)
         format_item <- . %>% (cli::col_silver) %>% (cli::style_italic)
         format_help <- . %>% (cli::col_green)
-        "Next-word prediction table for Stupid Backoff n-gram model" %>%
+        "Next-word prediction table for Stupid Back-off n-gram model" %>%
                 format_title %>%
                 cat(., "\n\n")
-        "Order (n):" %>%
+        "Order (N):" %>%
                 format_item %>%
-                cat(., x$n, "\n")
+                cat(., x$N, "\n")
         "Dictionary size:" %>%
                 format_item %>%
                 cat(., length(x$dict), " words\n")
-        "Backoff penalization (lambda):" %>%
+        "Back-off penalization (lambda):" %>%
                 format_item %>%
                 cat(., x$lambda, "\n")
         "Maximum number of predictions (L):" %>%

@@ -1,7 +1,7 @@
 ################################################################################
 #' Babble!
 #'
-#' Generate random text based on Stupid Backoff language model.
+#' Generate random text based on Stupid Back-off language model.
 #'
 #' @export
 #'
@@ -16,7 +16,7 @@
 #' @param L a length one integer. Number of next-word suggestions from
 #' which to sample (see details).
 #' @return A character vector of length one.
-#' @details This function generates random text from a Stupid Backoff language
+#' @details This function generates random text from a Stupid Back-off language
 #' model.
 #' \code{babble} randomly samples one of the top \eqn{latex}{L} next word
 #' predictions. Text generation stops when an End-Of-Sentence token is

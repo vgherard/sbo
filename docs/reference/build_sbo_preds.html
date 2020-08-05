@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Stupid Backoff predictions. — build_sbo_preds • sbo</title>
+<title>Stupid Back-off predictions. — build_sbo_preds • sbo</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Stupid Backoff predictions. — build_sbo_preds" />
-<meta property="og:description" content="Build Stupid Backoff prediction tables from \(latex\)-gram
+<meta property="og:title" content="Stupid Back-off predictions. — build_sbo_preds" />
+<meta property="og:description" content="Build Stupid Back-off prediction tables from \(latex\)-gram
 frequencies observed in a training corpus." />
 
 
@@ -112,13 +112,13 @@ frequencies observed in a training corpus." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Stupid Backoff predictions.</h1>
+    <h1>Stupid Back-off predictions.</h1>
     <small class="dont-index">Source: <a href='http://github.com/vgherard/sbo/blob/master/R/build_sbo_preds.R'><code>R/build_sbo_preds.R</code></a></small>
     <div class="hidden name"><code>build_sbo_preds.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Build Stupid Backoff prediction tables from \(latex\)-gram
+    <p>Build Stupid Back-off prediction tables from \(latex\)-gram
 frequencies observed in a training corpus.</p>
     </div>
 
@@ -135,7 +135,7 @@ frequencies extracted from a training corpus.</p></td>
     <tr>
       <th>lambda</th>
       <td><p>a length one numeric. Penalization \(latex\) in the
-Stupid Backoff algorithm.</p></td>
+Stupid Back-off algorithm.</p></td>
     </tr>
     <tr>
       <th>L</th>
@@ -154,10 +154,10 @@ for a given input.</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>This function compiles "prediction tables" from which top-scoring
-next-word predictions of a Stupid Backoff language model can be read off.
+next-word predictions of a Stupid Back-off language model can be read off.
 This is done with the purposes of memory compression and efficiency.</p>
 <p>The return value is a <code>sbo_preds</code> object, i.e. a list containing:</p><ol>
-<li><p>The order of the underlying \(latex\)-gram model, "<code>n</code>".</p></li>
+<li><p>The order of the underlying \(latex\)-gram model, "<code>N</code>".</p></li>
 <li><p>The maximum number of next-word predictions for a given text input.</p></li>
 <li><p>The model dictionary.</p></li>
 <li><p>A list of tibbles storing prediction tables. These are for internal use
@@ -169,15 +169,15 @@ in the <code><a href='predict.sbo_preds.html'>predict.sbo_preds</a></code> metho
     <div class='dont-index'><p><code><a href='predict.sbo_preds.html'>predict.sbo_preds</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Train an n-gram model</span>
-<span class='co'>## Get Stupid Backoff prediction tables</span>
+    <pre class="examples"><div class='input'><span class='co'># Train an N-gram model</span>
+<span class='co'>## Get Stupid Back-off prediction tables</span>
 <span class='no'>sbo</span> <span class='kw'>&lt;-</span> <span class='fu'>build_sbo_preds</span>(<span class='no'>twitter_freqs</span>)
 <span class='co'>## Print result</span>
-<span class='no'>sbo</span></div><div class='output co'>#&gt; <span style='font-weight: bold;text-decoration: underline;'>Next-word prediction table for Stupid Backoff n-gram model</span><span> 
+<span class='no'>sbo</span></div><div class='output co'>#&gt; <span style='font-weight: bold;text-decoration: underline;'>Next-word prediction table for Stupid Back-off n-gram model</span><span> 
 #&gt; 
-#&gt; </span><span style='color: #555555;font-style: italic;'>Order (n):</span><span> 3 
+#&gt; </span><span style='color: #555555;font-style: italic;'>Order (N):</span><span> 3 
 #&gt; </span><span style='color: #555555;font-style: italic;'>Dictionary size:</span><span> 1000  words
-#&gt; </span><span style='color: #555555;font-style: italic;'>Backoff penalization (lambda):</span><span> 0.4 
+#&gt; </span><span style='color: #555555;font-style: italic;'>Back-off penalization (lambda):</span><span> 0.4 
 #&gt; </span><span style='color: #555555;font-style: italic;'>Maximum number of predictions (L):</span><span> 3 
 #&gt; </span><span style='color: #555555;font-style: italic;'>
 #&gt; Object size:</span><span> 1.8 Mb 

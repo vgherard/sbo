@@ -1,7 +1,7 @@
 ################################################################################
-#' Evaluate Stupid Backoff next-word predictions
+#' Evaluate Stupid Back-off next-word predictions
 #'
-#' Evaluate next-word predictions based on Stupid Backoff \eqn{latex}{n}-gram
+#' Evaluate next-word predictions based on Stupid Back-off \eqn{latex}{N}-gram
 #' model on a test corpus.
 #'
 #' @author Valerio Gherardi
@@ -13,19 +13,19 @@
 #' @param test a character vector. Test corpus for model evaluation.
 #' @param L Maximum number of predictions for each input sentence
 #' (maximum allowed is \code{model$L})
-#' @return A tibble, containing the input $(n-1)$-grams, the true completions,
+#' @return A tibble, containing the input $(N-1)$-grams, the true completions,
 #' the predicted completions and a column indicating whether one of the
 #' predictions were correct or not.
-#' @details This function allows to obtain information on Stupid Backoff model
+#' @details This function allows to obtain information on Stupid Back-off model
 #' predictions, such as next-word prediction accuracy, or the word-rank
 #' distribution of correct prediction, by direct test against a test set corpus.
 #'
 #' \code{eval_sbo_preds} performs the following operations:
-#' 1. Sample a single $n$-gram from each sentence of test corpus.
-#' 1. Predict next words from the $(n-1)$-gram prefix.
+#' 1. Sample a single $N$-gram from each sentence of test corpus.
+#' 1. Predict next words from the $(N-1)$-gram prefix.
 #' 1. Return all predictions, together with the true word completions.
 #' @examples
-#' # Evaluating next-word predictions from a Stupid Backoff n-gram model
+#' # Evaluating next-word predictions from a Stupid Back-off N-gram model
 #'
 #' set.seed(840) # Set seed for reproducibility
 #' eval <- # May take ~ 2 or 3 minutes!
@@ -51,17 +51,17 @@ eval_sbo_preds <- function(model, test, L = model$L){
         stopifnot(is.character(test))
         if(is.na((L %<>% as.integer)) | L < 1L)
                 stop("L could not be coerced to a positive integer")
-        n <- model$n
+        N <- model$N
         dict <- model$dict
-        wrap <- c(paste0(rep("_BOS_", n-1), collapse = " "), "_EOS_")
+        wrap <- c(paste0(rep("_BOS_", N-1), collapse = " "), "_EOS_")
         test %>%
                 preprocess(split_sent = ".", wrap = wrap) %>%
                 lapply(function(x){
                         x %<>% stri_split_fixed(" ", omit_empty=TRUE) %>% unlist
-                        if(length(x) < n + 1) return(tibble())
-                        i <- sample(1:(length(x)-n+1), 1)
-                        input <- paste0(x[i:(i+n-2)], collapse = " ")
-                        tibble(input = input, true = x[i+n-1] )
+                        if(length(x) < N + 1) return(tibble())
+                        i <- sample(1:(length(x)-N+1), 1)
+                        input <- paste0(x[i:(i+N-2)], collapse = " ")
+                        tibble(input = input, true = x[i+N-1] )
                         }) %>%
                 bind_rows %>%
                 mutate(input = gsub("_BOS_", "", input),
