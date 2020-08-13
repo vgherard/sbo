@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Word frequency tables — get_word_freqs • sbo</title>
+<title>Changelog • sbo</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,7 @@
 
 
 
-<meta property="og:title" content="Word frequency tables — get_word_freqs" />
-<meta property="og:description" content="Get word frequency tables from a training corpus." />
+<meta property="og:title" content="Changelog" />
 
 
 
@@ -59,7 +58,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-topic">
+    <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -114,54 +113,25 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Word frequency tables</h1>
-    <small class="dont-index">Source: <a href='http://github.com/vgherard/sbo/blob/master/R/get_word_freqs.R'><code>R/get_word_freqs.R</code></a></small>
-    <div class="hidden name"><code>get_word_freqs.Rd</code></div>
+      <h1 data-toc-skip>Changelog <small></small></h1>
+      <small>Source: <a href='http://github.com/vgherard/sbo/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div class="ref-description">
-    <p>Get word frequency tables from a training corpus.</p>
-    </div>
-
-    <pre class="usage"><span class='fu'>get_word_freqs</span>(<span class='no'>text</span>)</pre>
-
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>text</th>
-      <td><p>a character vector. The training corpus from which to extract
-word frequencies.</p></td>
-    </tr>
-    </table>
-
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>A tibble containing word frequencies.</p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Get word frequencies and extract dictionary of top 1000 words</span>
-<span class='no'>words</span> <span class='kw'>&lt;-</span> <span class='fu'>get_word_freqs</span>(<span class='no'>twitter_train</span>)
-<span class='no'>words</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 59,919 x 2</span><span>
-#&gt;    word      n
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> the   </span><span style='text-decoration: underline;'>39</span><span>868
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> to    </span><span style='text-decoration: underline;'>33</span><span>463
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> i     </span><span style='text-decoration: underline;'>30</span><span>727
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> a     </span><span style='text-decoration: underline;'>25</span><span>831
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> you   </span><span style='text-decoration: underline;'>23</span><span>088
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> and   </span><span style='text-decoration: underline;'>18</span><span>681
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> for   </span><span style='text-decoration: underline;'>16</span><span>311
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> in    </span><span style='text-decoration: underline;'>16</span><span>106
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> of    </span><span style='text-decoration: underline;'>15</span><span>461
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> is    </span><span style='text-decoration: underline;'>14</span><span>949
-#&gt; </span><span style='color: #949494;'># … with 59,909 more rows</span><span></div><div class='input'><span class='no'>dict</span> <span class='kw'>&lt;-</span> <span class='no'>words</span>$<span class='no'>word</span>[<span class='fl'>1</span>:<span class='fl'>1000</span>]</div></span></pre>
+    <div id="sbo-011" class="section level1">
+<h1 class="page-header" data-toc-text="0.1.1">
+<a href="#sbo-011" class="anchor"></a>sbo 0.1.1</h1>
+<ul>
+<li>Added <code>predict</code> method for <code>kgram_freqs</code> class.</li>
+</ul>
+</div>
   </div>
+
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
     </nav>
   </div>
+
 </div>
 
 
