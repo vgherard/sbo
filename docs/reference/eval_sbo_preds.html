@@ -182,7 +182,8 @@ distribution of correct prediction, by direct test against a test set corpus.</p
                 <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span>(<span class='no'>correct</span>, <span class='no'>true</span> <span class='kw'>!=</span> <span class='st'>"."</span>) <span class='kw'>%&gt;%</span>
                 <span class='fu'>transmute</span>(<span class='kw'>rank</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/match.html'>match</a></span>(<span class='no'>true</span>, <span class='kw'>table</span> <span class='kw'>=</span> <span class='no'>twitter_sbo</span>$<span class='no'>dict</span>)) <span class='kw'>%&gt;%</span>
                 <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span>(<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>rank</span>)) + <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_histogram.html'>geom_histogram</a></span>(<span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='fl'>25</span>)
-}</div><div class='output co'>#&gt; <span class='message'>Carico il pacchetto richiesto: ggplot2</span></div><div class='img'><img src='eval_sbo_preds-1.png' alt='' width='700' height='433' /></div></span></pre>
+}</div><div class='output co'>#&gt; <span class='message'>Loading required package: ggplot2</span></div><div class='output co'>#&gt; <span class='message'>Need help getting started? Try the R Graphics Cookbok:</span>
+#&gt; <span class='message'>https://r-graphics.org</span></div><div class='img'><img src='eval_sbo_preds-1.png' alt='' width='700' height='433' /></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
