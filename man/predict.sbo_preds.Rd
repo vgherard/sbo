@@ -2,7 +2,7 @@
 % Please edit documentation in R/predict_sbo_preds.R
 \name{predict.sbo_preds}
 \alias{predict.sbo_preds}
-\title{Predict method for Stupid Back-off text predictor}
+\title{Predict method for Stupid Back-off prediction tables}
 \usage{
 \method{predict}{sbo_preds}(object, newdata, L = object$L, ...)
 }
@@ -21,10 +21,9 @@ A character vector if \code{length(newdata) == 1}, otherwise a
 character matrix.
 }
 \description{
-Predicted text based on Stupid Back-off \eqn{latex}{n}-gram model.
+Predictive text based on Stupid Back-off \eqn{latex}{N}-gram model.
 }
 \examples{
-# Predict from Stupid Back-off n-gram model
 predict(twitter_sbo, "i love")
 }
 \author{

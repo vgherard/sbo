@@ -1,6 +1,6 @@
-#' Predict method for Stupid Back-off text predictor
+#' Predict method for Stupid Back-off prediction tables
 #'
-#' Predicted text based on Stupid Back-off \eqn{latex}{n}-gram model.
+#' Predictive text based on Stupid Back-off \eqn{latex}{N}-gram model.
 #'
 #' @export
 #'
@@ -15,13 +15,12 @@
 #' @return A character vector if \code{length(newdata) == 1}, otherwise a
 #' character matrix.
 #' @examples
-#' # Predict from Stupid Back-off n-gram model
 #' predict(twitter_sbo, "i love")
 #' @importFrom utils head
 #' @importFrom utils tail
 ################################################################################
 predict.sbo_preds <- function(object, newdata, L = object$L, ...){
-        stopifnot(is.character(newdata))
+        stopifnot(is.character(newdata) & length(newdata) > 0)
         stopifnot(is.integer(L) & length(L) == 1 & L <= object$L)
         N <- object$N
         dict <- object$dict
