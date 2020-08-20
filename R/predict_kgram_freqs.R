@@ -27,7 +27,7 @@ predict.kgram_freqs <- function(object, newdata, lambda = 0.4, ...){
         N <- object$N
         dict <- object$dict
         V <- length(dict) + 3
-        wrap <- c(paste0(rep("_BOS_", N-1), collapse = " "), "")
+        prefix <- paste0(rep("_BOS_", N-1), collapse = " ")
 
         if(length(newdata) > 1)
                 return(lapply(newdata,
@@ -35,9 +35,10 @@ predict.kgram_freqs <- function(object, newdata, lambda = 0.4, ...){
                               )
                        )
         newdata %<>%
-                preprocess(split_sent = ".", omit_empty = F, wrap = wrap) %>%
+                preprocess(split_sent = ".", omit_empty = F) %>%
                 last %>%
-                get_words(dict) %>%
+                paste(prefix, ., sep = " ") %>%
+                tokenize_(dict) %>%
                 tail(N-1) %>%
                 `names<-`(paste0("w",1:(N-1)))
 

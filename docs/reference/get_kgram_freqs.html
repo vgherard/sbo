@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sbo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -177,20 +177,8 @@ and "Unknown word" tokens, respectively.</p></li>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Obtain k-gram frequency table from corpus</span>
 <span class='co'>## Get k-gram frequencies, up to k = N = 3.</span>
-<span class='no'>freqs</span> <span class='kw'>&lt;-</span> <span class='fu'>get_kgram_freqs</span>(<span class='no'>twitter_train</span>, <span class='no'>twitter_dict</span>, <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>3</span>)
-<span class='co'>## Print result</span>
-<span class='no'>freqs</span></div><div class='output co'>#&gt; <span style='font-weight: bold;text-decoration: underline;'>k-gram frequency table</span><span> 
-#&gt; 
-#&gt; </span><span style='color: #555555;font-style: italic;'>Order (N):</span><span> 3 
-#&gt; </span><span style='color: #555555;font-style: italic;'>Dictionary size:</span><span> 1000  words
-#&gt; 
-#&gt; </span><span style='color: #555555;font-style: italic;'># of unique 1-grams:</span><span> 1002 
-#&gt; </span><span style='color: #555555;font-style: italic;'># of unique 2-grams:</span><span> 102627 
-#&gt; </span><span style='color: #555555;font-style: italic;'># of unique 3-grams:</span><span> 410732 
-#&gt; </span><span style='color: #555555;font-style: italic;'>
-#&gt; Object size:</span><span> 13 Mb 
-#&gt; 
-#&gt; </span><span style='color: #00BB00;'>See ?get_kgram_freqs for help.</span><span> </div></span></pre>
+<span class='no'>freqs</span> <span class='kw'>&lt;-</span> <span class='fu'>get_kgram_freqs</span>(<span class='no'>twitter_train</span>, <span class='no'>twitter_dict</span>, <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='error'>Error in match.fun(FUN): '1:k' non è un oggetto function, character o symbol:</span></div><div class='input'><span class='co'>## Print result</span>
+<span class='no'>freqs</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): oggetto "freqs" non trovato</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

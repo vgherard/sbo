@@ -55,7 +55,8 @@ eval_sbo_preds <- function(model, test, L = model$L){
         dict <- model$dict
         wrap <- c(paste0(rep("_BOS_", N-1), collapse = " "), "_EOS_")
         test %>%
-                preprocess(split_sent = ".", wrap = wrap) %>%
+                preprocess(split_sent = ".") %>%
+                paste(wrap[[1]], ., wrap[[2]], sep = " ") %>%
                 lapply(function(x){
                         x %<>% stri_split_fixed(" ", omit_empty=TRUE) %>% unlist
                         if(length(x) < N + 1) return(tibble())

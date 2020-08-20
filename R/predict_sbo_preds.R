@@ -25,17 +25,18 @@ predict.sbo_preds <- function(object, newdata, L = object$L, ...){
         N <- object$N
         dict <- object$dict
         V <- length(dict) + 3
-        wrap <- c(paste0(rep("_BOS_", N-1), collapse = " "), "")
+        prefix <- paste0(rep("_BOS_", N-1), collapse = " ")
 
         if(length(newdata) > 1)
                 return(sapply(newdata,
-                              function(x)predict.sbo_preds(object, x, L)
+                              function(x) predict.sbo_preds(object, x, L)
                               ) %>% t
                        )
         newdata %<>%
-                preprocess(split_sent = ".", omit_empty = F, wrap = wrap) %>%
+                preprocess(split_sent = ".", omit_empty = F) %>%
                 last %>%
-                get_words(dict) %>%
+                paste(prefix, ., sep = " ") %>%
+                tokenize_(dict) %>%
                 tail(N-1) %>%
                 `names<-`(paste0("w",1:(N-1)))
 

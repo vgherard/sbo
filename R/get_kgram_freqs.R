@@ -10,10 +10,15 @@
 #'
 #' @param text a character vector. The training corpus from which to extract
 #' k-gram frequencies.
-#' @param dict a character vector. The language model fixed dictionary (see
-#' details), sorted by word frequency.
+#' @param dict either a character vector, or a length one integer/numeric.
+#' The language model fixed dictionary (see details), sorted by word frequency.
+#' If numeric, the dictionary is obtained from the training corpus using
+#' the \code{dict} most frequent words.
 #' @param N a length one integer. The maximum order of \eqn{latex}{k}-grams
 #' for which frequencies are sought.
+#' @param preproc a function for corpus preprocessing and sentence tokenization.
+#' Takes a character vector as input and returns a character vector, each
+#' element of it corresponding to a separate sentence.
 #' @return A \code{kgram_freqs} object, containing the \eqn{latex}{k}-gram
 #' frequency tables for \eqn{latex}{k = 1, 2, ..., N}.
 #' @details This function extracts all k-gram frequency tables from a text
@@ -36,6 +41,13 @@
 #' \code{length(dictionary)+1} and \code{length(dictionary)+2}
 #' correspond to the "Begin-Of-Sentence", "End-Of-Sentence"
 #' and "Unknown word" tokens, respectively.
+#'
+#' The \code{preproc} argument allows the user to employ a custom corpus
+#' preprocessing function (the default leverages on
+#' \code{\link[sbo]{preprocess}}), which should additionally perform
+#' tokenization at the sentence level. It is important to note that each
+#' element of the vector \code{preproc(text)} gets interpreted as a separate
+#' sentence in the \eqn{latex}{k}-gram tokenization algorithm.
 #' @seealso \code{\link[sbo]{get_word_freqs}}
 #' @examples
 #' # Obtain k-gram frequency table from corpus
@@ -45,25 +57,35 @@
 #' freqs
 ################################################################################
 
-get_kgram_freqs <- function(text, dict, N){
-        stopifnot(is.character(text), is.character(dict))
-        stopifnot(length((N %<>% as.integer))==1)
-        if(is.na(N) | N < 1L)
-                stop("n_max could not be coerced to a positive integer")
-        stopifnot(is.integer(N), length(N) == 1)
-        wrap <- c(paste0(rep("_BOS_", N-1), collapse = " "), "_EOS_")
-        text %<>% preprocess(split_sent = ".", wrap = wrap) %>% get_words(dict)
-        # Get k-gram counts
-        counts <- lapply(1:N, function(k)
+get_kgram_freqs <- function(text, dict, N,
+                            preproc = function(x)
+                                    preprocess(x, split_sent = ".")
+                            ){
+        stopifnot(is.character(text), is.function(preprocess))
+        N %<>% as.integer
+        if(length(N) != 1 | is.na(N) | N < 1L)
+                stop("N could not be coerced to a length one positive integer")
+        wrap <- c(paste0(rep("_BOS_", N - 1), collapse = " "), "_EOS_")
+        text %<>% preproc %>% paste(wrap[[1]], ., wrap[[2]], sep = " ")
+        if(!is.character(dict)){
+                dict %<>% as.integer
+                if(is.na(dict) | length(dict) != 1)
+                        stop("'dict' should be either a character vector or a
+                             length one numeric or integer.")
+                dict <- get_word_freqs(text, preproc= identity) %$% word[1:dict]
+        }
+        text %<>% tokenize_(dict)
+        len <- length(text)
+        counts <- lapply(1:N, function(k) # Get k-gram counts
                         text %>%
                                 # construct k column k-gram matrix
-                                sliding_matrix(ncol = k) %>%
-                                # drop k-grams ending by "BOS"
+                                sapply(1:k, function(i) .[i:(len-k+i)]) %>%
+                                # drop k-grams ending by BOS token
                                 subset(.[, k] != 0, drop = F) %>%
                                 `colnames<-`(paste0("w",(N-k+1):N)) %>%
                                 as_tibble %>%
                                 count(across(everything()), sort = TRUE)
-                       )
-        structure( list(N = N, dict = dict, counts = counts),
-                   class = "kgram_freqs" )
+                        )
+        structure(list(N = N, dict = dict, counts = counts),
+                  class = "kgram_freqs")
 }

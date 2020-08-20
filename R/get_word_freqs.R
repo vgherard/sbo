@@ -10,6 +10,8 @@
 #'
 #' @param text a character vector. The training corpus from which to extract
 #' word frequencies.
+#' @param preproc a function for corpus preprocessing. Takes a character
+#' vector as input and returns a character vector.
 #' @return A tibble containing word frequencies.
 #' @examples
 #' # Get word frequencies and extract dictionary of top 1000 words
@@ -18,10 +20,14 @@
 #' dict <- words$word[1:1000]
 ################################################################################
 
-get_word_freqs <- function(text){
-        stopifnot(class(text) == "character")
+get_word_freqs <- function(text,
+                           preproc = function(x)
+                                   preprocess(x, split_sent = ".",
+                                               omit_empty = TRUE)
+                           ){
+        stopifnot(is.character(text))
         text %>%
-                preprocess(split_sent = ".", omit_empty = TRUE) %>%
+                preproc %>%
                 stri_split_fixed(" ", omit_empty = TRUE) %>%
                 unlist %>%
                 tibble(word = .) %>%
