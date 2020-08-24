@@ -12,7 +12,7 @@ RoxygenNote: 7.1.1.9000
 Depends: 
     dplyr,
     magrittr,
-    R (>= 2.10)
+    R (>= 3.5.0)
 Imports: tidyr, stringi
 Suggests: 
     ggplot2,
