@@ -4,11 +4,17 @@
 \alias{get_word_freqs}
 \title{Word frequency tables}
 \usage{
-get_word_freqs(text)
+get_word_freqs(
+  text,
+  preproc = function(x) preprocess(x, split_sent = ".", omit_empty = TRUE)
+)
 }
 \arguments{
 \item{text}{a character vector. The training corpus from which to extract
 word frequencies.}
+
+\item{preproc}{a function for corpus preprocessing. Takes a character
+vector as input and returns a character vector.}
 }
 \value{
 A tibble containing word frequencies.
