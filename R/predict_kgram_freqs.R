@@ -31,7 +31,7 @@ predict.kgram_freqs <- function(object, newdata, lambda = 0.4, ...){
 
         if(length(newdata) > 1)
                 return(lapply(newdata,
-                              function(x)predict.kgram_freqs(object, x, L)
+                              function(x)predict.kgram_freqs(object, x, lambda)
                               )
                        )
         newdata %<>%
