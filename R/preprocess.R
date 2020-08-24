@@ -24,7 +24,6 @@
 #' @return A character vector. If \code{split_sent != FALSE}, each element of
 #' the return value corresponds to a sentence, otherwise the original
 #' structure of the input text is preserved.
-#' @author Valerio Gherardi
 #' @details This function provides basic utilities for preprocessing the
 #' training corpus of a language model. The order of arguments
 #' reflects the actual order of operations (e.g., the operations represented by
