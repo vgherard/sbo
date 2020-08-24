@@ -79,7 +79,7 @@ get_kgram_freqs <- function(text, dict, N,
         counts <- lapply(1:N, function(k) # Get k-gram counts
                         text %>%
                                 # construct k column k-gram matrix
-                                sapply(1:k, function(i) .[i:(len-k+i)]) %>%
+                                { sapply(1:k, function(i) .[i:(len-k+i)]) } %>%
                                 # drop k-grams ending by BOS token
                                 subset(.[, k] != 0, drop = F) %>%
                                 `colnames<-`(paste0("w",(N-k+1):N)) %>%
