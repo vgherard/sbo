@@ -50,42 +50,43 @@
 #' sentence in the \eqn{latex}{k}-gram tokenization algorithm.
 #' @seealso \code{\link[sbo]{get_word_freqs}}
 #' @examples
+#' \dontrun{
 #' # Obtain k-gram frequency table from corpus
 #' ## Get k-gram frequencies, up to k = N = 3.
 #' freqs <- get_kgram_freqs(twitter_train, twitter_dict, N = 3)
 #' ## Print result
 #' freqs
+#' }
 ################################################################################
 
-get_kgram_freqs <- function(text, dict, N,
-                            preproc = function(x)
-                                    preprocess(x, split_sent = ".")
-                            ){
-        stopifnot(is.character(text), is.function(preprocess))
+get_kgram_freqs <- function(text, N, dict, .preprocess = preprocess){
+        stopifnot(is.character(text))
         N %<>% as.integer
-        if(length(N) != 1 | is.na(N) | N < 1L)
-                stop("N could not be coerced to a length one positive integer")
-        wrap <- c(paste0(rep("_BOS_", N - 1), collapse = " "), "_EOS_")
-        text %<>% preproc %>% paste(wrap[[1]], ., wrap[[2]], sep = " ")
-        if(!is.character(dict)){
+        stopifnot(length(N) == 1 & !is.na(N) & N >= 1L)
+        stopifnot(is.function(.preprocess))
+
+        text <- .preprocess(text)
+        if (!is.character(dict)) {
                 dict %<>% as.integer
-                if(is.na(dict) | length(dict) != 1)
+                if (is.na(dict) | length(dict) != 1)
                         stop("'dict' should be either a character vector or a
                              length one numeric or integer.")
-                dict <- get_word_freqs(text, preproc= identity) %$% word[1:dict]
+                dict <- get_word_freqs(text, .preprocess = identity)[1:dict] %>%
+                        names
         }
-        text %<>% tokenize_(dict)
-        len <- length(text)
-        counts <- lapply(1:N, function(k) # Get k-gram counts
-                        text %>%
-                                # construct k column k-gram matrix
-                                { sapply(1:k, function(i) .[i:(len-k+i)]) } %>%
-                                # drop k-grams ending by BOS token
-                                subset(.[, k] != 0, drop = F) %>%
-                                `colnames<-`(paste0("w",(N-k+1):N)) %>%
-                                as_tibble %>%
-                                count(across(everything()), sort = TRUE)
-                        )
-        structure(list(N = N, dict = dict, counts = counts),
-                  class = "kgram_freqs")
+
+        counts <- lapply(get_kgram_freqsC(text, dict, N),
+                         function(x){
+                                 colnames(x) <-
+                                 c(paste0("w", (N + 2 - ncol(x)):N), "n")
+                                 return(as_tibble(x))
+                                 }
+                         )
+
+        return(structure(list(N = N, dict = dict,
+                              counts = counts, .preprocess = .preprocess
+                              ),
+                         class = "kgram_freqs"
+                         )
+               )
 }

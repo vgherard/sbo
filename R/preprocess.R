@@ -30,7 +30,7 @@
 #' \code{replace_punct} and \code{erase_extra} do not commute).
 #' @importFrom stringi stri_split_fixed
 
-preprocess <- function(text, to_lower = TRUE, replace_punct = TRUE,
+preprocess0 <- function(text, to_lower = TRUE, replace_punct = TRUE,
                   erase_extra = TRUE, collapse_space = TRUE,
                   split_sent = FALSE, omit_empty = TRUE){
         stopifnot(class(text) == "character")

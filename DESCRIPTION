@@ -13,7 +13,8 @@ Depends:
     dplyr,
     magrittr,
     R (>= 3.5.0)
-Imports: tidyr, stringi
+LinkingTo: Rcpp
+Imports: Rcpp, tidyr, stringi
 Suggests: 
     ggplot2,
     knitr,
