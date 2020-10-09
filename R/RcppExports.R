@@ -2,6 +2,11 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 #' @export
+build_sbo_predsC <- function(sentences, dict, N) {
+    invisible(.Call(`_sbo_build_sbo_predsC`, sentences, dict, N))
+}
+
+#' @export
 get_kgram_freqsC <- function(sentences, dict, N) {
     .Call(`_sbo_get_kgram_freqsC`, sentences, dict, N)
 }
@@ -9,6 +14,10 @@ get_kgram_freqsC <- function(sentences, dict, N) {
 #' @export
 get_word_freqsC <- function(text) {
     .Call(`_sbo_get_word_freqsC`, text)
+}
+
+predict_sbo_preds <- function(object, input) {
+    .Call(`_sbo_predict_sbo_preds`, object, input)
 }
 
 #' @export

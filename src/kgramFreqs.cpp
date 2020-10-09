@@ -10,14 +10,14 @@ using word = unsigned short int;
 
 kgramFreqs::kgramFreqs(const vector<string>& sentences,
                        const vector<string>& dict,
-                       int _N)
-                :N(_N), freqs(_N)
+                       int N)
+                :_N(N), _freqs(N)
         {
         deque<string> empty_queue(N - 1, "0");
         for(auto sentence: sentences){
                 if(sentence == "") continue;
                 deque<string> words_queue = empty_queue;
-                size_t start = 0; size_t end;
+                size_t start = sentence.find_first_not_of(" "); size_t end;
                 while((end = sentence.find_first_of(" ", start)) != string::npos
                               ){
                         word w{match(sentence.substr(start, end - start), dict)};
@@ -26,7 +26,7 @@ kgramFreqs::kgramFreqs(const vector<string>& sentences,
                         words_queue.pop_front();
                         start = sentence.find_first_not_of(" ", end);
                 }
-                word last_w = match(sentence.substr(start),dict);
+                word last_w = match(sentence.substr(start), dict);
                 words_queue.push_back(std::to_string(last_w));
                 push(words_queue);
                 words_queue.pop_front();
@@ -38,20 +38,20 @@ kgramFreqs::kgramFreqs(const vector<string>& sentences,
 void kgramFreqs::push(const deque<string>& words_queue){
         auto rit = words_queue.rbegin();
         string kgram = *rit;
-        freqs[0][kgram]++;
+        _freqs[0][kgram]++;
         rit++;
-        for(int k = 1; k < N; k++){
+        for(int k = 1; k < N(); k++){
                 kgram += " " + *rit;
-                freqs[k][kgram]++;
+                _freqs[k][kgram]++;
                 rit++;
         }
 }
 
 List kgramFreqs::make_R_list() const {
         List l;
-        for(int k = 0; k < N; k++){
-                IntegerMatrix m(freqs[k].size(), k + 2); int i = 0;
-                for(const auto& freq: freqs[k]){
+        for(int k = 0; k < N(); k++){
+                IntegerMatrix m(_freqs[k].size(), k + 2); int i = 0;
+                for(const auto& freq: _freqs[k]){
                         size_t end = -1; size_t start;
                         for(int j = k; j >= 0; j--){
                                 start = end + 1;

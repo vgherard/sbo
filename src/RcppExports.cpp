@@ -5,6 +5,18 @@
 
 using namespace Rcpp;
 
+// build_sbo_predsC
+void build_sbo_predsC(const std::vector<std::string>& sentences, const std::vector<std::string>& dict, int N);
+RcppExport SEXP _sbo_build_sbo_predsC(SEXP sentencesSEXP, SEXP dictSEXP, SEXP NSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const std::vector<std::string>& >::type sentences(sentencesSEXP);
+    Rcpp::traits::input_parameter< const std::vector<std::string>& >::type dict(dictSEXP);
+    Rcpp::traits::input_parameter< int >::type N(NSEXP);
+    build_sbo_predsC(sentences, dict, N);
+    return R_NilValue;
+END_RCPP
+}
 // get_kgram_freqsC
 List get_kgram_freqsC(const std::vector<std::string>& sentences, const std::vector<std::string>& dict, int N);
 RcppExport SEXP _sbo_get_kgram_freqsC(SEXP sentencesSEXP, SEXP dictSEXP, SEXP NSEXP) {
@@ -29,6 +41,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// predict_sbo_preds
+CharacterMatrix predict_sbo_preds(List object, std::vector<std::string> input);
+RcppExport SEXP _sbo_predict_sbo_preds(SEXP objectSEXP, SEXP inputSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type object(objectSEXP);
+    Rcpp::traits::input_parameter< std::vector<std::string> >::type input(inputSEXP);
+    rcpp_result_gen = Rcpp::wrap(predict_sbo_preds(object, input));
+    return rcpp_result_gen;
+END_RCPP
+}
 // preprocess
 std::vector<std::string> preprocess(const std::vector<std::string>& lines);
 RcppExport SEXP _sbo_preprocess(SEXP linesSEXP) {
@@ -42,8 +66,10 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_sbo_build_sbo_predsC", (DL_FUNC) &_sbo_build_sbo_predsC, 3},
     {"_sbo_get_kgram_freqsC", (DL_FUNC) &_sbo_get_kgram_freqsC, 3},
     {"_sbo_get_word_freqsC", (DL_FUNC) &_sbo_get_word_freqsC, 1},
+    {"_sbo_predict_sbo_preds", (DL_FUNC) &_sbo_predict_sbo_preds, 2},
     {"_sbo_preprocess", (DL_FUNC) &_sbo_preprocess, 1},
     {NULL, NULL, 0}
 };

@@ -30,6 +30,7 @@
 #' in the \code{\link[sbo]{predict.sbo_preds}} method.
 #' @seealso \code{\link[sbo]{predict.sbo_preds}}
 #' @examples
+#' \dontrun{
 #' # Train an N-gram model
 #' ## Get Stupid Back-off prediction tables
 #' sbo <- build_sbo_preds(twitter_freqs)
@@ -37,6 +38,7 @@
 #' sbo
 #' ## ...start playing
 #' predict(sbo, "i love")
+#' }
 ################################################################################
 
 build_sbo_preds <- function(freqs, lambda = 0.4, L = 3L, filtered = "_UNK_"){
@@ -54,7 +56,8 @@ build_sbo_preds <- function(freqs, lambda = 0.4, L = 3L, filtered = "_UNK_"){
                 ungroup %>%
                 pivot_wider(names_from = rank, names_prefix = "pred",
                             values_from = pred) %>%
-                mutate_all(as.integer)
+                mutate_all(as.integer) %>%
+                as.matrix
 
         preds <- lapply(pps_tbls, . %>% extract_preds)
 
