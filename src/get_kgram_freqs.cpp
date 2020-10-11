@@ -1,5 +1,3 @@
-// [[Rcpp::plugins(cpp11)]]
-#include <Rcpp.h>
 #include "sbo.h"
 using namespace Rcpp;
 
@@ -8,5 +6,7 @@ using namespace Rcpp;
 List get_kgram_freqsC(const std::vector<std::string>& sentences,
                       const std::vector<std::string>& dict,
                       int N){
-        return kgramFreqs(sentences, dict, N).make_R_list();
+        List l;
+        kgramFreqs(sentences, dict, N).save_to_R_list(l);
+        return l;
 }

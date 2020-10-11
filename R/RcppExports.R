@@ -2,11 +2,6 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 #' @export
-build_sbo_predsC <- function(sentences, dict, N) {
-    invisible(.Call(`_sbo_build_sbo_predsC`, sentences, dict, N))
-}
-
-#' @export
 get_kgram_freqsC <- function(sentences, dict, N) {
     .Call(`_sbo_get_kgram_freqsC`, sentences, dict, N)
 }
@@ -21,7 +16,12 @@ predict_sbo_preds <- function(object, input) {
 }
 
 #' @export
-preprocess <- function(lines) {
-    .Call(`_sbo_preprocess`, lines)
+preprocess <- function(input, erase = "[^.?!:;'\\w\\s]", lower_case = TRUE) {
+    .Call(`_sbo_preprocess`, input, erase, lower_case)
+}
+
+#' @export
+tokenize_sentences <- function(input, EOS = ".?!:;") {
+    .Call(`_sbo_tokenize_sentences`, input, EOS)
 }
 

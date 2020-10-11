@@ -59,13 +59,15 @@
 #' }
 ################################################################################
 
-get_kgram_freqs <- function(text, N, dict, .preprocess = preprocess){
+get_kgram_freqs <- function(text, N, dict, .preprocess = preprocess,
+                            EOS = ".?!:;"
+                            ){
         stopifnot(is.character(text))
         N %<>% as.integer
         stopifnot(length(N) == 1 & !is.na(N) & N >= 1L)
         stopifnot(is.function(.preprocess))
 
-        text <- .preprocess(text)
+        text <- tokenize_sentences(input = .preprocess(text), EOS = EOS)
         if (!is.character(dict)) {
                 dict %<>% as.integer
                 if (is.na(dict) | length(dict) != 1)
@@ -76,17 +78,14 @@ get_kgram_freqs <- function(text, N, dict, .preprocess = preprocess){
         }
 
         counts <- lapply(get_kgram_freqsC(text, dict, N),
-                         function(x){
-                                 colnames(x) <-
-                                 c(paste0("w", (N + 2 - ncol(x)):N), "n")
+                         function(x) {
+                                 word_names <- paste0("w", (N + 2 - ncol(x)):N)
+                                 colnames(x) <- c(word_names, "n")
                                  return(as_tibble(x))
                                  }
                          )
 
-        return(structure(list(N = N, dict = dict,
-                              counts = counts, .preprocess = .preprocess
-                              ),
-                         class = "kgram_freqs"
-                         )
-               )
+        return(structure(list(N = N, dict = dict, counts = counts,
+                              .preprocess = .preprocess, EOS = EOS),
+                         class = "kgram_freqs"))
 }

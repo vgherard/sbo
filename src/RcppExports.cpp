@@ -5,18 +5,6 @@
 
 using namespace Rcpp;
 
-// build_sbo_predsC
-void build_sbo_predsC(const std::vector<std::string>& sentences, const std::vector<std::string>& dict, int N);
-RcppExport SEXP _sbo_build_sbo_predsC(SEXP sentencesSEXP, SEXP dictSEXP, SEXP NSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const std::vector<std::string>& >::type sentences(sentencesSEXP);
-    Rcpp::traits::input_parameter< const std::vector<std::string>& >::type dict(dictSEXP);
-    Rcpp::traits::input_parameter< int >::type N(NSEXP);
-    build_sbo_predsC(sentences, dict, N);
-    return R_NilValue;
-END_RCPP
-}
 // get_kgram_freqsC
 List get_kgram_freqsC(const std::vector<std::string>& sentences, const std::vector<std::string>& dict, int N);
 RcppExport SEXP _sbo_get_kgram_freqsC(SEXP sentencesSEXP, SEXP dictSEXP, SEXP NSEXP) {
@@ -54,23 +42,37 @@ BEGIN_RCPP
 END_RCPP
 }
 // preprocess
-std::vector<std::string> preprocess(const std::vector<std::string>& lines);
-RcppExport SEXP _sbo_preprocess(SEXP linesSEXP) {
+std::vector<std::string> preprocess(std::vector<std::string> input, std::string erase, bool lower_case);
+RcppExport SEXP _sbo_preprocess(SEXP inputSEXP, SEXP eraseSEXP, SEXP lower_caseSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const std::vector<std::string>& >::type lines(linesSEXP);
-    rcpp_result_gen = Rcpp::wrap(preprocess(lines));
+    Rcpp::traits::input_parameter< std::vector<std::string> >::type input(inputSEXP);
+    Rcpp::traits::input_parameter< std::string >::type erase(eraseSEXP);
+    Rcpp::traits::input_parameter< bool >::type lower_case(lower_caseSEXP);
+    rcpp_result_gen = Rcpp::wrap(preprocess(input, erase, lower_case));
+    return rcpp_result_gen;
+END_RCPP
+}
+// tokenize_sentences
+std::vector<std::string> tokenize_sentences(const std::vector<std::string>& input, std::string EOS);
+RcppExport SEXP _sbo_tokenize_sentences(SEXP inputSEXP, SEXP EOSSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const std::vector<std::string>& >::type input(inputSEXP);
+    Rcpp::traits::input_parameter< std::string >::type EOS(EOSSEXP);
+    rcpp_result_gen = Rcpp::wrap(tokenize_sentences(input, EOS));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_sbo_build_sbo_predsC", (DL_FUNC) &_sbo_build_sbo_predsC, 3},
     {"_sbo_get_kgram_freqsC", (DL_FUNC) &_sbo_get_kgram_freqsC, 3},
     {"_sbo_get_word_freqsC", (DL_FUNC) &_sbo_get_word_freqsC, 1},
     {"_sbo_predict_sbo_preds", (DL_FUNC) &_sbo_predict_sbo_preds, 2},
-    {"_sbo_preprocess", (DL_FUNC) &_sbo_preprocess, 1},
+    {"_sbo_preprocess", (DL_FUNC) &_sbo_preprocess, 3},
+    {"_sbo_tokenize_sentences", (DL_FUNC) &_sbo_tokenize_sentences, 2},
     {NULL, NULL, 0}
 };
 
