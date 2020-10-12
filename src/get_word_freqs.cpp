@@ -1,23 +1,24 @@
-#include <Rcpp.h>
 #include "sbo.h"
 using namespace Rcpp;
 
-//' @export
+void get_word_freqsC(const std::string& sentence,
+                     std::map<std::string, int>& freqs){
+        if(sentence == "") return;
+        size_t start = 0;
+        size_t end;
+        while((end = sentence.find_first_of(" ", start)) != std::string::npos){
+                std::string word = sentence.substr(start, end - start);
+                freqs[word]++;
+                start = sentence.find_first_not_of(" ", end);
+        }
+        std::string last_word = sentence.substr(start);
+        freqs[last_word]++;
+}
+
 // [[Rcpp::export]]
 std::map<std::string, int> get_word_freqsC(const std::vector<std::string>& text)
-        {
-        std::map<std::string, int> word_freqs;
-        for(auto line: text){
-                if(line == "") continue;
-                size_t start = 0; size_t end;
-                while((end = line.find_first_of(" ", start)) !=
-                      std::string::npos){
-                        std::string word = line.substr(start, end - start);
-                        word_freqs[word]++;
-                        start = line.find_first_not_of(" ", end);
-                }
-                std::string last_word = line.substr(start);
-                word_freqs[last_word]++;
-        }
-        return word_freqs;
+{
+        std::map<std::string, int> freqs;
+        for(const std::string& sentence: text) get_word_freqsC(sentence, freqs);
+        return freqs;
 }
