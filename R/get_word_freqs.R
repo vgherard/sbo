@@ -6,12 +6,14 @@
 #' @author Valerio Gherardi
 #' @md
 #'
-#' export
+#' @export
 #'
 #' @param text a character vector. The training corpus from which to extract
 #' word frequencies.
 #' @param .preprocess a function for corpus preprocessing. Takes a character
 #' vector as input and returns a character vector.
+#' @param EOS a length one character vector listing all (single character)
+#' end-of-sentence tokens.
 #' @return A tibble containing word frequencies.
 #' @examples
 #' \dontrun{
@@ -22,9 +24,11 @@
 #' }
 ################################################################################
 
-get_word_freqs <- function(text, .preprocess = preprocess){
+get_word_freqs <- function(text, .preprocess = preprocess, EOS = ".?!:;"){
         stopifnot(is.character(text))
+        stopifnot(length(EOS) == 1 & is.character(EOS))
         stopifnot(is.function(.preprocess))
         text <- .preprocess(text)
-        return( get_word_freqsC(text) %>% sort(decreasing = TRUE) )
+        if (EOS != "") text <- tokenize_sentences(text, EOS = EOS)
+        return( sort(get_word_freqsC(text), decreasing = TRUE) )
 }
