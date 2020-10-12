@@ -67,7 +67,8 @@ get_kgram_freqs <- function(text, N, dict, .preprocess = preprocess,
         stopifnot(length(N) == 1 & !is.na(N) & N >= 1L)
         stopifnot(is.function(.preprocess))
 
-        text <- tokenize_sentences(input = .preprocess(text), EOS = EOS)
+        text <- .preprocess(text)
+        if (EOS != "") text <- tokenize_sentences(text, EOS = EOS)
         if (!is.character(dict)) {
                 dict %<>% as.integer
                 if (is.na(dict) | length(dict) != 1)
