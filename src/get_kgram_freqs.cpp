@@ -1,7 +1,6 @@
 #include "sbo.h"
 using namespace Rcpp;
 
-//' @export
 // [[Rcpp::export]]
 List get_kgram_freqsC(const std::vector<std::string>& sentences,
                       const std::vector<std::string>& dict,

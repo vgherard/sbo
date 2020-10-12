@@ -13,13 +13,14 @@ Depends:
     dplyr,
     magrittr,
     R (>= 3.5.0)
-LinkingTo: Rcpp
+LinkingTo: Rcpp, testthat
 Imports: Rcpp, tidyr, stringi
 Suggests: 
     ggplot2,
     knitr,
     rmarkdown,
-    cli
+    cli,
+    testthat
 URL: https://github.com/vgherard/sbo
 BugReports: http://github.com/vgherard/sbo/issues
 VignetteBuilder: knitr

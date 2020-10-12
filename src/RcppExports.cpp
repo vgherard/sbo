@@ -67,12 +67,15 @@ BEGIN_RCPP
 END_RCPP
 }
 
+RcppExport SEXP run_testthat_tests();
+
 static const R_CallMethodDef CallEntries[] = {
     {"_sbo_get_kgram_freqsC", (DL_FUNC) &_sbo_get_kgram_freqsC, 3},
     {"_sbo_get_word_freqsC", (DL_FUNC) &_sbo_get_word_freqsC, 1},
     {"_sbo_predict_sbo_preds", (DL_FUNC) &_sbo_predict_sbo_preds, 2},
     {"_sbo_preprocess", (DL_FUNC) &_sbo_preprocess, 3},
     {"_sbo_tokenize_sentences", (DL_FUNC) &_sbo_tokenize_sentences, 2},
+    {"run_testthat_tests", (DL_FUNC) &run_testthat_tests, 0},
     {NULL, NULL, 0}
 };
 
