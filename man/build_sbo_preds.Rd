@@ -4,7 +4,7 @@
 \alias{build_sbo_preds}
 \title{Stupid Back-off predictions.}
 \usage{
-build_sbo_preds(freqs, lambda = 0.4, L = 3L, filtered = "_UNK_")
+build_sbo_preds(freqs, lambda = 0.4, L = 3L, filtered = "<UNK>")
 }
 \arguments{
 \item{freqs}{a \code{kgram_freqs} object, containing \eqn{latex}{k}-gram
@@ -40,6 +40,7 @@ in the \code{\link[sbo]{predict.sbo_preds}} method.
 }
 }
 \examples{
+\dontrun{
 # Train an N-gram model
 ## Get Stupid Back-off prediction tables
 sbo <- build_sbo_preds(twitter_freqs)
@@ -47,6 +48,7 @@ sbo <- build_sbo_preds(twitter_freqs)
 sbo
 ## ...start playing
 predict(sbo, "i love")
+}
 }
 \seealso{
 \code{\link[sbo]{predict.sbo_preds}}
