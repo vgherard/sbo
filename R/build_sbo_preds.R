@@ -28,6 +28,10 @@
 #' 3. The model dictionary.
 #' 4. A list of tibbles storing prediction tables. These are for internal use
 #' in the \code{\link[sbo]{predict.sbo_preds}} method.
+#' 5. The function used for text preprocessing.
+#' 6. A length one character vector listing all (single character)
+#' end-of-sentence tokens.
+
 #' @seealso \code{\link[sbo]{predict.sbo_preds}}
 #' @examples
 #' \dontrun{

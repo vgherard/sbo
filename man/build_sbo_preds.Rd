@@ -37,6 +37,9 @@ The return value is a \code{sbo_preds} object, i.e. a list containing:
 \item The model dictionary.
 \item A list of tibbles storing prediction tables. These are for internal use
 in the \code{\link[sbo]{predict.sbo_preds}} method.
+\item The function used for text preprocessing.
+\item A length one character vector listing all (single character)
+end-of-sentence tokens.
 }
 }
 \examples{

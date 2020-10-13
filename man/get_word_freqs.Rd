@@ -4,17 +4,17 @@
 \alias{get_word_freqs}
 \title{Word frequency tables}
 \usage{
-get_word_freqs(
-  text,
-  preproc = function(x) preprocess(x, split_sent = ".", omit_empty = TRUE)
-)
+get_word_freqs(text, .preprocess = preprocess, EOS = ".?!:;")
 }
 \arguments{
 \item{text}{a character vector. The training corpus from which to extract
 word frequencies.}
 
-\item{preproc}{a function for corpus preprocessing. Takes a character
+\item{.preprocess}{a function for corpus preprocessing. Takes a character
 vector as input and returns a character vector.}
+
+\item{EOS}{a length one character vector listing all (single character)
+end-of-sentence tokens.}
 }
 \value{
 A tibble containing word frequencies.
@@ -23,10 +23,12 @@ A tibble containing word frequencies.
 Get word frequency tables from a training corpus.
 }
 \examples{
+\dontrun{
 # Get word frequencies and extract dictionary of top 1000 words
 words <- get_word_freqs(twitter_train)
 words
 dict <- words$word[1:1000]
+}
 }
 \author{
 Valerio Gherardi

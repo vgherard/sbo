@@ -34,7 +34,7 @@ encountered, or when the number of generated words exceeds n_max.
 \examples{
 # Babble!
 set.seed(840) # Set seed for reproducibility
-babble(twitter_sbo)
+babble(twitter_preds)
 }
 \author{
 Valerio Gherardi
