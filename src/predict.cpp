@@ -5,15 +5,26 @@ using word = unsigned short int;
 void fill_Ngram_prefix(const std::string& line, IntegerVector& prefix,
                       int N, const std::vector<std::string>& dict,
                       std::string EOS){
-        size_t start = line.find_last_of(EOS) + 1;
+        size_t start = line.find_first_not_of(" ", line.find_last_of(EOS) + 1);
         size_t end;
         while((end = line.find_first_of(" ", start)) != std::string::npos){
                 prefix.push_back(match(line.substr(start, end - start), dict));
                 prefix.erase(0);
                 start = line.find_first_not_of(" ", end);
         }
-        prefix.push_back(match(line.substr(start), dict));
-        prefix.erase(0);
+        if(start != std::string::npos){
+                prefix.push_back(match(line.substr(start), dict));
+                prefix.erase(0);
+        }
+}
+
+// [[Rcpp::export]]
+IntegerVector get_Ngram_prefix(const std::string& line,
+                               int N, const std::vector<std::string>& dict,
+                               std::string EOS){
+        IntegerVector prefix(N - 1, 0);
+        fill_Ngram_prefix(line, prefix, N, dict, EOS);
+        return prefix;
 }
 
 int get_row(const IntegerMatrix& m, const IntegerVector& x) {
