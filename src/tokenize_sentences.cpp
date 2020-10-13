@@ -12,7 +12,22 @@ void tokenize_sentences(std::string str, std::vector<std::string>& sentences,
         }
 }
 
+//' Sentence tokenizer
+//'
+//' Get sentence tokens from text
+//'
 //' @export
+//'
+//' @author Valerio Gherardi
+//' @md
+//'
+//' @param input a character vector.
+//' @param EOS a length one character vector listing all (single character)
+//' end-of-sentence tokens.
+//' @return a character vector, each entry of which corresponds to a single
+//' sentence.
+//' @examples
+//' tokenize_sentences("Hi there! I'm using `sbo`.")
 // [[Rcpp::export]]
 std::vector<std::string> tokenize_sentences(const std::vector<std::string>& input,
                                             std::string EOS = ".?!:;"){
@@ -24,4 +39,3 @@ std::vector<std::string> tokenize_sentences(const std::vector<std::string>& inpu
                 tokenize_sentences(str, sentences, _EOS, eos);
         return sentences;
 }
-
