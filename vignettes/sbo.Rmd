@@ -56,14 +56,14 @@ The prototypical workflow for building a text-predictor in `sbo` goes as follows
 ```{r, cache=TRUE}
 # N.B.: get_word_freqs(train) returns a tibble with a 'word' column 
 # and a 'counts' column, sorted by decreasing counts.
-dict <- get_word_freqs(train) %$% word[1:1000]
+dict <- get_word_freqs(train) %>% names %>% .[1:1000]
 head(dict)
 ```
 Alternatively, one may use a predefined dictionary. 
 
 *Step 1*. Get $k$-gram frequencies from training corpus:
 ```{r, cache=TRUE}
-( freqs <- get_kgram_freqs(train, dict, N = 3) ) # 'N' is the order of n-grams
+( freqs <- get_kgram_freqs(train, N = 3, dict) ) # 'N' is the order of n-grams
 ```
 
 *Step 2*. Build next-word prediction tables:
