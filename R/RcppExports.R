@@ -9,16 +9,52 @@ get_word_freqsC <- function(text) {
     .Call(`_sbo_get_word_freqsC`, text)
 }
 
+get_Ngram_prefix <- function(line, N, dict, EOS) {
+    .Call(`_sbo_get_Ngram_prefix`, line, N, dict, EOS)
+}
+
 predict_sbo_preds <- function(object, input) {
     .Call(`_sbo_predict_sbo_preds`, object, input)
 }
 
+#' Preprocess text corpus
+#'
+#' A simple text preprocessing utility.
+#'
 #' @export
+#'
+#' @author Valerio Gherardi
+#' @md
+#'
+#' @param input a character vector.
+#' @erase a length one character vector. Regular expression matching parts of
+#' text to be erased from input. The default removes anything not alphanumeric,
+#' white space, apostrophes or punctuation characters (i.e. ".?!:;").
+#' @lower_case a length one logical vector. If TRUE, puts everything to lower
+#' case.
+#' @return a character vector containing the processed output.
+#' @examples
+#' preprocess("Hi @@ there! I'm using `sbo`.")
 preprocess <- function(input, erase = "[^.?!:;'\\w\\s]", lower_case = TRUE) {
     .Call(`_sbo_preprocess`, input, erase, lower_case)
 }
 
+#' Sentence tokenizer
+#'
+#' Get sentence tokens from text
+#'
 #' @export
+#'
+#' @author Valerio Gherardi
+#' @md
+#'
+#' @param input a character vector.
+#' @param EOS a length one character vector listing all (single character)
+#' end-of-sentence tokens.
+#' @return a character vector, each entry of which corresponds to a single
+#' sentence.
+#' @examples
+#' tokenize_sentences("Hi there! I'm using `sbo`.")
 tokenize_sentences <- function(input, EOS = ".?!:;") {
     .Call(`_sbo_tokenize_sentences`, input, EOS)
 }
