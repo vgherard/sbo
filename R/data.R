@@ -3,7 +3,7 @@
 #' @source \url{https://www.kaggle.com/crmercado/tweets-blogs-news-swiftkey-dataset-4million}
 #' @format A collection of 100'000 Twitter posts in English.
 #' @seealso \code{\link[sbo]{twitter_test}}, \code{\link[sbo]{twitter_dict}},
-#' \code{\link[sbo]{twitter_freqs}}, \code{\link[sbo]{twitter_sbo}}
+#' \code{\link[sbo]{twitter_freqs}}, \code{\link[sbo]{twitter_preds}}
 #' @examples
 #' \dontrun{
 #'  head(twitter_train)
@@ -52,4 +52,4 @@
 #' Stupid Back-off model trained on the example training set
 #' \code{\link[sbo]{twitter_train}}.
 #' @seealso \code{\link[sbo]{twitter_train}}
-"twitter_sbo"
+"twitter_preds"

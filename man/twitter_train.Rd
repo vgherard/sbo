@@ -23,6 +23,6 @@ Twitter training set
 }
 \seealso{
 \code{\link[sbo]{twitter_test}}, \code{\link[sbo]{twitter_dict}},
-\code{\link[sbo]{twitter_freqs}}, \code{\link[sbo]{twitter_sbo}}
+\code{\link[sbo]{twitter_freqs}}, \code{\link[sbo]{twitter_preds}}
 }
 \keyword{datasets}
