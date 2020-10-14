@@ -43,21 +43,21 @@ text-predictor with `sbo`:
 library(sbo)
 ## Train a next-word prediction function based on 3-gram Stupid Back-off. 
 train <- sbo::twitter_train # 100k tweets, example dataset from sbo
-dict <- get_word_freqs(train) %$% word[1:1000] # Build rank-sorted dictionary
-freqs <- get_kgram_freqs(train, dict, N = 3) # Get k-gram frequencies (up to 3-grams)
-sbo <- build_sbo_preds(freqs) # Build prediction tables
+dict <- get_word_freqs(train) %>% names %>% .[1:1000] # Build rank-sorted dictionary
+freqs <- get_kgram_freqs(train, N = 3, dict) # Get k-gram frequencies (up to 3-grams)
+preds <- build_sbo_preds(freqs) # Build prediction tables
 ```
 
-The variable `sbo` now stores the next-word prediction tables, which can
+The `preds` object now stores the next-word prediction tables, which can
 be used to generate predictive text as follows:
 
 ``` r
-predict(sbo, "i love") # a character vector
+predict(preds, "i love") # a character vector
 #> [1] "you" "it"  "my"
-predict(sbo, c("Colorless green ideas sleep", "See you")) # a char matrix
-#>                             [,1]    [,2] [,3] 
-#> Colorless green ideas sleep "."     "in" "and"
-#> See you                     "there" "."  "at"
+predict(preds, c("Colorless green ideas sleep", "See you")) # a char matrix
+#>      [,1]    [,2]    [,3] 
+#> [1,] "<EOS>" "in"    "and"
+#> [2,] "there" "<EOS>" "at"
 ```
 
 ## Help

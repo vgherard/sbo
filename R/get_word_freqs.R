@@ -14,13 +14,13 @@
 #' vector as input and returns a character vector.
 #' @param EOS a length one character vector listing all (single character)
 #' end-of-sentence tokens.
-#' @return A tibble containing word frequencies.
+#' @return A named integer containing word frequencies.
 #' @examples
 #' \dontrun{
 #' # Get word frequencies and extract dictionary of top 1000 words
 #' words <- get_word_freqs(twitter_train)
 #' words
-#' dict <- words$word[1:1000]
+#' dict <- names(words)[1:1000]
 #' }
 ################################################################################
 
