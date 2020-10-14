@@ -4,7 +4,7 @@
 \alias{build_sbo_preds}
 \title{Stupid Back-off predictions.}
 \usage{
-build_sbo_preds(freqs, lambda = 0.4, L = 3L, filtered = "_UNK_")
+build_sbo_preds(freqs, lambda = 0.4, L = 3L, filtered = "<UNK>")
 }
 \arguments{
 \item{freqs}{a \code{kgram_freqs} object, containing \eqn{latex}{k}-gram
@@ -37,9 +37,13 @@ The return value is a \code{sbo_preds} object, i.e. a list containing:
 \item The model dictionary.
 \item A list of tibbles storing prediction tables. These are for internal use
 in the \code{\link[sbo]{predict.sbo_preds}} method.
+\item The function used for text preprocessing.
+\item A length one character vector listing all (single character)
+end-of-sentence tokens.
 }
 }
 \examples{
+\dontrun{
 # Train an N-gram model
 ## Get Stupid Back-off prediction tables
 sbo <- build_sbo_preds(twitter_freqs)
@@ -47,6 +51,7 @@ sbo <- build_sbo_preds(twitter_freqs)
 sbo
 ## ...start playing
 predict(sbo, "i love")
+}
 }
 \seealso{
 \code{\link[sbo]{predict.sbo_preds}}

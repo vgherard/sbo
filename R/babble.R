@@ -24,7 +24,7 @@
 #' @examples
 #' # Babble!
 #' set.seed(840) # Set seed for reproducibility
-#' babble(twitter_sbo)
+#' babble(twitter_preds)
 #' @importFrom stats predict
 ################################################################################
 babble <- function(model, input = NA, n_max = 100L, L = model$L){
@@ -36,6 +36,6 @@ babble <- function(model, input = NA, n_max = 100L, L = model$L){
         if(is.na(input))
                 input <- sample(model$dict, 1)
         next_word <- sample(size = 1L, predict(model, input, L))
-        if(next_word == ".") return(paste0(input,"."))
+        if(next_word == "<EOS>") return(paste0(input,"."))
         babble(model, paste(input,next_word), n_max-1L, L)
 }

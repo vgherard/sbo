@@ -28,8 +28,13 @@
 #' 3. The model dictionary.
 #' 4. A list of tibbles storing prediction tables. These are for internal use
 #' in the \code{\link[sbo]{predict.sbo_preds}} method.
+#' 5. The function used for text preprocessing.
+#' 6. A length one character vector listing all (single character)
+#' end-of-sentence tokens.
+
 #' @seealso \code{\link[sbo]{predict.sbo_preds}}
 #' @examples
+#' \dontrun{
 #' # Train an N-gram model
 #' ## Get Stupid Back-off prediction tables
 #' sbo <- build_sbo_preds(twitter_freqs)
@@ -37,13 +42,14 @@
 #' sbo
 #' ## ...start playing
 #' predict(sbo, "i love")
+#' }
 ################################################################################
 
-build_sbo_preds <- function(freqs, lambda = 0.4, L = 3L, filtered = "_UNK_"){
+build_sbo_preds <- function(freqs, lambda = 0.4, L = 3L, filtered = "<UNK>"){
         N <- freqs$N
         dict <- freqs$dict
         V <- length(dict) + 2 # Dict. length including EOS and UNK.
-        filtered %<>% match(table = c(dict, "_EOS_", "_UNK_"), nomatch = -1)
+        filtered %<>% match(table = c(dict, "<EOS>", "<UNK>"), nomatch = -1)
 
         pps_tbls <- build_pps_tables(freqs$counts, N, lambda, V, filtered, L)
 
@@ -54,12 +60,13 @@ build_sbo_preds <- function(freqs, lambda = 0.4, L = 3L, filtered = "_UNK_"){
                 ungroup %>%
                 pivot_wider(names_from = rank, names_prefix = "pred",
                             values_from = pred) %>%
-                mutate_all(as.integer)
+                mutate_all(as.integer) %>%
+                as.matrix
 
         preds <- lapply(pps_tbls, . %>% extract_preds)
 
-        structure(list(N = N, L = L, lambda = lambda, dict = dict,
-                       preds = preds
+        structure(list(N = N, L = L, lambda = lambda, dict = dict, preds = preds,
+                       .preprocess = freqs$.preprocess, EOS = freqs$EOS
                        ),
                   class = "sbo_preds"
                   )

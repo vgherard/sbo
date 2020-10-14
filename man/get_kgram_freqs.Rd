@@ -4,28 +4,24 @@
 \alias{get_kgram_freqs}
 \title{\eqn{latex}{k}-gram frequency tables}
 \usage{
-get_kgram_freqs(
-  text,
-  dict,
-  N,
-  preproc = function(x) preprocess(x, split_sent = ".")
-)
+get_kgram_freqs(text, N, dict, .preprocess = preprocess, EOS = ".?!:;")
 }
 \arguments{
 \item{text}{a character vector. The training corpus from which to extract
 k-gram frequencies.}
+
+\item{N}{a length one integer. The maximum order of \eqn{latex}{k}-grams
+for which frequencies are sought.}
 
 \item{dict}{either a character vector, or a length one integer/numeric.
 The language model fixed dictionary (see details), sorted by word frequency.
 If numeric, the dictionary is obtained from the training corpus using
 the \code{dict} most frequent words.}
 
-\item{N}{a length one integer. The maximum order of \eqn{latex}{k}-grams
-for which frequencies are sought.}
+\item{.preprocess}{a function to apply before \eqn{latex}{k}-gram tokenization.}
 
-\item{preproc}{a function for corpus preprocessing and sentence tokenization.
-Takes a character vector as input and returns a character vector, each
-element of it corresponding to a separate sentence.}
+\item{EOS}{a length one character vector listing all (single character)
+end-of-sentence tokens.}
 }
 \value{
 A \code{kgram_freqs} object, containing the \eqn{latex}{k}-gram
@@ -55,21 +51,30 @@ reference dictionary. The special codes \code{0},
 \code{length(dictionary)+1} and \code{length(dictionary)+2}
 correspond to the "Begin-Of-Sentence", "End-Of-Sentence"
 and "Unknown word" tokens, respectively.
+\item The function used for text preprocessing (i.e. the .preprocess argument)
+\item A length one character vector listing all (single character)
+end-of-sentence tokens. (i.e. EOS argument)
 }
 
-The \code{preproc} argument allows the user to employ a custom corpus
+The \code{.preprocess} argument allows the user to employ a custom corpus
 preprocessing function (the default leverages on
-\code{\link[sbo]{preprocess}}), which should additionally perform
-tokenization at the sentence level. It is important to note that each
-element of the vector \code{preproc(text)} gets interpreted as a separate
-sentence in the \eqn{latex}{k}-gram tokenization algorithm.
+code{\link[sbo]{preprocess}}).
+
+The algorithm for \eqn{k}-gram tokenization considers anything separated by
+(any number of) white spaces (i.e. " ") as a single word. Sentences are split
+according to end-of-sentence (single character) tokens, as specified
+by the \code{EOS} argument. Additionally text belonging to different entries of
+the preprocessed input vector which are understood to belong to different
+sentences.
 }
 \examples{
+\dontrun{
 # Obtain k-gram frequency table from corpus
 ## Get k-gram frequencies, up to k = N = 3.
-freqs <- get_kgram_freqs(twitter_train, twitter_dict, N = 3)
+freqs <- get_kgram_freqs(twitter_train, N = 3, dict = twitter_dict)
 ## Print result
 freqs
+}
 }
 \seealso{
 \code{\link[sbo]{get_word_freqs}}

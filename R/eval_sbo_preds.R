@@ -25,6 +25,7 @@
 #' 1. Predict next words from the $(N-1)$-gram prefix.
 #' 1. Return all predictions, together with the true word completions.
 #' @examples
+#' \dontrun{
 #' # Evaluating next-word predictions from a Stupid Back-off N-gram model
 #'
 #' set.seed(840) # Set seed for reproducibility
@@ -44,7 +45,9 @@
 #'                 transmute(rank = match(true, table = twitter_sbo$dict)) %>%
 #'                 ggplot(aes(x = rank)) + geom_histogram(binwidth = 25)
 #' }
+#' }
 #' @importFrom stats predict
+#' @importFrom stringi stri_split_fixed
 ################################################################################
 
 eval_sbo_preds <- function(model, test, L = model$L){
@@ -55,7 +58,8 @@ eval_sbo_preds <- function(model, test, L = model$L){
         dict <- model$dict
         wrap <- c(paste0(rep("_BOS_", N-1), collapse = " "), "_EOS_")
         test %>%
-                preprocess(split_sent = ".") %>%
+                (model$.preprocess) %>%
+                tokenize_sentences(EOS = model$EOS) %>%
                 paste(wrap[[1]], ., wrap[[2]], sep = " ") %>%
                 lapply(function(x){
                         x %<>% stri_split_fixed(" ", omit_empty=TRUE) %>% unlist

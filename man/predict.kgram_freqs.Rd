@@ -9,8 +9,8 @@
 \arguments{
 \item{object}{a \code{kgram_freqs} object.}
 
-\item{newdata}{a character vector, containing the input for next-word
-prediction.}
+\item{newdata}{a length one character vector, containing the input for
+next-word prediction.}
 
 \item{lambda}{a numeric vector of length one. The back-off penalization
 in Stupid Back-off algorithm.}
@@ -18,9 +18,8 @@ in Stupid Back-off algorithm.}
 \item{...}{further arguments passed to or from other methods.}
 }
 \value{
-A tibble if \code{length(newdata)==1}, a list of tibbles if
-\code{length(newdata)>1}. Each tibble contains the next-word probabilities
-for all words in the dictionary.
+A tibble containing the next-word probabilities for all words
+in the dictionary.
 }
 \description{
 Predictive text based on Stupid Back-off \eqn{latex}{N}-gram model.

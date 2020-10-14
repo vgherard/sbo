@@ -16,9 +16,9 @@
 #' the \code{dict} most frequent words.
 #' @param N a length one integer. The maximum order of \eqn{latex}{k}-grams
 #' for which frequencies are sought.
-#' @param preproc a function for corpus preprocessing and sentence tokenization.
-#' Takes a character vector as input and returns a character vector, each
-#' element of it corresponding to a separate sentence.
+#' @param .preprocess a function to apply before \eqn{latex}{k}-gram tokenization.
+#' @param EOS a length one character vector listing all (single character)
+#' end-of-sentence tokens.
 #' @return A \code{kgram_freqs} object, containing the \eqn{latex}{k}-gram
 #' frequency tables for \eqn{latex}{k = 1, 2, ..., N}.
 #' @details This function extracts all k-gram frequency tables from a text
@@ -41,51 +41,60 @@
 #' \code{length(dictionary)+1} and \code{length(dictionary)+2}
 #' correspond to the "Begin-Of-Sentence", "End-Of-Sentence"
 #' and "Unknown word" tokens, respectively.
+#' - The function used for text preprocessing (i.e. the .preprocess argument)
+#' - A length one character vector listing all (single character)
+#' end-of-sentence tokens. (i.e. EOS argument)
 #'
-#' The \code{preproc} argument allows the user to employ a custom corpus
+#' The \code{.preprocess} argument allows the user to employ a custom corpus
 #' preprocessing function (the default leverages on
-#' \code{\link[sbo]{preprocess}}), which should additionally perform
-#' tokenization at the sentence level. It is important to note that each
-#' element of the vector \code{preproc(text)} gets interpreted as a separate
-#' sentence in the \eqn{latex}{k}-gram tokenization algorithm.
+#' code{\link[sbo]{preprocess}}).
+#'
+#' The algorithm for \eqn{k}-gram tokenization considers anything separated by
+#' (any number of) white spaces (i.e. " ") as a single word. Sentences are split
+#' according to end-of-sentence (single character) tokens, as specified
+#' by the `EOS` argument. Additionally text belonging to different entries of
+#' the preprocessed input vector which are understood to belong to different
+#' sentences.
+#'
 #' @seealso \code{\link[sbo]{get_word_freqs}}
 #' @examples
+#' \dontrun{
 #' # Obtain k-gram frequency table from corpus
 #' ## Get k-gram frequencies, up to k = N = 3.
-#' freqs <- get_kgram_freqs(twitter_train, twitter_dict, N = 3)
+#' freqs <- get_kgram_freqs(twitter_train, N = 3, dict = twitter_dict)
 #' ## Print result
 #' freqs
+#' }
 ################################################################################
 
-get_kgram_freqs <- function(text, dict, N,
-                            preproc = function(x)
-                                    preprocess(x, split_sent = ".")
+get_kgram_freqs <- function(text, N, dict, .preprocess = preprocess,
+                            EOS = ".?!:;"
                             ){
-        stopifnot(is.character(text), is.function(preprocess))
+        stopifnot(is.character(text))
         N %<>% as.integer
-        if(length(N) != 1 | is.na(N) | N < 1L)
-                stop("N could not be coerced to a length one positive integer")
-        wrap <- c(paste0(rep("_BOS_", N - 1), collapse = " "), "_EOS_")
-        text %<>% preproc %>% paste(wrap[[1]], ., wrap[[2]], sep = " ")
-        if(!is.character(dict)){
+        stopifnot(length(N) == 1 & !is.na(N) & N >= 1L)
+        stopifnot(is.function(.preprocess))
+
+        text <- .preprocess(text)
+        if (EOS != "") text <- tokenize_sentences(text, EOS = EOS)
+        if (!is.character(dict)) {
                 dict %<>% as.integer
-                if(is.na(dict) | length(dict) != 1)
+                if (is.na(dict) | length(dict) != 1)
                         stop("'dict' should be either a character vector or a
                              length one numeric or integer.")
-                dict <- get_word_freqs(text, preproc= identity) %$% word[1:dict]
+                dict <- get_word_freqs(text, .preprocess = identity)[1:dict] %>%
+                        names
         }
-        text %<>% tokenize_(dict)
-        len <- length(text)
-        counts <- lapply(1:N, function(k) # Get k-gram counts
-                        text %>%
-                                # construct k column k-gram matrix
-                                { sapply(1:k, function(i) .[i:(len-k+i)]) } %>%
-                                # drop k-grams ending by BOS token
-                                subset(.[, k] != 0, drop = F) %>%
-                                `colnames<-`(paste0("w",(N-k+1):N)) %>%
-                                as_tibble %>%
-                                count(across(everything()), sort = TRUE)
-                        )
-        structure(list(N = N, dict = dict, counts = counts),
-                  class = "kgram_freqs")
+
+        counts <- lapply(get_kgram_freqsC(text, dict, N),
+                         function(x) {
+                                 word_names <- paste0("w", (N + 2 - ncol(x)):N)
+                                 colnames(x) <- c(word_names, "n")
+                                 return(as_tibble(x))
+                                 }
+                         )
+
+        return(structure(list(N = N, dict = dict, counts = counts,
+                              .preprocess = .preprocess, EOS = EOS),
+                         class = "kgram_freqs"))
 }

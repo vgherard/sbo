@@ -4,15 +4,12 @@
 \alias{predict.sbo_preds}
 \title{Predict method for Stupid Back-off prediction tables}
 \usage{
-\method{predict}{sbo_preds}(object, newdata, L = object$L, ...)
+\method{predict}{sbo_preds}(object, newdata, ...)
 }
 \arguments{
 \item{object}{a \code{sbo_preds} object.}
 
 \item{newdata}{a character vector, containing the input for next-word prediction.}
-
-\item{L}{a length one integer. Number of predictions for each input sentence
-(maximum allowed is \code{object$L}).}
 
 \item{...}{further arguments passed to or from other methods.}
 }
@@ -24,7 +21,7 @@ character matrix.
 Predictive text based on Stupid Back-off \eqn{latex}{N}-gram model.
 }
 \examples{
-predict(twitter_sbo, "i love")
+predict(twitter_preds, "i love")
 }
 \author{
 Valerio Gherardi
