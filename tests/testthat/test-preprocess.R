@@ -14,6 +14,19 @@ test_that("default_erase_arg_kills_anything_not_word_or_space_or_punctuation", {
         expect_identical(actual, expected)
 })
 
+test_that("erase argument works with basic regex's", {
+        input <- "this is a sentence"
+        actual <- c(preprocess(input, erase = "[[:space:]]"),
+                    preprocess(input, erase = "."),
+                    preprocess(input, erase = "^\\w"),
+                    preprocess(input, erase = "[aeiou]")
+                    )
+        expected <- c("thisisasentence", "", "his is a sentence",
+                      "ths s  sntnc"
+                      )
+        expect_identical(actual, expected)
+})
+
 test_that("lower_case_works", {
         input <- "CoLoRleSs greEn iDEaS slEEp fUrIoUSlY"
         expected <- "colorless green ideas sleep furiously"
