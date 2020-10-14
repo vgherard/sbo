@@ -8,4 +8,4 @@
 ^docs$
 ^pkgdown$
 ^data-raw$
-*.txt
+^.*\.txt$
