@@ -17,7 +17,7 @@ vector as input and returns a character vector.}
 end-of-sentence tokens.}
 }
 \value{
-A tibble containing word frequencies.
+A named integer containing word frequencies.
 }
 \description{
 Get word frequency tables from a training corpus.
