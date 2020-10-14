@@ -20,7 +20,7 @@
 #' # Get word frequencies and extract dictionary of top 1000 words
 #' words <- get_word_freqs(twitter_train)
 #' words
-#' dict <- words$word[1:1000]
+#' dict <- names(words)[1:1000]
 #' }
 ################################################################################
 
