@@ -24,6 +24,8 @@ print.kgram_freqs <- function(x, ...){
                 cat(., format(object.size(x), units = "MB"), "\n")
         cat("\n")
         "See ?get_kgram_freqs for help." %>% format_help %>% cat(., "\n")
+
+        return(invisible(x))
 }
 
 #' @export
@@ -56,4 +58,6 @@ print.sbo_preds <- function(x, ...){
         "See ?build_sbo_preds, ?predict.sbo_preds for help." %>%
                 format_help %>%
                 cat(., "\n")
+
+        return(invisible(x))
 }
