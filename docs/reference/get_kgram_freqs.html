@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sbo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -123,7 +123,7 @@
     <p>Get \(latex\)-gram frequency tables from a training corpus.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_kgram_freqs</span>(<span class='no'>text</span>, <span class='no'>dict</span>, <span class='no'>N</span>)</pre>
+    <pre class="usage"><span class='fu'>get_kgram_freqs</span><span class='op'>(</span><span class='va'>text</span>, <span class='va'>N</span>, <span class='va'>dict</span>, .preprocess <span class='op'>=</span> <span class='va'>preprocess</span>, EOS <span class='op'>=</span> <span class='st'>".?!:;"</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -134,14 +134,25 @@
 k-gram frequencies.</p></td>
     </tr>
     <tr>
-      <th>dict</th>
-      <td><p>a character vector. The language model fixed dictionary (see
-details), sorted by word frequency.</p></td>
-    </tr>
-    <tr>
       <th>N</th>
       <td><p>a length one integer. The maximum order of \(latex\)-grams
 for which frequencies are sought.</p></td>
+    </tr>
+    <tr>
+      <th>dict</th>
+      <td><p>either a character vector, or a length one integer/numeric.
+The language model fixed dictionary (see details), sorted by word frequency.
+If numeric, the dictionary is obtained from the training corpus using
+the <code>dict</code> most frequent words.</p></td>
+    </tr>
+    <tr>
+      <th>.preprocess</th>
+      <td><p>a function to apply before \(latex\)-gram tokenization.</p></td>
+    </tr>
+    <tr>
+      <th>EOS</th>
+      <td><p>a length one character vector listing all (single character)
+end-of-sentence tokens.</p></td>
     </tr>
     </table>
 
@@ -168,17 +179,36 @@ reference dictionary. The special codes <code>0</code>,
 <code>length(dictionary)+1</code> and <code>length(dictionary)+2</code>
 correspond to the "Begin-Of-Sentence", "End-Of-Sentence"
 and "Unknown word" tokens, respectively.</p></li>
+<li><p>The function used for text preprocessing (i.e. the .preprocess argument)</p></li>
+<li><p>A length one character vector listing all (single character)
+end-of-sentence tokens. (i.e. EOS argument)</p></li>
 </ul>
 
+<p>The <code>.preprocess</code> argument allows the user to employ a custom corpus
+preprocessing function (the default leverages on
+code<a href='preprocess.html'>preprocess</a>).</p>
+<p>The algorithm for \(k\)-gram tokenization considers anything separated by
+(any number of) white spaces (i.e. " ") as a single word. Sentences are split
+according to end-of-sentence (single character) tokens, as specified
+by the <code>EOS</code> argument. Additionally text belonging to different entries of
+the preprocessed input vector which are understood to belong to different
+sentences.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='get_word_freqs.html'>get_word_freqs</a></code></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Valerio Gherardi</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Obtain k-gram frequency table from corpus</span>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='co'># Obtain k-gram frequency table from corpus</span>
 <span class='co'>## Get k-gram frequencies, up to k = N = 3.</span>
-<span class='no'>freqs</span> <span class='kw'>&lt;-</span> <span class='fu'>get_kgram_freqs</span>(<span class='no'>twitter_train</span>, <span class='no'>twitter_dict</span>, <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='error'>Error in match.fun(FUN): '1:k' non è un oggetto function, character o symbol:</span></div><div class='input'><span class='co'>## Print result</span>
-<span class='no'>freqs</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): oggetto "freqs" non trovato</span></div></pre>
+<span class='va'>freqs</span> <span class='op'>&lt;-</span> <span class='fu'>get_kgram_freqs</span><span class='op'>(</span><span class='va'>twitter_train</span>, N <span class='op'>=</span> <span class='fl'>3</span>, dict <span class='op'>=</span> <span class='va'>twitter_dict</span><span class='op'>)</span>
+<span class='co'>## Print result</span>
+<span class='va'>freqs</span>
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -194,7 +224,7 @@ and "Unknown word" tokens, respectively.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

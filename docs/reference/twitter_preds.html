@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Predict method for Stupid Back-off prediction tables — predict.sbo_preds • sbo</title>
+<title>Next-word prediction tables from 3-gram model trained on Twitter training
+set — twitter_preds • sbo</title>
 
 
 <!-- jquery -->
@@ -39,8 +40,10 @@
 
 
 
-<meta property="og:title" content="Predict method for Stupid Back-off prediction tables — predict.sbo_preds" />
-<meta property="og:description" content="Predictive text based on Stupid Back-off \(latex\)-gram model." />
+<meta property="og:title" content="Next-word prediction tables from 3-gram model trained on Twitter training
+set — twitter_preds" />
+<meta property="og:description" content="Next-word prediction tables from 3-gram model trained on Twitter training
+set" />
 
 
 
@@ -114,46 +117,29 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Predict method for Stupid Back-off prediction tables</h1>
-    <small class="dont-index">Source: <a href='http://github.com/vgherard/sbo/blob/master/R/predict_sbo_preds.R'><code>R/predict_sbo_preds.R</code></a></small>
-    <div class="hidden name"><code>predict.sbo_preds.Rd</code></div>
+    <h1>Next-word prediction tables from 3-gram model trained on Twitter training
+set</h1>
+    <small class="dont-index">Source: <a href='http://github.com/vgherard/sbo/blob/master/R/data.R'><code>R/data.R</code></a></small>
+    <div class="hidden name"><code>twitter_preds.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Predictive text based on Stupid Back-off \(latex\)-gram model.</p>
+    <p>Next-word prediction tables from 3-gram model trained on Twitter training
+set</p>
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for sbo_preds</span>
-<span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>newdata</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='va'>twitter_preds</span></pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>object</th>
-      <td><p>a <code>sbo_preds</code> object.</p></td>
-    </tr>
-    <tr>
-      <th>newdata</th>
-      <td><p>a character vector, containing the input for next-word prediction.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>further arguments passed to or from other methods.</p></td>
-    </tr>
-    </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>A character vector if <code>length(newdata) == 1</code>, otherwise a
-character matrix.</p>
-    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+    <p>A <code>sbo_preds</code> object. Contains prediction tables of a 3-gram
+Stupid Back-off model trained on the example training set
+<code><a href='twitter_train.html'>twitter_train</a></code>.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>Valerio Gherardi</p>
+    <div class='dont-index'><p><code><a href='twitter_train.html'>twitter_train</a></code></p></div>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>twitter_preds</span>, <span class='st'>"i love"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "you" "it"  "my" </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
