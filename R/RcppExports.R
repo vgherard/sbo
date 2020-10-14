@@ -27,10 +27,10 @@ predict_sbo_preds <- function(object, input) {
 #' @md
 #'
 #' @param input a character vector.
-#' @erase a length one character vector. Regular expression matching parts of
+#' @param erase a length one character vector. Regular expression matching parts of
 #' text to be erased from input. The default removes anything not alphanumeric,
 #' white space, apostrophes or punctuation characters (i.e. ".?!:;").
-#' @lower_case a length one logical vector. If TRUE, puts everything to lower
+#' @param lower_case a length one logical vector. If TRUE, puts everything to lower
 #' case.
 #' @return a character vector containing the processed output.
 #' @examples

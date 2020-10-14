@@ -8,6 +8,13 @@ preprocess(input, erase = "[^.?!:;'\\\\w\\\\s]", lower_case = TRUE)
 }
 \arguments{
 \item{input}{a character vector.}
+
+\item{erase}{a length one character vector. Regular expression matching parts of
+text to be erased from input. The default removes anything not alphanumeric,
+white space, apostrophes or punctuation characters (i.e. ".?!:;").}
+
+\item{lower_case}{a length one logical vector. If TRUE, puts everything to lower
+case.}
 }
 \value{
 a character vector containing the processed output.
