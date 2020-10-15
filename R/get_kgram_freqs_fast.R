@@ -1,67 +1,11 @@
 ################################################################################
-#' \eqn{latex}{k}-gram frequency tables
-#'
-#' Get \eqn{latex}{k}-gram frequency tables from a training corpus.
-#'
-#' @author Valerio Gherardi
-#' @md
-#'
+#' @rdname get_kgram_freqs
 #' @export
-#'
-#' @param text a character vector. The training corpus from which to extract
-#' k-gram frequencies.
-#' @param dict either a character vector, or a length one integer/numeric.
-#' The language model fixed dictionary (see details), sorted by word frequency.
-#' If numeric, the dictionary is obtained from the training corpus using
-#' the \code{dict} most frequent words.
-#' @param N a length one integer. The maximum order of \eqn{latex}{k}-grams
-#' for which frequencies are sought.
-#' @param .preprocess a function to apply before \eqn{latex}{k}-gram tokenization.
-#' @param EOS a length one character vector listing all (single character)
-#' end-of-sentence tokens.
-#' @return A \code{kgram_freqs} object, containing the \eqn{latex}{k}-gram
-#' frequency tables for \eqn{latex}{k = 1, 2, ..., N}.
-#' @details This function extracts all k-gram frequency tables from a text
-#' corpus up to a specified \eqn{latex}{k}-gram order \eqn{latex}{N}. These are
-#' the building blocks to train any \eqn{latex}{N}-gram model.
-#'
-#' \code{get_kgram_freqs} employs a fixed (user specified) dictionary; any
-#' out-of-vocabulary word gets effectively replaced by an "unknown word" token.
-#'
-#' The return value is a "\code{kgram_freqs}" object, i.e. a list containing:
-#'
-#' - The highest order of \eqn{latex}{N}-grams, \eqn{latex}{N}.
-#' - The reference dictionary, sorted by word frequency. This can be obtained
-#' using \code{\link[sbo]{get_word_freqs}}.
-#' - A list of n tibbles, storing frequency counts for each
-#' \eqn{latex}{k}-gram observed in the training corpus, for
-#' \eqn{latex}{k = 1, 2, ..., N}. In these tibbles, words are represented by
-#' integer numbers corresponding to their position in the
-#' reference dictionary. The special codes \code{0},
-#' \code{length(dictionary)+1} and \code{length(dictionary)+2}
-#' correspond to the "Begin-Of-Sentence", "End-Of-Sentence"
-#' and "Unknown word" tokens, respectively.
-#' - The function used for text preprocessing (i.e. the .preprocess argument)
-#' - A length one character vector listing all (single character)
-#' end-of-sentence tokens. (i.e. EOS argument)
-#'
-#' The \code{.preprocess} argument allows the user to employ a custom corpus
-#' preprocessing function (the default leverages on
-#' code{\link[sbo]{preprocess}}).
-#'
-#' The algorithm for \eqn{k}-gram tokenization considers anything separated by
-#' (any number of) white spaces (i.e. " ") as a single word. Sentences are split
-#' according to end-of-sentence (single character) tokens, as specified
-#' by the `EOS` argument. Additionally text belonging to different entries of
-#' the preprocessed input vector which are understood to belong to different
-#' sentences.
-#'
-#' @seealso \code{\link[sbo]{get_word_freqs}}
 #' @examples
 #' \dontrun{
 #' # Obtain k-gram frequency table from corpus
 #' ## Get k-gram frequencies, up to k = N = 3.
-#' freqs <- get_kgram_freqs(twitter_train, N = 3, dict = twitter_dict)
+#' freqs <- get_kgram_freqs_fast(twitter_train, N = 3, dict = twitter_dict)
 #' ## Print result
 #' freqs
 #' }
