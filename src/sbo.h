@@ -14,6 +14,7 @@ class kgramFreqs{
         std::vector<std::unordered_map<std::string, int>> _freqs;
         int _N;
 public:
+        kgramFreqs(int N) :_N(N), _freqs(N) {}
         kgramFreqs(const std::vector<std::string>&,
                    const std::vector<std::string>&,
                    int);

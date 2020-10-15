@@ -1,3 +1,7 @@
+# sbo 0.3.0
+* Added `get_kgram_freqs_fast()` for fast and memory efficient kgram 
+tokenization using the default text preprocessing utility.
+
 # sbo 0.2.0
 * The infrastructure of `get_kgram_freqs()`, `get_word_freqs()`, `preprocess()`,  and `predict.sbo_preds()` has been entirely rewritten in C++.
 * Added `tokenize_sentences()` function for sentence level tokenization.
