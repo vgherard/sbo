@@ -82,11 +82,11 @@ get_kgram_freqs <- function(text, N, dict, .preprocess = preprocess,
                 if (is.na(dict) | length(dict) != 1)
                         stop("'dict' should be either a character vector or a
                              length one numeric or integer.")
-                dict <- get_word_freqs(text, .preprocess = identity)[1:dict] %>%
-                        names
+                dict <- get_word_freqs(text, .preprocess = identity,
+                                       EOS = EOS)[1:dict] %>% names
         }
 
-        counts <- lapply(get_kgram_freqsC(text, dict, N),
+        counts <- lapply(get_kgram_freqsC(text, N, dict),
                          function(x) {
                                  word_names <- paste0("w", (N + 2 - ncol(x)):N)
                                  colnames(x) <- c(word_names, "n")
