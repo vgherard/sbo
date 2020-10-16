@@ -2,7 +2,7 @@
 % Please edit documentation in R/predict_kgram_freqs.R
 \name{predict.kgram_freqs}
 \alias{predict.kgram_freqs}
-\title{Predict method for \eqn{latex}{k}-gram frequency tables}
+\title{Predict method for k-gram frequency tables}
 \usage{
 \method{predict}{kgram_freqs}(object, newdata, lambda = 0.4, ...)
 }
@@ -22,7 +22,7 @@ A tibble containing the next-word probabilities for all words
 in the dictionary.
 }
 \description{
-Predictive text based on Stupid Back-off \eqn{latex}{N}-gram model.
+Predictive text based on Stupid Back-off N-gram model.
 }
 \examples{
 predict(twitter_freqs, "i love")

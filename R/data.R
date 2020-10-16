@@ -36,10 +36,10 @@
 
 
 
-#' \eqn{k}-gram frequencies from Twitter training set
+#' k-gram frequencies from Twitter training set
 #'
 #' @md
-#' @format A \code{kgram_freqs} object. Contains \eqn{k}-gram frequencies from
+#' @format A \code{kgram_freqs} object. Contains k-gram frequencies from
 #' the example training set \code{\link[sbo]{twitter_train}}.
 #' @seealso \code{\link[sbo]{twitter_train}}
 "twitter_freqs"

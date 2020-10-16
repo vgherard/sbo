@@ -1,6 +1,6 @@
 #' Predict method for Stupid Back-off prediction tables
 #'
-#' Predictive text based on Stupid Back-off \eqn{latex}{N}-gram model.
+#' Predictive text based on Stupid Back-off N-gram model.
 #'
 #' @export
 #'

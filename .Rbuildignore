@@ -9,3 +9,5 @@
 ^pkgdown$
 ^data-raw$
 ^.*\.txt$
+src/ignore
+cran-comments.md

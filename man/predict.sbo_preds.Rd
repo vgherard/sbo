@@ -18,7 +18,7 @@ A character vector if \code{length(newdata) == 1}, otherwise a
 character matrix.
 }
 \description{
-Predictive text based on Stupid Back-off \eqn{latex}{N}-gram model.
+Predictive text based on Stupid Back-off N-gram model.
 }
 \examples{
 predict(twitter_preds, "i love")

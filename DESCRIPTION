@@ -1,6 +1,6 @@
 Package: sbo
 Type: Package
-Title: Text prediction via N-gram Stupid Back-off models
+Title: Text Prediction via N-Gram Stupid Back-Off Models
 Version: 0.3.0
 Author: Valerio Gherardi
 Maintainer: Valerio Gherardi <vgherard@sissa.it>
@@ -22,5 +22,5 @@ Suggests:
     cli,
     testthat
 URL: https://github.com/vgherard/sbo
-BugReports: http://github.com/vgherard/sbo/issues
+BugReports: https://github.com/vgherard/sbo/issues
 VignetteBuilder: knitr

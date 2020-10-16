@@ -27,7 +27,7 @@ Generate random text based on Stupid Back-off language model.
 \details{
 This function generates random text from a Stupid Back-off language
 model.
-\code{babble} randomly samples one of the top \eqn{latex}{L} next word
+\code{babble} randomly samples one of the top L next word
 predictions. Text generation stops when an End-Of-Sentence token is
 encountered, or when the number of generated words exceeds n_max.
 }

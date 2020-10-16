@@ -20,7 +20,7 @@ the predicted completions and a column indicating whether one of the
 predictions were correct or not.
 }
 \description{
-Evaluate next-word predictions based on Stupid Back-off \eqn{latex}{N}-gram
+Evaluate next-word predictions based on Stupid Back-off N-gram
 model on a test corpus.
 }
 \details{

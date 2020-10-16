@@ -1,6 +1,6 @@
-#' Predict method for \eqn{latex}{k}-gram frequency tables
+#' Predict method for k-gram frequency tables
 #'
-#' Predictive text based on Stupid Back-off \eqn{latex}{N}-gram model.
+#' Predictive text based on Stupid Back-off N-gram model.
 #'
 #' @export
 #'

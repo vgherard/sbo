@@ -1,7 +1,7 @@
 ################################################################################
 #' Evaluate Stupid Back-off next-word predictions
 #'
-#' Evaluate next-word predictions based on Stupid Back-off \eqn{latex}{N}-gram
+#' Evaluate next-word predictions based on Stupid Back-off N-gram
 #' model on a test corpus.
 #'
 #' @author Valerio Gherardi

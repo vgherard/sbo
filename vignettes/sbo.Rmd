@@ -100,7 +100,7 @@ For convenience, the objects created in this section are preloaded in `sbo` as `
 At the present stage, both `get_word_freqs` and `get_kgram_freqs` employ internal functions for text preprocessing and tokenization. Preprocessing consists of the following steps, in this order:
 
 1. Lower-case everything.
-1. Replace all punctation including **.**, **?**, **!**, **:**, **;** (any number of any of these) with a single **.**.
+1. Replace all punctuation including **.**, **?**, **!**, **:**, **;** (any number of any of these) with a single **.**.
 1. Strip any character different from **.**, **'**, **space** or alphanumeric.
 1. Split sentences in correspondence of dots and wrap each sentence with appropriate Begin/End-Of-Sentence tokens.
 
