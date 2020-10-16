@@ -27,23 +27,33 @@ IntegerVector get_Ngram_prefix(const std::string& line,
         return prefix;
 }
 
-int get_row(const IntegerMatrix& m, const IntegerVector& x) {
-        for(int i = 0; i < m.nrow(); i++)
-                if(is_true(all(IntegerVector(m(i, _)) == x))) return i;
+int get_row(const IntegerMatrix& m, const IntegerVector& ref) {
+        int nrows = m.nrow(); int ncols = m.ncol();
+        unsigned short int j = 0;
+        bool match;
+        for(int i = 0; i < nrows; i++){
+                match = true;
+                for(j = 0; j < ncols; j++) {
+                        if (m(i, j) != ref[j]) {match = false; break;}
+                }
+                if (match) return i;
+        }
         return -1;
 }
 
-void fill_output_matrix(const int& N, const List& preds, IntegerVector& prefix,
+void fill_output_matrix(const int& N,
+                        const std::vector<IntegerMatrix>& prefixes,
+                        const std::vector<IntegerMatrix>& completions,
+                        IntegerVector& prefix,
                         const int& L, CharacterMatrix& output,
                         const std::vector<std::string>& dict_ext,
                         int& i
                         ){
         for(int k = N - 1; k >= 0; k--){
-                int r = get_row(as<IntegerMatrix>(preds[k])(_, Range(0, k - 1)),
-                                prefix);
+                int r = get_row(prefixes[k], prefix);
                 if(r != -1){
                         for(int j = 0; j < L; j++){
-                                int w = as<IntegerMatrix>(preds[k])(r, k + j);
+                                int w = completions[k](r, j);
                                 output(i, j) = dict_ext[w - 1];
                         }
                         break;
@@ -63,13 +73,25 @@ CharacterMatrix predict_sbo_preds(List object, std::vector<std::string> input) {
         int N = object["N"];
         int L = object["L"];
         const List & preds(object["preds"]);
+        std::vector<IntegerMatrix> prefixes;
+        std::vector<IntegerMatrix> completions;
+        for(int k = 0; k < N; k++){
+                if(k == 0) prefixes.push_back(IntegerMatrix(1,0));
+                else prefixes.push_back(
+                                as<IntegerMatrix>(preds[k])(_, Range(0, k - 1))
+                        );
+                completions.push_back(
+                        as<IntegerMatrix>(preds[k])(_, Range(k, k + L - 1))
+                );
+        }
         CharacterMatrix output(input.size(), L);
         int i = 0;
         for(const std::string& line : input)
                 {
                 IntegerVector prefix(N - 1, 0);
                 fill_Ngram_prefix(line, prefix, N, dict, EOS);
-                fill_output_matrix(N, preds, prefix, L, output, dict_ext, i);
+                fill_output_matrix(N, prefixes, completions, prefix, L, output,
+                                   dict_ext, i);
                 }
         return output;
 }

@@ -41,7 +41,7 @@ distribution of correct prediction, by direct test against a test set corpus.
 
 set.seed(840) # Set seed for reproducibility
 eval <- # May take ~ 2 or 3 minutes!
-        eval_sbo_preds(twitter_sbo, twitter_test, L = 3)
+        eval_sbo_preds(twitter_preds, twitter_test, L = 3)
 
 ## Compute three-word accuracies
 eval \%>\% summarise(accuracy = sum(correct)/n()) # Overall accuracy
