@@ -28,15 +28,13 @@ IntegerVector get_Ngram_prefix(const std::string& line,
 }
 
 int get_row(const IntegerMatrix& m, const IntegerVector& ref) {
-        int nrows = m.nrow(); int ncols = m.ncol();
-        unsigned short int j = 0;
-        bool match;
+        int nrows = m.nrow(); int ncols = m.ncol(); unsigned short int j;
         for(int i = 0; i < nrows; i++){
-                match = true;
                 for(j = 0; j < ncols; j++) {
-                        if (m(i, j) != ref[j]) {match = false; break;}
+                        if (m(i, j) != ref[j]) goto next;
                 }
-                if (match) return i;
+                return i;
+                next: continue;
         }
         return -1;
 }
