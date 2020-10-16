@@ -30,7 +30,7 @@
 #'
 #' set.seed(840) # Set seed for reproducibility
 #' eval <- # May take ~ 2 or 3 minutes!
-#'         eval_sbo_preds(twitter_sbo, twitter_test, L = 3)
+#'         eval_sbo_preds(twitter_preds, twitter_test, L = 3)
 #'
 #' ## Compute three-word accuracies
 #' eval %>% summarise(accuracy = sum(correct)/n()) # Overall accuracy
@@ -56,7 +56,7 @@ eval_sbo_preds <- function(model, test, L = model$L){
                 stop("L could not be coerced to a positive integer")
         N <- model$N
         dict <- model$dict
-        wrap <- c(paste0(rep("_BOS_", N-1), collapse = " "), "_EOS_")
+        wrap <- c(paste0(rep("<BOS>", N-1), collapse = " "), "<EOS>")
         test %>%
                 (model$.preprocess) %>%
                 tokenize_sentences(EOS = model$EOS) %>%
@@ -69,13 +69,14 @@ eval_sbo_preds <- function(model, test, L = model$L){
                         tibble(input = input, true = x[i+N-1] )
                         }) %>%
                 bind_rows %>%
-                mutate(input = gsub("_BOS_", "", input),
-                       true = gsub("_EOS_", ".", true) ) %>%
+                mutate(input = gsub("<BOS>", "", input)) %>%
                 group_by(row_number()) %>%
-                mutate(preds = sapply(input,
-                                      function(x) list(predict(model, x, L))
-                                      ),
-                       correct = true %in% unlist(preds) ) %>%
+                # mutate(preds = sapply(input,
+                #                       function(x) list(predict(model, x, L))
+                #                       ),
+                #        correct = true %in% unlist(preds) ) %>%
+                mutate(preds = matrix(predict(model, input), ncol = L),
+                       correct = true %in% preds) %>%
                 ungroup %>%
                 select(input, true, preds, correct)
 }
