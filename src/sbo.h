@@ -1,9 +1,8 @@
 #include <Rcpp.h>
 #include <string>
 #include <vector>
-#include <queue>
+#include <deque>
 #include <unordered_map>
-#include <map>
 #include <regex>
 #include <algorithm>
 // [[Rcpp::plugins(cpp11)]]
