@@ -73,7 +73,7 @@ model on a test corpus." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sbo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -171,7 +171,7 @@ distribution of correct prediction, by direct test against a test set corpus.</p
 
 <span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>840</span><span class='op'>)</span> <span class='co'># Set seed for reproducibility</span>
 <span class='va'>eval</span> <span class='op'>&lt;-</span> <span class='co'># May take ~ 2 or 3 minutes!</span>
-        <span class='fu'>eval_sbo_preds</span><span class='op'>(</span><span class='va'>twitter_sbo</span>, <span class='va'>twitter_test</span>, L <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
+        <span class='fu'>eval_sbo_preds</span><span class='op'>(</span><span class='va'>twitter_preds</span>, <span class='va'>twitter_test</span>, L <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
 
 <span class='co'>## Compute three-word accuracies</span>
 <span class='va'>eval</span> <span class='op'>%&gt;%</span> <span class='fu'>summarise</span><span class='op'>(</span>accuracy <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>correct</span><span class='op'>)</span><span class='op'>/</span><span class='fu'>n</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># Overall accuracy</span>

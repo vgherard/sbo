@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sbo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -157,7 +157,7 @@ end-of-sentence tokens.</p></td>
 <span class='co'># Get word frequencies and extract dictionary of top 1000 words</span>
 <span class='va'>words</span> <span class='op'>&lt;-</span> <span class='fu'>get_word_freqs</span><span class='op'>(</span><span class='va'>twitter_train</span><span class='op'>)</span>
 <span class='va'>words</span>
-<span class='va'>dict</span> <span class='op'>&lt;-</span> <span class='va'>words</span><span class='op'>$</span><span class='va'>word</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>1000</span><span class='op'>]</span>
+<span class='va'>dict</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>words</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>1000</span><span class='op'>]</span>
 <span class='op'>}</span>
 </div></pre>
   </div>

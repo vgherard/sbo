@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sbo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -78,7 +78,7 @@
                   <a class="author_email" href="mailto:#"></a><a href="mailto:vgherard@sissa.it" class="email">vgherard@sissa.it</a>
       
                   
-            <h4 class="date">2020-10-14</h4>
+            <h4 class="date">2020-10-16</h4>
       
       <small class="dont-index">Source: <a href="http://github.com/vgherard/sbo/blob/master/vignettes/sbo.Rmd"><code>vignettes/sbo.Rmd</code></a></small>
       <div class="hidden name"><code>sbo.Rmd</code></div>
@@ -131,7 +131,7 @@
 <p>Alternatively, one may use a predefined dictionary.</p>
 <p><em>Step 1</em>. Get <span class="math inline">\(k\)</span>-gram frequencies from training corpus:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="op">(</span> <span class="va">freqs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_kgram_freqs.html">get_kgram_freqs</a></span><span class="op">(</span><span class="va">train</span>, N <span class="op">=</span> <span class="fl">3</span>, <span class="va">dict</span><span class="op">)</span> <span class="op">)</span> <span class="co"># 'N' is the order of n-grams</span>
+<span class="op">(</span><span class="va">freqs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_kgram_freqs.html">get_kgram_freqs</a></span><span class="op">(</span><span class="va">train</span>, N <span class="op">=</span> <span class="fl">3</span>, <span class="va">dict</span><span class="op">)</span><span class="op">)</span> <span class="co"># 'N' is the order of n-grams</span>
 <span class="co">#&gt; k-gram frequency table </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Order (N): 3 </span>
@@ -176,7 +176,7 @@
 <span class="co">#&gt; [1] "thinking."</span></pre></div>
 <p>If we wish to save the frequency tables, or the final prediction tables, and reload them in a future session, we can easily do this through <code>save</code>/<code>load</code>, <em>e.g.</em></p>
 <div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/save.html">save</a></span><span class="op">(</span><span class="va">sbo</span>, <span class="st">"sbo.rda"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/save.html">save</a></span><span class="op">(</span><span class="va">sbo</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/load.html">load</a></span><span class="op">(</span><span class="st">"sbo.rda"</span><span class="op">)</span></pre></div>
 <p>For convenience, the objects created in this section are preloaded in <code>sbo</code> as <code>twitter_dict</code>, <code>twitter_freqs</code> and <code>twitter_sbo</code>.</p>
 <div id="some-details-on-text-preprocessing-and-k-gram-tokenization" class="section level3">
@@ -204,20 +204,20 @@
 <p>As a concrete example, we test the text-predictor trained in the previous section over the Twitter (independent) test set.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">840</span><span class="op">)</span>
-<span class="op">(</span> <span class="va">eval</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/eval_sbo_preds.html">eval_sbo_preds</a></span><span class="op">(</span><span class="va">sbo</span>, <span class="va">test</span><span class="op">)</span> <span class="op">)</span>
+<span class="op">(</span><span class="va">eval</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/eval_sbo_preds.html">eval_sbo_preds</a></span><span class="op">(</span><span class="va">sbo</span>, <span class="va">test</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 18,497 x 4</span>
-<span class="co">#&gt;    input            true      preds        correct</span>
-<span class="co">#&gt;    &lt;chr&gt;            &lt;chr&gt;     &lt;named list&gt; &lt;lgl&gt;  </span>
-<span class="co">#&gt;  1 "oh hey"         shirtless &lt;chr [3]&gt;    FALSE  </span>
-<span class="co">#&gt;  2 " "              how       &lt;chr [3]&gt;    FALSE  </span>
-<span class="co">#&gt;  3 " ah"            no        &lt;chr [3]&gt;    FALSE  </span>
-<span class="co">#&gt;  4 "he estudiado"   .         &lt;chr [3]&gt;    FALSE  </span>
-<span class="co">#&gt;  5 "nada d"         .         &lt;chr [3]&gt;    FALSE  </span>
-<span class="co">#&gt;  6 "mama no"        esta      &lt;chr [3]&gt;    FALSE  </span>
-<span class="co">#&gt;  7 "ya mean"        .         &lt;chr [3]&gt;    FALSE  </span>
-<span class="co">#&gt;  8 "tennis the"     scoring   &lt;chr [3]&gt;    FALSE  </span>
-<span class="co">#&gt;  9 " thanks"        for       &lt;chr [3]&gt;    TRUE   </span>
-<span class="co">#&gt; 10 "concert wasn't" over      &lt;chr [3]&gt;    TRUE   </span>
+<span class="co">#&gt;    input            true      preds[,1] [,2]   [,3]    correct</span>
+<span class="co">#&gt;    &lt;chr&gt;            &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;  &lt;chr&gt;   &lt;lgl&gt;  </span>
+<span class="co">#&gt;  1 "oh hey"         shirtless a         &lt;EOS&gt;  i'm     FALSE  </span>
+<span class="co">#&gt;  2 " "              how       i         &lt;EOS&gt;  the     FALSE  </span>
+<span class="co">#&gt;  3 " ah"            no        &lt;EOS&gt;     i      yes     FALSE  </span>
+<span class="co">#&gt;  4 "he estudiado"   &lt;EOS&gt;     &lt;EOS&gt;     the    it      TRUE   </span>
+<span class="co">#&gt;  5 "nada d"         &lt;EOS&gt;     &lt;EOS&gt;     from   project TRUE   </span>
+<span class="co">#&gt;  6 "mama no"        esta      &lt;EOS&gt;     matter more    FALSE  </span>
+<span class="co">#&gt;  7 "ya mean"        &lt;EOS&gt;     &lt;EOS&gt;     i've   to      TRUE   </span>
+<span class="co">#&gt;  8 "tennis the"     scoring   word      same   best    FALSE  </span>
+<span class="co">#&gt;  9 " thanks"        for       for       &lt;EOS&gt;  to      TRUE   </span>
+<span class="co">#&gt; 10 "concert wasn't" over      over      a      even    TRUE   </span>
 <span class="co">#&gt; # … with 18,487 more rows</span></pre></div>
 <p>As it is seen, <code>eval_sbo_preds</code> returns a tibble containing the input <span class="math inline">\((N-1)\)</span>-grams, the true completions, the predicted completions and a column indicating whether one of the predictions were correct or not.</p>
 <p>We can estimate predictive accuracy as follows (the uncertainty in the estimate is approximated by the binomial formula <span class="math inline">\(\sigma = \sqrt{\frac{p(1-p)}{M}}\)</span>, where <span class="math inline">\(M\)</span> is the number of trials):</p>
@@ -228,7 +228,7 @@
 <span class="co">#&gt; # A tibble: 1 x 2</span>
 <span class="co">#&gt;   accuracy uncertainty</span>
 <span class="co">#&gt;      &lt;dbl&gt;       &lt;dbl&gt;</span>
-<span class="co">#&gt; 1    0.162     0.00271</span></pre></div>
+<span class="co">#&gt; 1    0.351     0.00351</span></pre></div>
 <p>We may want to exclude from the test <span class="math inline">\(N\)</span>-grams ending by the End-Of-Sentence token (here represented by <code>"."</code>):</p>
 <div class="sourceCode" id="cb12"><pre class="downlit">
 <span class="va">eval</span> <span class="op">%&gt;%</span> <span class="co"># Accuracy for in-sentence predictions</span>
@@ -239,16 +239,17 @@
 <span class="co">#&gt; # A tibble: 1 x 2</span>
 <span class="co">#&gt;   accuracy uncertainty</span>
 <span class="co">#&gt;      &lt;dbl&gt;       &lt;dbl&gt;</span>
-<span class="co">#&gt; 1    0.202     0.00330</span></pre></div>
+<span class="co">#&gt; 1    0.351     0.00351</span></pre></div>
 <p>In trying to reduce the size (in physical memory) of your text-predictor, it might be useful to prune the model dictionary. The following command plots an histogram of the distribution of correct predictions in our test.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit">
-<span class="kw">if</span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+<span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
         <span class="va">eval</span> <span class="op">%&gt;%</span>
                 <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">correct</span>, <span class="va">true</span> <span class="op">!=</span> <span class="st">"."</span><span class="op">)</span> <span class="op">%&gt;%</span>
                 <span class="fu">transmute</span><span class="op">(</span>rank <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/match.html">match</a></span><span class="op">(</span><span class="va">true</span>, table <span class="op">=</span> <span class="va">sbo</span><span class="op">$</span><span class="va">dict</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
                 <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">rank</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_histogram</a></span><span class="op">(</span>binwidth <span class="op">=</span> <span class="fl">25</span><span class="op">)</span>
 <span class="op">}</span>
-<span class="co">#&gt; Carico il pacchetto richiesto: ggplot2</span></pre></div>
+<span class="co">#&gt; Carico il pacchetto richiesto: ggplot2</span>
+<span class="co">#&gt; Warning: Removed 3483 rows containing non-finite values (stat_bin).</span></pre></div>
 <p><img src="sbo_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
 <p>Apparently, the large majority of correct predictions come from the first ~ 300 words of the dictionary, so that if we prune the dictionary excluding words with rank greater than, <em>e.g.</em>, 500 we can reduce the size of our model without seriously affecting its prediction accuracy.</p>
 </div>

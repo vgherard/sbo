@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sbo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -115,7 +115,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>\(latex\)-gram frequency tables</h1>
-    <small class="dont-index">Source: <a href='http://github.com/vgherard/sbo/blob/master/R/get_kgram_freqs.R'><code>R/get_kgram_freqs.R</code></a></small>
+    <small class="dont-index">Source: <a href='http://github.com/vgherard/sbo/blob/master/R/get_kgram_freqs.R'><code>R/get_kgram_freqs.R</code></a>, <a href='http://github.com/vgherard/sbo/blob/master/R/get_kgram_freqs_doc.R'><code>R/get_kgram_freqs_doc.R</code></a>, <a href='http://github.com/vgherard/sbo/blob/master/R/get_kgram_freqs_fast.R'><code>R/get_kgram_freqs_fast.R</code></a></small>
     <div class="hidden name"><code>get_kgram_freqs.Rd</code></div>
     </div>
 
@@ -123,7 +123,16 @@
     <p>Get \(latex\)-gram frequency tables from a training corpus.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_kgram_freqs</span><span class='op'>(</span><span class='va'>text</span>, <span class='va'>N</span>, <span class='va'>dict</span>, .preprocess <span class='op'>=</span> <span class='va'>preprocess</span>, EOS <span class='op'>=</span> <span class='st'>".?!:;"</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>get_kgram_freqs</span><span class='op'>(</span><span class='va'>text</span>, <span class='va'>N</span>, <span class='va'>dict</span>, .preprocess <span class='op'>=</span> <span class='va'>preprocess</span>, EOS <span class='op'>=</span> <span class='st'>".?!:;"</span><span class='op'>)</span>
+
+<span class='fu'>get_kgram_freqs_fast</span><span class='op'>(</span>
+  <span class='va'>text</span>,
+  <span class='va'>N</span>,
+  <span class='va'>dict</span>,
+  erase <span class='op'>=</span> <span class='st'>"[^.?!:;'\\w\\s]"</span>,
+  lower_case <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  EOS <span class='op'>=</span> <span class='st'>".?!:;"</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -147,12 +156,25 @@ the <code>dict</code> most frequent words.</p></td>
     </tr>
     <tr>
       <th>.preprocess</th>
-      <td><p>a function to apply before \(latex\)-gram tokenization.</p></td>
+      <td><p>a function to apply before \(latex\)-gram
+tokenization.</p></td>
     </tr>
     <tr>
       <th>EOS</th>
       <td><p>a length one character vector listing all (single character)
 end-of-sentence tokens.</p></td>
+    </tr>
+    <tr>
+      <th>erase</th>
+      <td><p>a length one character vector. Regular expression matching
+parts  of text to be erased from input. The default removes anything not
+alphanumeric, white space, apostrophes or punctuation characters
+(i.e. ".?!:;").</p></td>
+    </tr>
+    <tr>
+      <th>lower_case</th>
+      <td><p>a length one logical vector. If TRUE, puts everything to
+lower case.</p></td>
     </tr>
     </table>
 
@@ -162,11 +184,16 @@ end-of-sentence tokens.</p></td>
 frequency tables for \(latex\).</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This function extracts all k-gram frequency tables from a text
+    <p>These functions extract all k-gram frequency tables from a text
 corpus up to a specified \(latex\)-gram order \(latex\). These are
 the building blocks to train any \(latex\)-gram model.</p>
-<p><code>get_kgram_freqs</code> employs a fixed (user specified) dictionary; any
-out-of-vocabulary word gets effectively replaced by an "unknown word" token.</p>
+<p>The optimized version <code>get_kgram_freqs_fast(erase = x, lower_case = y)</code>
+is equivalent to
+<code>get_kgram_freqs(.preprocess = preprocess(erase = x, lower_case = y))</code>,
+but more efficient (both from the speed and memory point of view).</p>
+<p><code>get_kgram_freqs</code> and <code>get_kgram_freqs_fast</code> employ a fixed
+(user specified) dictionary; any out-of-vocabulary word gets effectively
+replaced by an "unknown word" token.</p>
 <p>The return value is a "<code>kgram_freqs</code>" object, i.e. a list containing:</p><ul>
 <li><p>The highest order of \(latex\)-grams, \(latex\).</p></li>
 <li><p>The reference dictionary, sorted by word frequency. This can be obtained
@@ -184,9 +211,8 @@ and "Unknown word" tokens, respectively.</p></li>
 end-of-sentence tokens. (i.e. EOS argument)</p></li>
 </ul>
 
-<p>The <code>.preprocess</code> argument allows the user to employ a custom corpus
-preprocessing function (the default leverages on
-code<a href='preprocess.html'>preprocess</a>).</p>
+<p>The <code>.preprocess</code> argument of <code>get_kgram_freqs</code> allows the user to
+employ a custom corpus preprocessing function.</p>
 <p>The algorithm for \(k\)-gram tokenization considers anything separated by
 (any number of) white spaces (i.e. " ") as a single word. Sentences are split
 according to end-of-sentence (single character) tokens, as specified
@@ -205,6 +231,13 @@ sentences.</p>
 <span class='co'># Obtain k-gram frequency table from corpus</span>
 <span class='co'>## Get k-gram frequencies, up to k = N = 3.</span>
 <span class='va'>freqs</span> <span class='op'>&lt;-</span> <span class='fu'>get_kgram_freqs</span><span class='op'>(</span><span class='va'>twitter_train</span>, N <span class='op'>=</span> <span class='fl'>3</span>, dict <span class='op'>=</span> <span class='va'>twitter_dict</span><span class='op'>)</span>
+<span class='co'>## Print result</span>
+<span class='va'>freqs</span>
+<span class='op'>}</span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='co'># Obtain k-gram frequency table from corpus</span>
+<span class='co'>## Get k-gram frequencies, up to k = N = 3.</span>
+<span class='va'>freqs</span> <span class='op'>&lt;-</span> <span class='fu'>get_kgram_freqs_fast</span><span class='op'>(</span><span class='va'>twitter_train</span>, N <span class='op'>=</span> <span class='fl'>3</span>, dict <span class='op'>=</span> <span class='va'>twitter_dict</span><span class='op'>)</span>
 <span class='co'>## Print result</span>
 <span class='va'>freqs</span>
 <span class='op'>}</span>

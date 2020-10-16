@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">sbo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -103,17 +103,17 @@
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/vgherard/sbo">sbo</a></span><span class="op">)</span>
 <span class="co">## Train a next-word prediction function based on 3-gram Stupid Back-off. </span>
 <span class="va">train</span> <span class="op">&lt;-</span> <span class="fu">sbo</span><span class="fu">::</span><span class="va"><a href="reference/twitter_train.html">twitter_train</a></span> <span class="co"># 100k tweets, example dataset from sbo</span>
-<span class="va">dict</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_word_freqs.html">get_word_freqs</a></span><span class="op">(</span><span class="va">train</span><span class="op">)</span> <span class="op">%$%</span> <span class="va">word</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">1000</span><span class="op">]</span> <span class="co"># Build rank-sorted dictionary</span>
-<span class="va">freqs</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_kgram_freqs.html">get_kgram_freqs</a></span><span class="op">(</span><span class="va">train</span>, <span class="va">dict</span>, N <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="co"># Get k-gram frequencies (up to 3-grams)</span>
-<span class="va">sbo</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/build_sbo_preds.html">build_sbo_preds</a></span><span class="op">(</span><span class="va">freqs</span><span class="op">)</span> <span class="co"># Build prediction tables</span></pre></div>
-<p>The variable <code>sbo</code> now stores the next-word prediction tables, which can be used to generate predictive text as follows:</p>
+<span class="va">dict</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_word_freqs.html">get_word_freqs</a></span><span class="op">(</span><span class="va">train</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="va">names</span> <span class="op">%&gt;%</span> <span class="va">.</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">1000</span><span class="op">]</span> <span class="co"># Build rank-sorted dictionary</span>
+<span class="va">freqs</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_kgram_freqs.html">get_kgram_freqs</a></span><span class="op">(</span><span class="va">train</span>, N <span class="op">=</span> <span class="fl">3</span>, <span class="va">dict</span><span class="op">)</span> <span class="co"># Get k-gram frequencies (up to 3-grams)</span>
+<span class="va">preds</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/build_sbo_preds.html">build_sbo_preds</a></span><span class="op">(</span><span class="va">freqs</span><span class="op">)</span> <span class="co"># Build prediction tables</span></pre></div>
+<p>The <code>preds</code> object now stores the next-word prediction tables, which can be used to generate predictive text as follows:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">sbo</span>, <span class="st">"i love"</span><span class="op">)</span> <span class="co"># a character vector</span>
+<span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">preds</span>, <span class="st">"i love"</span><span class="op">)</span> <span class="co"># a character vector</span>
 <span class="co">#&gt; [1] "you" "it"  "my"</span>
-<span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">sbo</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Colorless green ideas sleep"</span>, <span class="st">"See you"</span><span class="op">)</span><span class="op">)</span> <span class="co"># a char matrix</span>
-<span class="co">#&gt;                             [,1]    [,2] [,3] </span>
-<span class="co">#&gt; Colorless green ideas sleep "."     "in" "and"</span>
-<span class="co">#&gt; See you                     "there" "."  "at"</span></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">preds</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Colorless green ideas sleep"</span>, <span class="st">"See you"</span><span class="op">)</span><span class="op">)</span> <span class="co"># a char matrix</span>
+<span class="co">#&gt;      [,1]    [,2]    [,3] </span>
+<span class="co">#&gt; [1,] "&lt;EOS&gt;" "in"    "and"</span>
+<span class="co">#&gt; [2,] "there" "&lt;EOS&gt;" "at"</span></pre></div>
 </div>
 <div id="help" class="section level2">
 <h2 class="hasAnchor">

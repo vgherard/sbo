@@ -53,7 +53,7 @@ head(train, 3)
 The prototypical workflow for building a text-predictor in `sbo` goes as follows:
 
 *Step 0 (optional)*. Build a dictionary from training set, typically keeping the top $V$ most frequent words: 
-```{r, cache=TRUE}
+```{r}
 # N.B.: get_word_freqs(train) returns a tibble with a 'word' column 
 # and a 'counts' column, sorted by decreasing counts.
 dict <- get_word_freqs(train) %>% names %>% .[1:1000]
@@ -62,12 +62,12 @@ head(dict)
 Alternatively, one may use a predefined dictionary. 
 
 *Step 1*. Get $k$-gram frequencies from training corpus:
-```{r, cache=TRUE}
-( freqs <- get_kgram_freqs(train, N = 3, dict) ) # 'N' is the order of n-grams
+```{r}
+(freqs <- get_kgram_freqs(train, N = 3, dict)) # 'N' is the order of n-grams
 ```
 
 *Step 2*. Build next-word prediction tables:
-```{r, cache=TRUE}
+```{r}
 ( sbo <- build_sbo_preds(freqs) )
 ```
 
@@ -90,7 +90,7 @@ babble(sbo)
 If we wish to save the frequency tables, or the final prediction tables, and reload them in a future session, we can easily do this through `save`/`load`, *e.g.*
 
 ```{r, eval=FALSE}
-save(sbo, "sbo.rda")
+save(sbo)
 load("sbo.rda")
 ```
 
@@ -116,9 +116,9 @@ Once we have built our next-word predictor, we may want to directly test its pre
 
 As a concrete example, we test the text-predictor trained in the previous section over the Twitter (independent) test set.
 
-```{r, cache=TRUE}
+```{r}
 set.seed(840)
-( eval <- eval_sbo_preds(sbo, test) )
+(eval <- eval_sbo_preds(sbo, test))
 ```
 
 As it is seen, `eval_sbo_preds` returns a tibble containing the input $(N-1)$-grams, the true completions, the predicted completions and a column indicating whether one of the predictions were correct or not.
@@ -144,7 +144,7 @@ eval %>% # Accuracy for in-sentence predictions
 In trying to reduce the size (in physical memory) of your text-predictor, it might be useful to prune the model dictionary. The following command plots an histogram of the distribution of correct predictions in our test.
 
 ```{r}
-if(require(ggplot2)){
+if (require(ggplot2)) {
         eval %>%
                 filter(correct, true != ".") %>%
                 transmute(rank = match(true, table = sbo$dict)) %>%
