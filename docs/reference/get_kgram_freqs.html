@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>\(latex\)-gram frequency tables — get_kgram_freqs • sbo</title>
+<title>k-gram frequency tables — get_kgram_freqs • sbo</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="\(latex\)-gram frequency tables — get_kgram_freqs" />
-<meta property="og:description" content="Get \(latex\)-gram frequency tables from a training corpus." />
+<meta property="og:title" content="k-gram frequency tables — get_kgram_freqs" />
+<meta property="og:description" content="Get k-gram frequency tables from a training corpus." />
 
 
 
@@ -96,7 +96,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="http://github.com/vgherard/sbo/">
+  <a href="https://github.com/vgherard/sbo/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -114,13 +114,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>\(latex\)-gram frequency tables</h1>
-    <small class="dont-index">Source: <a href='http://github.com/vgherard/sbo/blob/master/R/get_kgram_freqs.R'><code>R/get_kgram_freqs.R</code></a>, <a href='http://github.com/vgherard/sbo/blob/master/R/get_kgram_freqs_doc.R'><code>R/get_kgram_freqs_doc.R</code></a>, <a href='http://github.com/vgherard/sbo/blob/master/R/get_kgram_freqs_fast.R'><code>R/get_kgram_freqs_fast.R</code></a></small>
+    <h1>k-gram frequency tables</h1>
+    <small class="dont-index">Source: <a href='https://github.com/vgherard/sbo/blob/master/R/get_kgram_freqs.R'><code>R/get_kgram_freqs.R</code></a>, <a href='https://github.com/vgherard/sbo/blob/master/R/get_kgram_freqs_doc.R'><code>R/get_kgram_freqs_doc.R</code></a>, <a href='https://github.com/vgherard/sbo/blob/master/R/get_kgram_freqs_fast.R'><code>R/get_kgram_freqs_fast.R</code></a></small>
     <div class="hidden name"><code>get_kgram_freqs.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Get \(latex\)-gram frequency tables from a training corpus.</p>
+    <p>Get k-gram frequency tables from a training corpus.</p>
     </div>
 
     <pre class="usage"><span class='fu'>get_kgram_freqs</span><span class='op'>(</span><span class='va'>text</span>, <span class='va'>N</span>, <span class='va'>dict</span>, .preprocess <span class='op'>=</span> <span class='va'>preprocess</span>, EOS <span class='op'>=</span> <span class='st'>".?!:;"</span><span class='op'>)</span>
@@ -144,7 +144,7 @@ k-gram frequencies.</p></td>
     </tr>
     <tr>
       <th>N</th>
-      <td><p>a length one integer. The maximum order of \(latex\)-grams
+      <td><p>a length one integer. The maximum order of k-grams
 for which frequencies are sought.</p></td>
     </tr>
     <tr>
@@ -156,7 +156,7 @@ the <code>dict</code> most frequent words.</p></td>
     </tr>
     <tr>
       <th>.preprocess</th>
-      <td><p>a function to apply before \(latex\)-gram
+      <td><p>a function to apply before k-gram
 tokenization.</p></td>
     </tr>
     <tr>
@@ -180,13 +180,13 @@ lower case.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>kgram_freqs</code> object, containing the \(latex\)-gram
-frequency tables for \(latex\).</p>
+    <p>A <code>kgram_freqs</code> object, containing the k-gram
+frequency tables for k = 1, 2, ..., N.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>These functions extract all k-gram frequency tables from a text
-corpus up to a specified \(latex\)-gram order \(latex\). These are
-the building blocks to train any \(latex\)-gram model.</p>
+corpus up to a specified k-gram order N. These are
+the building blocks to train any N-gram model.</p>
 <p>The optimized version <code>get_kgram_freqs_fast(erase = x, lower_case = y)</code>
 is equivalent to
 <code>get_kgram_freqs(.preprocess = preprocess(erase = x, lower_case = y))</code>,
@@ -195,12 +195,12 @@ but more efficient (both from the speed and memory point of view).</p>
 (user specified) dictionary; any out-of-vocabulary word gets effectively
 replaced by an "unknown word" token.</p>
 <p>The return value is a "<code>kgram_freqs</code>" object, i.e. a list containing:</p><ul>
-<li><p>The highest order of \(latex\)-grams, \(latex\).</p></li>
+<li><p>The highest order of N-grams, N.</p></li>
 <li><p>The reference dictionary, sorted by word frequency. This can be obtained
 using <code><a href='get_word_freqs.html'>get_word_freqs</a></code>.</p></li>
 <li><p>A list of n tibbles, storing frequency counts for each
-\(latex\)-gram observed in the training corpus, for
-\(latex\). In these tibbles, words are represented by
+k-gram observed in the training corpus, for
+k = 1, 2, ..., N. In these tibbles, words are represented by
 integer numbers corresponding to their position in the
 reference dictionary. The special codes <code>0</code>,
 <code>length(dictionary)+1</code> and <code>length(dictionary)+2</code>
@@ -213,7 +213,7 @@ end-of-sentence tokens. (i.e. EOS argument)</p></li>
 
 <p>The <code>.preprocess</code> argument of <code>get_kgram_freqs</code> allows the user to
 employ a custom corpus preprocessing function.</p>
-<p>The algorithm for \(k\)-gram tokenization considers anything separated by
+<p>The algorithm for k-gram tokenization considers anything separated by
 (any number of) white spaces (i.e. " ") as a single word. Sentences are split
 according to end-of-sentence (single character) tokens, as specified
 by the <code>EOS</code> argument. Additionally text belonging to different entries of
