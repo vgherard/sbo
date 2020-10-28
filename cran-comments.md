@@ -1,3 +1,7 @@
+## Resubmission (v2)
+* Added citation of Brants et al. paper in Description field.
+* Reduced example dataset to comply with (tarball size) < 5 MB.
+
 ## Test environments
 * local Ubuntu 20.04.1 install, R 4.0.2
 * win-builder (devel, release and oldrealese)
