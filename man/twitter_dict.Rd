@@ -16,9 +16,7 @@ twitter_dict
 Top 1000 dictionary from Twitter training set
 }
 \examples{
-\dontrun{
- head(twitter_dict, 10)
-}
+head(twitter_dict, 10)
 }
 \seealso{
 \code{\link[sbo]{twitter_train}}

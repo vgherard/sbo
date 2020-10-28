@@ -17,9 +17,7 @@ twitter_train
 Twitter training set
 }
 \examples{
-\dontrun{
- head(twitter_train)
-}
+head(twitter_train)
 }
 \seealso{
 \code{\link[sbo]{twitter_test}}, \code{\link[sbo]{twitter_dict}},

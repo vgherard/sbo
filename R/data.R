@@ -5,9 +5,7 @@
 #' @seealso \code{\link[sbo]{twitter_test}}, \code{\link[sbo]{twitter_dict}},
 #' \code{\link[sbo]{twitter_freqs}}, \code{\link[sbo]{twitter_preds}}
 #' @examples
-#' \dontrun{
-#'  head(twitter_train)
-#' }
+#' head(twitter_train)
 "twitter_train"
 
 #' Twitter test set
@@ -16,9 +14,7 @@
 #' @format A collection of 10'000 Twitter posts in English.
 #' @seealso \code{\link[sbo]{twitter_train}}
 #' @examples
-#' \dontrun{
-#'  head(twitter_test)
-#' }
+#' head(twitter_test)
 "twitter_test"
 
 #' Top 1000 dictionary from Twitter training set
@@ -28,9 +24,7 @@
 #' the example training set \code{\link[sbo]{twitter_train}}, sorted by word
 #' rank.
 #' @examples
-#' \dontrun{
-#'  head(twitter_dict, 10)
-#' }
+#' head(twitter_dict, 10)
 #' @seealso \code{\link[sbo]{twitter_train}}
 "twitter_dict"
 

@@ -16,10 +16,12 @@
 #' end-of-sentence tokens.
 #' @return A named integer containing word frequencies.
 #' @examples
+#' \donttest{
 #' # Get word frequencies and extract dictionary of top 1000 words
 #' words <- get_word_freqs(twitter_train)
 #' words
 #' dict <- names(words)[1:1000]
+#' }
 ################################################################################
 
 get_word_freqs <- function(text, .preprocess = preprocess, EOS = ".?!:;"){

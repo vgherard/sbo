@@ -2,11 +2,13 @@
 #' @rdname get_kgram_freqs
 #' @export
 #' @examples
+#' \donttest{
 #' # Obtain k-gram frequency table from corpus
 #' ## Get k-gram frequencies, up to k = N = 3.
 #' freqs <- get_kgram_freqs(twitter_train, N = 3, dict = twitter_dict)
 #' ## Print result
 #' freqs
+#' }
 ################################################################################
 
 get_kgram_freqs <- function(text, N, dict, .preprocess = preprocess,

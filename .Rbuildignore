@@ -11,3 +11,4 @@
 ^.*\.txt$
 src/ignore
 cran-comments.md
+^CRAN-RELEASE$
