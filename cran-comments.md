@@ -1,5 +1,5 @@
 ## Resubmission (v3)
-* Replaced `\dontrun{}` directives with `\donttest{}` in documentation examples.
+* Replaced `\dontrun{}` directives with `\donttest{}` in documentation examples (`\donttest{}` examples now trigger a NOTE in my local check, signaling execution time > 5s).
 
 ## Resubmission (v2)
 * Added citation of Brants et al. paper in Description field.
