@@ -1,10 +1,10 @@
 Package: sbo
 Type: Package
-Title: Text Prediction via N-Gram Stupid Back-Off Models
+Title: Text Prediction via Stupid Back-Off N-Gram Models
 Version: 0.3.0
 Author: Valerio Gherardi
 Maintainer: Valerio Gherardi <vgherard@sissa.it>
-Description: Utilities for building and evaluating text prediction functions based on Stupid Back-off n-gram models.
+Description: Utilities for building and evaluating text prediction functions based on Stupid Back-Off n-gram models (Brants et al., 2007, <https://www.aclweb.org/anthology/D07-1090/>).
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
