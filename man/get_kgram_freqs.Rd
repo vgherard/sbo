@@ -93,20 +93,16 @@ the preprocessed input vector which are understood to belong to different
 sentences.
 }
 \examples{
-\dontrun{
 # Obtain k-gram frequency table from corpus
 ## Get k-gram frequencies, up to k = N = 3.
 freqs <- get_kgram_freqs(twitter_train, N = 3, dict = twitter_dict)
 ## Print result
 freqs
-}
-\dontrun{
 # Obtain k-gram frequency table from corpus
 ## Get k-gram frequencies, up to k = N = 3.
 freqs <- get_kgram_freqs_fast(twitter_train, N = 3, dict = twitter_dict)
 ## Print result
 freqs
-}
 }
 \seealso{
 \code{\link[sbo]{get_word_freqs}}

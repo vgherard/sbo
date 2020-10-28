@@ -1,3 +1,6 @@
+## Resubmission (v3)
+* Replaced `\dontrun{}` directives with `\donttest{}` in documentation examples.
+
 ## Resubmission (v2)
 * Added citation of Brants et al. paper in Description field.
 * Reduced example dataset to comply with (tarball size) < 5 MB.

@@ -23,12 +23,10 @@ A named integer containing word frequencies.
 Get word frequency tables from a training corpus.
 }
 \examples{
-\dontrun{
 # Get word frequencies and extract dictionary of top 1000 words
 words <- get_word_freqs(twitter_train)
 words
 dict <- names(words)[1:1000]
-}
 }
 \author{
 Valerio Gherardi

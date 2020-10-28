@@ -178,16 +178,25 @@ end-of-sentence tokens.</p></li>
     <p>Valerio Gherardi</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
 <span class='co'># Train an N-gram model</span>
 <span class='co'>## Get Stupid Back-off prediction tables</span>
-<span class='va'>sbo</span> <span class='op'>&lt;-</span> <span class='fu'>build_sbo_preds</span><span class='op'>(</span><span class='va'>twitter_freqs</span><span class='op'>)</span>
+<span class='va'>preds</span> <span class='op'>&lt;-</span> <span class='fu'>build_sbo_preds</span><span class='op'>(</span><span class='va'>twitter_freqs</span><span class='op'>)</span>
 <span class='co'>## Print result</span>
-<span class='va'>sbo</span>
-<span class='co'>## ...start playing</span>
-<span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>sbo</span>, <span class='st'>"i love"</span><span class='op'>)</span>
-<span class='op'>}</span>
-</div></pre>
+<span class='va'>preds</span>
+</div><div class='output co'>#&gt; <span style='font-weight: bold;text-decoration: underline;'>Next-word prediction table for Stupid Back-off n-gram model</span><span> 
+#&gt; 
+#&gt; </span><span style='color: #555555;font-style: italic;'>Order (N):</span><span> 3 
+#&gt; </span><span style='color: #555555;font-style: italic;'>Dictionary size:</span><span> 1000  words
+#&gt; </span><span style='color: #555555;font-style: italic;'>Back-off penalization (lambda):</span><span> 0.4 
+#&gt; </span><span style='color: #555555;font-style: italic;'>Maximum number of predictions (L):</span><span> 3 
+#&gt; </span><span style='color: #555555;font-style: italic;'>
+#&gt; Object size:</span><span> 1.5 Mb 
+#&gt; 
+#&gt; </span><span style='color: #00BB00;'>See ?build_sbo_preds, ?predict.sbo_preds for help.</span><span> </div><div class='input'><span class='co'>## ...start playing</span>
+<span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>preds</span>, <span class='st'>"i love"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "you" "it"  "the"</div><div class='input'><span class='co'># }</span>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

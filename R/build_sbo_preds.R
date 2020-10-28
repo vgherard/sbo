@@ -34,14 +34,14 @@
 
 #' @seealso \code{\link[sbo]{predict.sbo_preds}}
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # Train an N-gram model
 #' ## Get Stupid Back-off prediction tables
-#' sbo <- build_sbo_preds(twitter_freqs)
+#' preds <- build_sbo_preds(twitter_freqs)
 #' ## Print result
-#' sbo
+#' preds
 #' ## ...start playing
-#' predict(sbo, "i love")
+#' predict(preds, "i love")
 #' }
 ################################################################################
 

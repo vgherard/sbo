@@ -25,7 +25,7 @@
 #' 1. Predict next words from the $(N-1)$-gram prefix.
 #' 1. Return all predictions, together with the true word completions.
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # Evaluating next-word predictions from a Stupid Back-off N-gram model
 #'
 #' set.seed(840) # Set seed for reproducibility
@@ -42,7 +42,7 @@
 #' if(require(ggplot2)){
 #'         eval %>% ###
 #'                 filter(correct, true != ".") %>%
-#'                 transmute(rank = match(true, table = twitter_sbo$dict)) %>%
+#'                 transmute(rank = match(true, table = twitter_preds$dict)) %>%
 #'                 ggplot(aes(x = rank)) + geom_histogram(binwidth = 25)
 #' }
 #' }

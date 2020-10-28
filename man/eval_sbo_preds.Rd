@@ -36,7 +36,7 @@ distribution of correct prediction, by direct test against a test set corpus.
 }
 }
 \examples{
-\dontrun{
+\donttest{
 # Evaluating next-word predictions from a Stupid Back-off N-gram model
 
 set.seed(840) # Set seed for reproducibility
@@ -53,7 +53,7 @@ eval \%>\% # Accuracy for in-sentence predictions
 if(require(ggplot2)){
         eval \%>\% ###
                 filter(correct, true != ".") \%>\%
-                transmute(rank = match(true, table = twitter_sbo$dict)) \%>\%
+                transmute(rank = match(true, table = twitter_preds$dict)) \%>\%
                 ggplot(aes(x = rank)) + geom_histogram(binwidth = 25)
 }
 }
