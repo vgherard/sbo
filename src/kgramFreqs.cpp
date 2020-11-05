@@ -11,12 +11,12 @@ using word = unsigned short int;
 kgramFreqs::kgramFreqs(const vector<string>& sentences,
                        const vector<string>& dict,
                        int N)
-                :_N(N), _freqs(N)
+                :N_(N), freqs_(N)
         { for(const string& sentence: sentences) insert(sentence, dict); }
 
 void kgramFreqs::insert(const string& sentence, const vector<string>& dict){
         if(sentence == "") return;
-        deque<string> words_queue(_N - 1, "0");
+        deque<string> words_queue(N_ - 1, "0");
         size_t end;
         size_t start = sentence.find_first_not_of(" ");
         while((end = sentence.find_first_of(" ", start)) != string::npos){
@@ -40,7 +40,7 @@ void kgramFreqs::insert(const deque<string>& words_queue){
         auto rend = words_queue.rend();
         for(auto rit = words_queue.rbegin(); rit != rend; rit++){
                 kgram += " " + *rit;
-                _freqs[k][kgram]++;
+                freqs_[k][kgram]++;
                 k++;
         }
 }
@@ -48,9 +48,9 @@ void kgramFreqs::insert(const deque<string>& words_queue){
 void kgramFreqs::save_to_R_list(List& l) const {
         size_t start;
         for(int k = 0; k < N(); k++){
-                l.push_back(IntegerMatrix(_freqs[k].size(), k + 2));
+                l.push_back(IntegerMatrix(freqs_[k].size(), k + 2));
                 int i = 0;
-                for(const auto& f: _freqs[k]){
+                for(const auto& f: freqs_[k]){
                         // kgram strings start with a space by construction
                         size_t end = 0;
                         for(int j = k; j >= 0; j--){

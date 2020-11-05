@@ -10,18 +10,18 @@
 // Classes
 
 class kgramFreqs{
-        int _N;
-        std::vector<std::unordered_map<std::string, int>> _freqs;
+        int N_;
+        std::vector<std::unordered_map<std::string, int>> freqs_;
 public:
-        kgramFreqs(int N) :_N(N), _freqs(N) {}
+        kgramFreqs(int N) :N_(N), freqs_(N) {}
         kgramFreqs(const std::vector<std::string>&,
                    const std::vector<std::string>&,
                    int);
         void insert(const std::string&, const std::vector<std::string>&);
         void insert(const std::deque<std::string>&);
-        int N() const { return _N; }
+        int N() const { return N_; }
         const std::vector<std::unordered_map<std::string, int>>& freqs() const
-                { return _freqs; }
+                { return freqs_; }
         void save_to_R_list(Rcpp::List&) const;
 };
 
