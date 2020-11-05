@@ -7,6 +7,8 @@
 
 [![Travis build
 status](https://travis-ci.com/vgherard/sbo.svg?branch=master)](https://travis-ci.com/vgherard/sbo)
+[![Codecov test
+coverage](https://codecov.io/gh/vgherard/sbo/branch/master/graph/badge.svg)](https://codecov.io/gh/vgherard/sbo?branch=master)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/sbo)](https://CRAN.R-project.org/package=sbo)
 <!-- badges: end -->

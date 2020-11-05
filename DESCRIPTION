@@ -20,7 +20,8 @@ Suggests:
     knitr,
     rmarkdown,
     cli,
-    testthat
+    testthat,
+    covr
 URL: https://github.com/vgherard/sbo
 BugReports: https://github.com/vgherard/sbo/issues
 VignetteBuilder: knitr
