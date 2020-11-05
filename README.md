@@ -7,6 +7,8 @@
 
 [![Travis build
 status](https://travis-ci.com/vgherard/sbo.svg?branch=master)](https://travis-ci.com/vgherard/sbo)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/sbo)](https://CRAN.R-project.org/package=sbo)
 <!-- badges: end -->
 
 `sbo` provides utilities for building and evaluating next-word

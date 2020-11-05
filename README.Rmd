@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![Travis build status](https://travis-ci.com/vgherard/sbo.svg?branch=master)](https://travis-ci.com/vgherard/sbo)
+[![CRAN status](https://www.r-pkg.org/badges/version/sbo)](https://CRAN.R-project.org/package=sbo)
 <!-- badges: end -->
 
 `sbo` provides utilities for building and evaluating next-word prediction functions based on [Stupid Back-off](https://www.aclweb.org/anthology/D07-1090.pdf) [N-gram models](https://en.wikipedia.org/wiki/N-gram) in R. It includes functions such as:
