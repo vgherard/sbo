@@ -26,14 +26,22 @@ knitr::opts_chunk$set(
 
 ## Installation
 
-You can install `sbo` from [GitHub](https://github.com/vgherard/sbo):
+### Released version
+
+You can install the latest release of `sbo` from CRAN:
+
+``` r
+install.packages("sbo")
+```
+
+### Development version:
+
+You can install the development version of `sbo` from GitHub:
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("vgherard/sbo")
 ```
-
-The latter command will not build vignettes. If you want to build vignettes also, do `devtools::install_github("vgherard/sbo", build_vignettes = TRUE)` instead.
 
 ## Example
 

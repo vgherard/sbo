@@ -70,7 +70,8 @@
 
       
 
-      </header><script src="sbo_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="sbo_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="sbo_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="sbo_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Text prediction via N-gram Stupid Back-off models</h1>
@@ -91,8 +92,8 @@
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
 <p>The <code>sbo</code> package provides utilities for building and evaluating next-word prediction functions based on <a href="https://www.aclweb.org/anthology/D07-1090.pdf">Stupid Back-off</a> <a href="https://en.wikipedia.org/wiki/N-gram">N-gram models</a> in R. In this vignette, I illustrate the functions and classes exported by <code>sbo</code>, the typical workflow for building a text predictor from a given training corpus, and the evaluation of next-word predictions through a test corpus. In the last section, I list some upcoming features in a future version of <code>sbo</code>.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/vgherard/sbo">sbo</a></span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/vgherard/sbo">sbo</a></span><span class="op">)</span></code></pre></div>
 </div>
 <div id="functions-and-classes" class="section level2">
 <h2 class="hasAnchor">
@@ -111,27 +112,27 @@
 <a href="#building-a-next-word-prediction-function-with-sbo" class="anchor"></a>Building a next-word prediction function with <code>sbo</code>
 </h2>
 <p>In this and the next section we will employ the <code>twitter_train</code> and <code>twitter_test</code> example datasets, included in <code>sbo</code> for illustrative purpose:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="va">train</span> <span class="op">&lt;-</span> <span class="va">twitter_train</span>
-<span class="va">test</span> <span class="op">&lt;-</span> <span class="va">twitter_test</span></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">train</span> <span class="op">&lt;-</span> <span class="va">twitter_train</span>
+<span class="va">test</span> <span class="op">&lt;-</span> <span class="va">twitter_test</span></code></pre></div>
 <p>These are small samples of <span class="math inline">\(10^5\)</span> and <span class="math inline">\(10^4\)</span> entries, respectively, from the “Tweets” Swiftkey dataset fully available <a href="https://www.kaggle.com/crmercado/tweets-blogs-news-swiftkey-dataset-4million">here</a>. Each entry consists of a single tweet in English, <em>e.g.</em>:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">train</span>, <span class="fl">3</span><span class="op">)</span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">train</span>, <span class="fl">3</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Just realized that Cedar Block is equal parts nutjob conspiracy theorist and pragmatic skeptic. Which side will win? Stay tuned."</span>
 <span class="co">#&gt; [2] "Doesn't get any stricter than a book set in the past!"                                                                           </span>
-<span class="co">#&gt; [3] "Hunger Games! So excited! Want go!"</span></pre></div>
+<span class="co">#&gt; [3] "Hunger Games! So excited! Want go!"</span></code></pre></div>
 <p>The prototypical workflow for building a text-predictor in <code>sbo</code> goes as follows:</p>
 <p><em>Step 0 (optional)</em>. Build a dictionary from training set, typically keeping the top <span class="math inline">\(V\)</span> most frequent words:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="co"># N.B.: get_word_freqs(train) returns a tibble with a 'word' column </span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># N.B.: get_word_freqs(train) returns a tibble with a 'word' column </span>
 <span class="co"># and a 'counts' column, sorted by decreasing counts.</span>
 <span class="va">dict</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_word_freqs.html">get_word_freqs</a></span><span class="op">(</span><span class="va">train</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="va">names</span> <span class="op">%&gt;%</span> <span class="va">.</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">1000</span><span class="op">]</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">dict</span><span class="op">)</span>
-<span class="co">#&gt; [1] "the" "to"  "i"   "a"   "you" "and"</span></pre></div>
+<span class="co">#&gt; [1] "the" "to"  "i"   "a"   "you" "and"</span></code></pre></div>
 <p>Alternatively, one may use a predefined dictionary.</p>
 <p><em>Step 1</em>. Get <span class="math inline">\(k\)</span>-gram frequencies from training corpus:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="op">(</span><span class="va">freqs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_kgram_freqs.html">get_kgram_freqs</a></span><span class="op">(</span><span class="va">train</span>, N <span class="op">=</span> <span class="fl">3</span>, <span class="va">dict</span><span class="op">)</span><span class="op">)</span> <span class="co"># 'N' is the order of n-grams</span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="op">(</span><span class="va">freqs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_kgram_freqs.html">get_kgram_freqs</a></span><span class="op">(</span><span class="va">train</span>, N <span class="op">=</span> <span class="fl">3</span>, <span class="va">dict</span><span class="op">)</span><span class="op">)</span> <span class="co"># 'N' is the order of n-grams</span>
 <span class="co">#&gt; k-gram frequency table </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Order (N): 3 </span>
@@ -143,10 +144,10 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Object size: 5.9 Mb </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; See ?get_kgram_freqs for help.</span></pre></div>
+<span class="co">#&gt; See ?get_kgram_freqs for help.</span></code></pre></div>
 <p><em>Step 2</em>. Build next-word prediction tables:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="op">(</span> <span class="va">sbo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_sbo_preds.html">build_sbo_preds</a></span><span class="op">(</span><span class="va">freqs</span><span class="op">)</span> <span class="op">)</span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="op">(</span> <span class="va">sbo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_sbo_preds.html">build_sbo_preds</a></span><span class="op">(</span><span class="va">freqs</span><span class="op">)</span> <span class="op">)</span>
 <span class="co">#&gt; Next-word prediction table for Stupid Back-off n-gram model </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Order (N): 3 </span>
@@ -156,28 +157,28 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Object size: 1.5 Mb </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; See ?build_sbo_preds, ?predict.sbo_preds for help.</span></pre></div>
+<span class="co">#&gt; See ?build_sbo_preds, ?predict.sbo_preds for help.</span></code></pre></div>
 <p>At this point we can predict next words from our model, by using <code>predict</code> (see <code><a href="../reference/predict.sbo_preds.html">?predict.sbo_preds</a></code> for help on the relevant <code>predict</code> method):</p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">sbo</span>, <span class="st">"i love"</span><span class="op">)</span> <span class="co"># a character vector</span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">sbo</span>, <span class="st">"i love"</span><span class="op">)</span> <span class="co"># a character vector</span>
 <span class="co">#&gt; [1] "you" "it"  "the"</span>
 <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">sbo</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Colorless green ideas sleep"</span>, <span class="st">"See you"</span><span class="op">)</span><span class="op">)</span> <span class="co"># a char matrix</span>
 <span class="co">#&gt;      [,1]    [,2]    [,3] </span>
 <span class="co">#&gt; [1,] "&lt;EOS&gt;" "in"    "and"</span>
-<span class="co">#&gt; [2,] "there" "&lt;EOS&gt;" "at"</span></pre></div>
+<span class="co">#&gt; [2,] "there" "&lt;EOS&gt;" "at"</span></code></pre></div>
 <p>Last, but not least, we can employ our model for generating some beautiful non-sense:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">840</span><span class="op">)</span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">840</span><span class="op">)</span>
 <span class="fu"><a href="../reference/babble.html">babble</a></span><span class="op">(</span><span class="va">sbo</span><span class="op">)</span>
 <span class="co">#&gt; [1] "who's ready."</span>
 <span class="fu"><a href="../reference/babble.html">babble</a></span><span class="op">(</span><span class="va">sbo</span><span class="op">)</span>
 <span class="co">#&gt; [1] "isn't it."</span>
 <span class="fu"><a href="../reference/babble.html">babble</a></span><span class="op">(</span><span class="va">sbo</span><span class="op">)</span>
-<span class="co">#&gt; [1] "news is welcome and best."</span></pre></div>
+<span class="co">#&gt; [1] "news is welcome and best."</span></code></pre></div>
 <p>If we wish to save the frequency tables, or the final prediction tables, and reload them in a future session, we can easily do this through <code>save</code>/<code>load</code>, <em>e.g.</em></p>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/save.html">save</a></span><span class="op">(</span><span class="va">sbo</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/load.html">load</a></span><span class="op">(</span><span class="st">"sbo.rda"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/save.html">save</a></span><span class="op">(</span><span class="va">sbo</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/load.html">load</a></span><span class="op">(</span><span class="st">"sbo.rda"</span><span class="op">)</span></code></pre></div>
 <p>For convenience, the objects created in this section are preloaded in <code>sbo</code> as <code>twitter_dict</code>, <code>twitter_freqs</code> and <code>twitter_sbo</code>.</p>
 <div id="some-details-on-text-preprocessing-and-k-gram-tokenization" class="section level3">
 <h3 class="hasAnchor">
@@ -202,8 +203,8 @@
 <li>Return all predictions, together with the true word completions.</li>
 </ol>
 <p>As a concrete example, we test the text-predictor trained in the previous section over the Twitter (independent) test set.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">840</span><span class="op">)</span>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">840</span><span class="op">)</span>
 <span class="op">(</span><span class="va">eval</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/eval_sbo_preds.html">eval_sbo_preds</a></span><span class="op">(</span><span class="va">sbo</span>, <span class="va">test</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 18,497 x 4</span>
 <span class="co">#&gt;    input            true      preds[,1] [,2]  [,3]    correct</span>
@@ -218,20 +219,20 @@
 <span class="co">#&gt;  8 "tennis the"     scoring   word      same  best    FALSE  </span>
 <span class="co">#&gt;  9 " thanks"        for       for       &lt;EOS&gt; to      TRUE   </span>
 <span class="co">#&gt; 10 "concert wasn't" over      a         even  that    FALSE  </span>
-<span class="co">#&gt; # … with 18,487 more rows</span></pre></div>
+<span class="co">#&gt; # … with 18,487 more rows</span></code></pre></div>
 <p>As it is seen, <code>eval_sbo_preds</code> returns a tibble containing the input <span class="math inline">\((N-1)\)</span>-grams, the true completions, the predicted completions and a column indicating whether one of the predictions were correct or not.</p>
 <p>We can estimate predictive accuracy as follows (the uncertainty in the estimate is approximated by the binomial formula <span class="math inline">\(\sigma = \sqrt{\frac{p(1-p)}{M}}\)</span>, where <span class="math inline">\(M\)</span> is the number of trials):</p>
-<div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="va">eval</span> <span class="op">%&gt;%</span> <span class="fu">summarise</span><span class="op">(</span>accuracy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">correct</span><span class="op">)</span><span class="op">/</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span>, 
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">eval</span> <span class="op">%&gt;%</span> <span class="fu">summarise</span><span class="op">(</span>accuracy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">correct</span><span class="op">)</span><span class="op">/</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span>, 
                    uncertainty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span> <span class="va">accuracy</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">accuracy</span><span class="op">)</span> <span class="op">/</span> <span class="fu">n</span><span class="op">(</span><span class="op">)</span> <span class="op">)</span>
                    <span class="op">)</span>
 <span class="co">#&gt; # A tibble: 1 x 2</span>
 <span class="co">#&gt;   accuracy uncertainty</span>
 <span class="co">#&gt;      &lt;dbl&gt;       &lt;dbl&gt;</span>
-<span class="co">#&gt; 1    0.344     0.00349</span></pre></div>
+<span class="co">#&gt; 1    0.344     0.00349</span></code></pre></div>
 <p>We may want to exclude from the test <span class="math inline">\(N\)</span>-grams ending by the End-Of-Sentence token (here represented by <code>"."</code>):</p>
-<div class="sourceCode" id="cb12"><pre class="downlit">
-<span class="va">eval</span> <span class="op">%&gt;%</span> <span class="co"># Accuracy for in-sentence predictions</span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">eval</span> <span class="op">%&gt;%</span> <span class="co"># Accuracy for in-sentence predictions</span>
         <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">true</span> <span class="op">!=</span> <span class="st">"."</span><span class="op">)</span> <span class="op">%&gt;%</span>
         <span class="fu">summarise</span><span class="op">(</span>accuracy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">correct</span><span class="op">)</span><span class="op">/</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span>,
                   uncertainty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span> <span class="va">accuracy</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">accuracy</span><span class="op">)</span> <span class="op">/</span> <span class="fu">n</span><span class="op">(</span><span class="op">)</span> <span class="op">)</span>
@@ -239,17 +240,17 @@
 <span class="co">#&gt; # A tibble: 1 x 2</span>
 <span class="co">#&gt;   accuracy uncertainty</span>
 <span class="co">#&gt;      &lt;dbl&gt;       &lt;dbl&gt;</span>
-<span class="co">#&gt; 1    0.344     0.00349</span></pre></div>
+<span class="co">#&gt; 1    0.344     0.00349</span></code></pre></div>
 <p>In trying to reduce the size (in physical memory) of your text-predictor, it might be useful to prune the model dictionary. The following command plots an histogram of the distribution of correct predictions in our test.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit">
-<span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
         <span class="va">eval</span> <span class="op">%&gt;%</span>
                 <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">correct</span>, <span class="va">true</span> <span class="op">!=</span> <span class="st">"."</span><span class="op">)</span> <span class="op">%&gt;%</span>
                 <span class="fu">transmute</span><span class="op">(</span>rank <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/match.html">match</a></span><span class="op">(</span><span class="va">true</span>, table <span class="op">=</span> <span class="va">sbo</span><span class="op">$</span><span class="va">dict</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
                 <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">rank</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_histogram</a></span><span class="op">(</span>binwidth <span class="op">=</span> <span class="fl">25</span><span class="op">)</span>
 <span class="op">}</span>
 <span class="co">#&gt; Carico il pacchetto richiesto: ggplot2</span>
-<span class="co">#&gt; Warning: Removed 3471 rows containing non-finite values (stat_bin).</span></pre></div>
+<span class="co">#&gt; Warning: Removed 3471 rows containing non-finite values (stat_bin).</span></code></pre></div>
 <p><img src="sbo_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
 <p>Apparently, the large majority of correct predictions come from the first ~ 300 words of the dictionary, so that if we prune the dictionary excluding words with rank greater than, <em>e.g.</em>, 500 we can reduce the size of our model without seriously affecting its prediction accuracy.</p>
 </div>
