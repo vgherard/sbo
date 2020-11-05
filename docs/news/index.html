@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sbo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -117,16 +117,27 @@
       <small>Source: <a href='https://github.com/vgherard/sbo/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="sbo-031" class="section level1">
+<h1 class="page-header" data-toc-text="0.3.1">
+<a href="#sbo-031" class="anchor"></a>sbo 0.3.1<small> Unreleased </small>
+</h1>
+<ul>
+<li>Changed leading to trailing underscore in private variables definition of C++ <code>kgramFreqs</code> class, as per §1.6.4 of the “Writing R extensions” guide.</li>
+<li>Removed Catch tests infrastructure for C++ code.</li>
+</ul>
+</div>
     <div id="sbo-030" class="section level1">
 <h1 class="page-header" data-toc-text="0.3.0">
-<a href="#sbo-030" class="anchor"></a>sbo 0.3.0</h1>
+<a href="#sbo-030" class="anchor"></a>sbo 0.3.0<small> 2020-11-04 </small>
+</h1>
 <ul>
 <li>Added <code><a href="../reference/get_kgram_freqs.html">get_kgram_freqs_fast()</a></code> for fast and memory efficient kgram tokenization using the default text preprocessing utility.</li>
 </ul>
 </div>
     <div id="sbo-020" class="section level1">
 <h1 class="page-header" data-toc-text="0.2.0">
-<a href="#sbo-020" class="anchor"></a>sbo 0.2.0</h1>
+<a href="#sbo-020" class="anchor"></a>sbo 0.2.0<small> Unreleased </small>
+</h1>
 <ul>
 <li>The infrastructure of <code><a href="../reference/get_kgram_freqs.html">get_kgram_freqs()</a></code>, <code><a href="../reference/get_word_freqs.html">get_word_freqs()</a></code>, <code><a href="../reference/preprocess.html">preprocess()</a></code>, and <code><a href="../reference/predict.sbo_preds.html">predict.sbo_preds()</a></code> has been entirely rewritten in C++.</li>
 <li>Added <code><a href="../reference/tokenize_sentences.html">tokenize_sentences()</a></code> function for sentence level tokenization.</li>
@@ -136,7 +147,8 @@
 </div>
     <div id="sbo-012" class="section level1">
 <h1 class="page-header" data-toc-text="0.1.2">
-<a href="#sbo-012" class="anchor"></a>sbo 0.1.2</h1>
+<a href="#sbo-012" class="anchor"></a>sbo 0.1.2<small> Unreleased </small>
+</h1>
 <ul>
 <li>Added <code>preproc</code> argument to <code><a href="../reference/get_kgram_freqs.html">get_kgram_freqs()</a></code> and <code><a href="../reference/get_word_freqs.html">get_word_freqs()</a></code>, for custom training corpus preprocessing.</li>
 <li>The <code>dict</code> argument of <code><a href="../reference/get_kgram_freqs.html">get_kgram_freqs()</a></code> now also accepts numeric values, allowing to build a dictionary directly from the training corpus.</li>
@@ -144,7 +156,8 @@
 </div>
     <div id="sbo-011" class="section level1">
 <h1 class="page-header" data-toc-text="0.1.1">
-<a href="#sbo-011" class="anchor"></a>sbo 0.1.1</h1>
+<a href="#sbo-011" class="anchor"></a>sbo 0.1.1<small> Unreleased </small>
+</h1>
 <ul>
 <li>Added <code>predict</code> method for <code>kgram_freqs</code> class.</li>
 </ul>
