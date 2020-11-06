@@ -10,9 +10,9 @@ List get_kgram_freqs_fastC(std::vector<std::string>& input,
                       std::string EOS = ".?!:;"
                       ){
         kgramFreqs freqs(N);
-        std::regex _erase(erase);
+        std::regex erase_(erase);
         for(std::string str : input){
-                str = std::regex_replace(str, _erase, "");
+                if (erase != "") str = std::regex_replace(str, erase_, "");
                 if (lower_case) for (char& c : str) c = tolower(c);
                 size_t begin = std::string::npos;
                 while(begin != 0){
