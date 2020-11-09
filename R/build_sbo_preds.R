@@ -46,12 +46,14 @@
 ################################################################################
 
 build_sbo_preds <- function(freqs, lambda = 0.4, L = 3L, filtered = "<UNK>"){
-        N <- freqs$N
-        dict <- freqs$dict
+        N <- attr(freqs, "N")
+        dict <- attr(freqs, "dict")
         V <- length(dict) + 2 # Dict. length including EOS and UNK.
+        .preprocess <- attr(freqs, ".preprocess")
+        EOS <- attr(freqs, "EOS")
         filtered %<>% match(table = c(dict, "<EOS>", "<UNK>"), nomatch = -1)
 
-        pps_tbls <- build_pps_tables(freqs$counts, N, lambda, V, filtered, L)
+        pps_tbls <- build_pps_tables(freqs, N, lambda, V, filtered, L)
 
         extract_preds <- . %>%
                 select(-score) %>%
@@ -65,9 +67,9 @@ build_sbo_preds <- function(freqs, lambda = 0.4, L = 3L, filtered = "<UNK>"){
 
         preds <- lapply(pps_tbls, . %>% extract_preds)
 
-        structure(list(N = N, L = L, lambda = lambda, dict = dict, preds = preds,
-                       .preprocess = freqs$.preprocess, EOS = freqs$EOS
-                       ),
+        structure(preds, 
+                  N = N, dict = dict, lambda = lambda, L = L,
+                  .preprocess = .preprocess, EOS = EOS,
                   class = "sbo_preds"
-                  )
+                  ) # return
 }

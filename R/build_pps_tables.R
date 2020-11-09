@@ -13,7 +13,7 @@
 
 build_pps_tables <- function(counts, N, lambda, V, filtered, L){
         k <- length(counts)
-        if(k == 0)return(list())
+        if (k == 0) return(list())
         counts[[k]] %<>% rename("pred" = paste0("w",N))
         pref <- names(counts[[k]]) %>% .[!(. %in% c("pred", "n"))]
 
@@ -27,10 +27,10 @@ build_pps_tables <- function(counts, N, lambda, V, filtered, L){
         pps_lower <- build_pps_tables(counts[-k], N, lambda, V, filtered, L)
 
         pps_backoff <-
-                {if(k>1) pps_lower[[k-1]] else tibble(pred = integer())} %>%
-                mutate( across(any_of("score"), function(x)lambda*x) ) %>%
+                {if (k>1) pps_lower[[k - 1]] else tibble(pred = integer())} %>%
+                mutate( across(any_of("score"), function(x) lambda * x) ) %>%
                 left_join(distinct(select(pps, any_of(pref))),
-                          by = tail(pref,-1)
+                          by = tail(pref, -1)
                 ) %>%
                 anti_join( select(pps, -score), by = c("pred", pref) )
 
