@@ -1,3 +1,11 @@
+# sbo (development version)
+
+#### API changes 
+* metadata of `kgram_freqs` and `sbo_preds` objects are now attributes (#11).
+
+#### New features
+* Added `summary()` methods for `kgram_freqs` and `sbo_preds` objects; correspondingly, the output of `print()` has been simplified considerably (#5).
+
 # sbo 0.3.2
 * Patch addressing inexpected behaviour of `erase` argument in 
 `preprocess()` and `get_kgram_freqs_fast()`, c.f. issue #17.
