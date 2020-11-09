@@ -4,7 +4,7 @@ Title: Text Prediction via Stupid Back-Off N-Gram Models
 Version: 0.3.2.9000
 Author: Valerio Gherardi
 Maintainer: Valerio Gherardi <vgherard@sissa.it>
-Description: Utilities for building and evaluating text prediction functions based on Stupid Back-Off n-gram models (Brants et al., 2007, <https://www.aclweb.org/anthology/D07-1090/>).
+Description: Utilities for building and evaluating text prediction functions based on Stupid Back-Off N-gram models (Brants et al., 2007, <https://www.aclweb.org/anthology/D07-1090/>).
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -22,6 +22,7 @@ Suggests:
     cli,
     testthat,
     covr
-URL: https://github.com/vgherard/sbo
+URL: https://vgherard.github.io/sbo/,
+    https://github.com/vgherard/sbo
 BugReports: https://github.com/vgherard/sbo/issues
 VignetteBuilder: knitr
