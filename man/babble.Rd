@@ -4,7 +4,7 @@
 \alias{babble}
 \title{Babble!}
 \usage{
-babble(model, input = NA, n_max = 100L, L = model$L)
+babble(model, input = NA, n_max = 100L, L = attr(model, "L"))
 }
 \arguments{
 \item{model}{a \code{sbo_preds} object.}

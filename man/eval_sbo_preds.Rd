@@ -4,7 +4,7 @@
 \alias{eval_sbo_preds}
 \title{Evaluate Stupid Back-off next-word predictions}
 \usage{
-eval_sbo_preds(model, test, L = model$L)
+eval_sbo_preds(model, test, L = attr(model, "L"))
 }
 \arguments{
 \item{model}{a \code{sbo_preds} object.}
@@ -12,7 +12,7 @@ eval_sbo_preds(model, test, L = model$L)
 \item{test}{a character vector. Test corpus for model evaluation.}
 
 \item{L}{Maximum number of predictions for each input sentence
-(maximum allowed is \code{model$L})}
+(maximum allowed is \code{attr(model, "L")})}
 }
 \value{
 A tibble, containing the input $(N-1)$-grams, the true completions,

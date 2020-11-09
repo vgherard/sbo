@@ -12,7 +12,7 @@
 #' @param model a \code{sbo_preds} object.
 #' @param test a character vector. Test corpus for model evaluation.
 #' @param L Maximum number of predictions for each input sentence
-#' (maximum allowed is \code{model$L})
+#' (maximum allowed is \code{attr(model, "L")})
 #' @return A tibble, containing the input $(N-1)$-grams, the true completions,
 #' the predicted completions and a column indicating whether one of the
 #' predictions were correct or not.
@@ -50,16 +50,18 @@
 #' @importFrom stringi stri_split_fixed
 ################################################################################
 
-eval_sbo_preds <- function(model, test, L = model$L){
+eval_sbo_preds <- function(model, test, L = attr(model, "L")){
         stopifnot(is.character(test))
-        if(is.na((L %<>% as.integer)) | L < 1L)
+        if (is.na((L %<>% as.integer)) | L < 1L)
                 stop("L could not be coerced to a positive integer")
-        N <- model$N
-        dict <- model$dict
-        wrap <- c(paste0(rep("<BOS>", N-1), collapse = " "), "<EOS>")
+        N <- attr(model, "N")
+        dict <- attr(model, "dict")
+        .preprocess <- attr(model, ".preprocess")
+        EOS <- attr(model, "EOS")
+        wrap <- c(paste0(rep("<BOS>", N - 1), collapse = " "), "<EOS>")
         test %>%
-                (model$.preprocess) %>%
-                tokenize_sentences(EOS = model$EOS) %>%
+                .preprocess %>%
+                tokenize_sentences(EOS = EOS) %>%
                 paste(wrap[[1]], ., wrap[[2]], sep = " ") %>%
                 lapply(function(x){
                         x %<>% stri_split_fixed(" ", omit_empty=TRUE) %>% unlist

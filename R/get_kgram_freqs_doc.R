@@ -41,22 +41,22 @@
 #' (user specified) dictionary; any out-of-vocabulary word gets effectively
 #' replaced by an "unknown word" token.
 #'
-#' The return value is a "\code{kgram_freqs}" object, i.e. a list containing:
-#'
-#' - The highest order of N-grams, N.
-#' - The reference dictionary, sorted by word frequency. This can be obtained
-#' using \code{\link[sbo]{get_word_freqs}}.
-#' - A list of n tibbles, storing frequency counts for each
-#' k-gram observed in the training corpus, for
-#' k = 1, 2, ..., N. In these tibbles, words are represented by
+#' The return value is a "\code{kgram_freqs}" object, i.e. a list of N tibbles, 
+#' storing frequency counts for each k-gram observed in the training corpus, for
+#' k = 1, 2, ..., N. In these tables, words are represented by
 #' integer numbers corresponding to their position in the
 #' reference dictionary. The special codes \code{0},
 #' \code{length(dictionary)+1} and \code{length(dictionary)+2}
 #' correspond to the "Begin-Of-Sentence", "End-Of-Sentence"
 #' and "Unknown word" tokens, respectively.
-#' - The function used for text preprocessing (i.e. the .preprocess argument)
-#' - A length one character vector listing all (single character)
-#' end-of-sentence tokens. (i.e. EOS argument)
+#' 
+#' Furthermore, the returned objected has the following attributes: 
+#'
+#' - \code{N}`: The highest order of N-grams.
+#' - \code{dict}: The reference dictionary, sorted by word frequency.
+#' - \code{.preprocess}: The function used for text preprocessing.
+#' - \code{EOS}: A length one character vector listing all (single character)
+#' end-of-sentence tokens employed in k-gram tokenization.
 #'
 #' The \code{.preprocess} argument of \code{get_kgram_freqs} allows the user to
 #' employ a custom corpus preprocessing function.
@@ -64,7 +64,7 @@
 #' The algorithm for k-gram tokenization considers anything separated by
 #' (any number of) white spaces (i.e. " ") as a single word. Sentences are split
 #' according to end-of-sentence (single character) tokens, as specified
-#' by the `EOS` argument. Additionally text belonging to different entries of
+#' by the \code{EOS} argument. Additionally text belonging to different entries of
 #' the preprocessed input vector which are understood to belong to different
 #' sentences.
 #'

@@ -2,7 +2,7 @@ context("consistency of predict methods")
 
 test_that("empty input works",{
         input <- ""
-        L <- twitter_preds$L
+        L <- attr(twitter_preds, "L")
         from_freqs <- predict(twitter_freqs, input)$completion[1:L]
         from_preds <- predict(twitter_preds, input)
 
@@ -11,7 +11,7 @@ test_that("empty input works",{
 
 test_that("some input works",{
         input <- "i love"
-        L <- twitter_preds$L
+        L <- attr(twitter_preds, "L")
         from_freqs <- predict(twitter_freqs, input)$completion[1:L]
         from_preds <- predict(twitter_preds, input)
 

@@ -18,18 +18,21 @@
 #' for a given input.
 #' @param filtered a character vector. Words to exclude from predictions.
 #' @return A \code{sbo_preds} object.
-#' @details This function compiles "prediction tables" from which top-scoring
+#' @details This function returns "prediction tables" from which top-scoring
 #' next-word predictions of a Stupid Back-off language model can be read off.
 #' This is done with the purposes of memory compression and efficiency.
 #'
-#' The return value is a \code{sbo_preds} object, i.e. a list containing:
-#' 1. The order of the underlying N-gram model, "\code{N}".
-#' 2. The maximum number of next-word predictions for a given text input.
-#' 3. The model dictionary.
-#' 4. A list of tibbles storing prediction tables. These are for internal use
-#' in the \code{\link[sbo]{predict.sbo_preds}} method.
-#' 5. The function used for text preprocessing.
-#' 6. A length one character vector listing all (single character)
+#' The return value is a \code{sbo_preds} object, i.e. a list containing 
+#' the model's prediction tables (for internal use within the \code{predict()}
+#' method).
+#' 
+#' Furthermore, the returned objected has the following attributes: 
+#' - \code{N}: The order of the underlying N-gram model, "\code{N}".
+#' - \code{dict}: The model dictionary.
+#' - \code{lambda}: The penalization used in the Stupid Back-Off algorithm.
+#' - \code{L}: The maximum number of next-word predictions for a given text input.
+#' - \code{.preprocess}: The function used for text preprocessing.
+#' - \code{EOS}: A length one character vector listing all (single character)
 #' end-of-sentence tokens.
 
 #' @seealso \code{\link[sbo]{predict.sbo_preds}}
@@ -46,12 +49,14 @@
 ################################################################################
 
 build_sbo_preds <- function(freqs, lambda = 0.4, L = 3L, filtered = "<UNK>"){
-        N <- freqs$N
-        dict <- freqs$dict
+        N <- attr(freqs, "N")
+        dict <- attr(freqs, "dict")
         V <- length(dict) + 2 # Dict. length including EOS and UNK.
+        .preprocess <- attr(freqs, ".preprocess")
+        EOS <- attr(freqs, "EOS")
         filtered %<>% match(table = c(dict, "<EOS>", "<UNK>"), nomatch = -1)
 
-        pps_tbls <- build_pps_tables(freqs$counts, N, lambda, V, filtered, L)
+        pps_tbls <- build_pps_tables(freqs, N, lambda, V, filtered, L)
 
         extract_preds <- . %>%
                 select(-score) %>%
@@ -65,9 +70,9 @@ build_sbo_preds <- function(freqs, lambda = 0.4, L = 3L, filtered = "<UNK>"){
 
         preds <- lapply(pps_tbls, . %>% extract_preds)
 
-        structure(list(N = N, L = L, lambda = lambda, dict = dict, preds = preds,
-                       .preprocess = freqs$.preprocess, EOS = freqs$EOS
-                       ),
+        structure(preds, 
+                  N = N, dict = dict, lambda = lambda, L = L,
+                  .preprocess = .preprocess, EOS = EOS,
                   class = "sbo_preds"
-                  )
+                  ) # return
 }

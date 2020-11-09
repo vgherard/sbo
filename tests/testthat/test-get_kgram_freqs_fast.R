@@ -7,17 +7,16 @@ test_that("return value has the correct structure", {
                              erase = "",
                              lower_case = FALSE,
                              EOS = "")
-        expect_true(length(f) == 5)
+        expect_true(is.list(f))
+        expect_true(length(f) == 3)
         expect_true(all(
-                c("N", "dict", "counts", ".preprocess", "EOS") %in% names(f)
-                ))
-        expect_true( is.integer(f[["N"]]) )
-        expect_true( is.character(f[["dict"]]) )
-        expect_true( is.character(f[["EOS"]]) )
-        expect_true( is.function(f[[".preprocess"]]) )
-        expect_true( is.list(f[["counts"]]) )
-        expect_true( length(f[["counts"]]) == f[["N"]] )
-        expect_identical( f[["counts"]][[1]], as_tibble(f[["counts"]][[1]]) )
+                c("N", "dict", ".preprocess", "EOS") %in% names(attributes(f))
+        ))
+        expect_true(is.integer(attr(f, "N")))
+        expect_true(is.character(attr(f, "dict")))
+        expect_true(is.character(attr(f, "EOS")))
+        expect_true( is.function(attr(f, ".preprocess")) )
+        expect_identical(f[[1]], as_tibble(f[[1]]))
 })
 
 test_that("input `N <= 0` produces error", {
@@ -52,8 +51,8 @@ test_that("correct 1-gram and 2-gram counts on simple input", {
         ) %>% arrange(w1, w2)
         freqs <- get_kgram_freqs_fast(text = input, N = 2, dict = dict,
                                       erase = "", lower_case = FALSE, EOS = "")
-        actual_1grams <- arrange(freqs$counts[[1]], w2)
-        actual_2grams <- arrange(freqs$counts[[2]], w1, w2)
+        actual_1grams <- arrange(freqs[[1]], w2)
+        actual_2grams <- arrange(freqs[[2]], w1, w2)
 
         expect_identical(expected_1grams, actual_1grams)
         expect_identical(expected_2grams, actual_2grams)
@@ -74,8 +73,8 @@ test_that("correct 1-gram and 2-gram with some preprocessing", {
         ) %>% arrange(w1, w2)
         freqs <- get_kgram_freqs_fast(text = input, N = 2, dict = dict,
                                       erase = "", lower_case = TRUE, EOS = "")
-        actual_1grams <- arrange(freqs$counts[[1]], w2)
-        actual_2grams <- arrange(freqs$counts[[2]], w1, w2)
+        actual_1grams <- arrange(freqs[[1]], w2)
+        actual_2grams <- arrange(freqs[[2]], w1, w2)
 
         expect_identical(expected_1grams, actual_1grams)
         expect_identical(expected_2grams, actual_2grams)
@@ -96,8 +95,8 @@ test_that("correct 1-gram and 2-gram counts with EOS token", {
         ) %>% arrange(w1, w2)
         freqs <- get_kgram_freqs_fast(text = input, N = 2, dict = dict,
                                       erase = "", lower_case = FALSE, EOS = "/")
-        actual_1grams <- arrange(freqs$counts[[1]], w2)
-        actual_2grams <- arrange(freqs$counts[[2]], w1, w2)
+        actual_1grams <- arrange(freqs[[1]], w2)
+        actual_2grams <- arrange(freqs[[2]], w1, w2)
 
         expect_identical(expected_1grams, actual_1grams)
         expect_identical(expected_2grams, actual_2grams)

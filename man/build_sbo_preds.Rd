@@ -26,19 +26,22 @@ Build Stupid Back-off prediction tables from k-gram
 frequencies observed in a training corpus.
 }
 \details{
-This function compiles "prediction tables" from which top-scoring
+This function returns "prediction tables" from which top-scoring
 next-word predictions of a Stupid Back-off language model can be read off.
 This is done with the purposes of memory compression and efficiency.
 
-The return value is a \code{sbo_preds} object, i.e. a list containing:
-\enumerate{
-\item The order of the underlying N-gram model, "\code{N}".
-\item The maximum number of next-word predictions for a given text input.
-\item The model dictionary.
-\item A list of tibbles storing prediction tables. These are for internal use
-in the \code{\link[sbo]{predict.sbo_preds}} method.
-\item The function used for text preprocessing.
-\item A length one character vector listing all (single character)
+The return value is a \code{sbo_preds} object, i.e. a list containing
+the model's prediction tables (for internal use within the \code{predict()}
+method).
+
+Furthermore, the returned objected has the following attributes:
+\itemize{
+\item \code{N}: The order of the underlying N-gram model, "\code{N}".
+\item \code{dict}: The model dictionary.
+\item \code{lambda}: The penalization used in the Stupid Back-Off algorithm.
+\item \code{L}: The maximum number of next-word predictions for a given text input.
+\item \code{.preprocess}: The function used for text preprocessing.
+\item \code{EOS}: A length one character vector listing all (single character)
 end-of-sentence tokens.
 }
 }
