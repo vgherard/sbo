@@ -4,8 +4,8 @@ test_that("empty input works",{
         actual <- predict(twitter_preds, "")
 
         expect_type(actual, "character")
-        expect_length(actual, twitter_preds$L)
-        expect_length(unique(actual), twitter_preds$L)
+        expect_length(actual, attr(twitter_preds, "L"))
+        expect_length(unique(actual), attr(twitter_preds, "L"))
 })
 
 test_that("whitespace inputs work",{

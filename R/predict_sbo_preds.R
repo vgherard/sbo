@@ -17,7 +17,8 @@
 ################################################################################
 predict.sbo_preds <- function(object, newdata, ...){
         stopifnot(is.character(newdata) & length(newdata) > 0)
-        newdata <- object$.preprocess(newdata)
+        .preprocess <- attr(object, ".preprocess")
+        newdata <- .preprocess(newdata)
         output <- predict_sbo_preds(object, newdata);
         if (nrow(output) == 1) return(as.character(output))
         else return(output)

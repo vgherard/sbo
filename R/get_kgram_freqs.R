@@ -38,7 +38,8 @@ get_kgram_freqs <- function(text, N, dict, .preprocess = preprocess,
                                  }
                          )
 
-        return(structure(list(N = N, dict = dict, counts = counts,
-                              .preprocess = .preprocess, EOS = EOS),
-                         class = "kgram_freqs"))
+        structure(counts,
+                  N = N, dict = dict, .preprocess = .preprocess, EOS = EOS,
+                  class = "kgram_freqs"
+                  ) # return
 }

@@ -63,14 +63,14 @@ void fill_output_matrix(const int& N,
 
 // [[Rcpp::export]]
 CharacterMatrix predict_sbo_preds(List object, std::vector<std::string> input) {
-        std::vector<std::string> dict = object["dict"];
+        std::vector<std::string> dict = object.attr("dict");
         std::vector<std::string> dict_ext = dict;
         dict_ext.push_back("<EOS>");
         dict_ext.push_back("<UNK>");
-        std::string EOS = object["EOS"];
-        int N = object["N"];
-        int L = object["L"];
-        const List & preds(object["preds"]);
+        std::string EOS = object.attr("EOS");
+        int N = object.attr("N");
+        int L = object.attr("L");
+        const List & preds(object);
         std::vector<IntegerMatrix> prefixes;
         std::vector<IntegerMatrix> completions;
         for(int k = 0; k < N; k++){

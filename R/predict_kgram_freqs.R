@@ -23,18 +23,19 @@
 predict.kgram_freqs <- function(object, newdata, lambda = 0.4, ...){
         stopifnot(is.character(newdata) & length(newdata) == 1)
         stopifnot(is.numeric(lambda) & length(lambda) == 1)
-        N <- object$N
-        dict <- object$dict
-        EOS <- object$EOS
+        N <- attr(object, "N")
+        dict <- attr(object, "dict")
+        EOS <- attr(object, "EOS")
+        .preprocess <- attr(object, ".preprocess")
         V <- length(dict) + 3
 
-        newdata <- object$.preprocess(newdata)
+        newdata <- .preprocess(newdata)
         newdata %<>% get_Ngram_prefix(N, dict, EOS) %>%
                 `names<-`(paste0("w", 1:(N - 1)))
 
         FUN <- function(x){ x == newdata[[cur_column()]] }
         lapply(1:N, function(k)
-                {object$counts[[k]] %>%
+                {object[[k]] %>%
                         filter(across(any_of( names(newdata) ), FUN)) %>%
                         mutate(score = lambda^(N - k) * n / sum(n), k = k) %>%
                         select(all_of( paste0("w", N) ), score, k )
