@@ -52,5 +52,5 @@ summary.sbo_preds <- function(object, ...){
         cat("\n")
         "See ?predict.sbo_preds for usage help." %>% format_help %>% cat("\n")
 
-        return(invisible(x))
+        return(invisible(object))
 }

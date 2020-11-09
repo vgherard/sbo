@@ -12,7 +12,7 @@
 #' @param model a \code{sbo_preds} object.
 #' @param test a character vector. Test corpus for model evaluation.
 #' @param L Maximum number of predictions for each input sentence
-#' (maximum allowed is \code{model$L})
+#' (maximum allowed is \code{attr(model, "L")})
 #' @return A tibble, containing the input $(N-1)$-grams, the true completions,
 #' the predicted completions and a column indicating whether one of the
 #' predictions were correct or not.

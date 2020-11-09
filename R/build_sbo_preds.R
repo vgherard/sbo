@@ -18,18 +18,21 @@
 #' for a given input.
 #' @param filtered a character vector. Words to exclude from predictions.
 #' @return A \code{sbo_preds} object.
-#' @details This function compiles "prediction tables" from which top-scoring
+#' @details This function returns "prediction tables" from which top-scoring
 #' next-word predictions of a Stupid Back-off language model can be read off.
 #' This is done with the purposes of memory compression and efficiency.
 #'
-#' The return value is a \code{sbo_preds} object, i.e. a list containing:
-#' 1. The order of the underlying N-gram model, "\code{N}".
-#' 2. The maximum number of next-word predictions for a given text input.
-#' 3. The model dictionary.
-#' 4. A list of tibbles storing prediction tables. These are for internal use
-#' in the \code{\link[sbo]{predict.sbo_preds}} method.
-#' 5. The function used for text preprocessing.
-#' 6. A length one character vector listing all (single character)
+#' The return value is a \code{sbo_preds} object, i.e. a list containing 
+#' the model's prediction tables (for internal use within the \code{predict()}
+#' method).
+#' 
+#' Furthermore, the returned objected has the following attributes: 
+#' - \code{N}: The order of the underlying N-gram model, "\code{N}".
+#' - \code{dict}: The model dictionary.
+#' - \code{lambda}: The penalization used in the Stupid Back-Off algorithm.
+#' - \code{L}: The maximum number of next-word predictions for a given text input.
+#' - \code{.preprocess}: The function used for text preprocessing.
+#' - \code{EOS}: A length one character vector listing all (single character)
 #' end-of-sentence tokens.
 
 #' @seealso \code{\link[sbo]{predict.sbo_preds}}
