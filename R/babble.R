@@ -25,7 +25,6 @@
 #' # Babble!
 #' set.seed(840) # Set seed for reproducibility
 #' babble(twitter_preds)
-#' @importFrom stats predict
 ################################################################################
 babble <- function(model, input = NA, n_max = 100L, L = attr(model, "L")){
   stopifnot(is.na(input) | is.character(input) & length(input) == 1)

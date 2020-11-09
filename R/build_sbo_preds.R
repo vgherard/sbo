@@ -8,7 +8,6 @@
 #' @md
 #'
 #' @export
-#' @importFrom tidyr pivot_wider
 #'
 #' @param freqs a \code{kgram_freqs} object, containing k-gram
 #' frequencies extracted from a training corpus.

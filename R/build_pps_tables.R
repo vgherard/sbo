@@ -6,10 +6,7 @@
 # @param V an integer.
 # @param filtered an integer.
 # @param L an integer.
-#' @importFrom utils tail
 ################################################################################
-
-
 
 build_pps_tables <- function(counts, N, lambda, V, filtered, L){
         k <- length(counts)

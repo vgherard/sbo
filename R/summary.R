@@ -1,5 +1,4 @@
 #' @export
-#' @importFrom utils object.size
 
 summary.kgram_freqs <- function(object, ...){
         format_title <- . %>% (cli::style_underline) %>% (cli::style_bold)
@@ -29,7 +28,6 @@ summary.kgram_freqs <- function(object, ...){
 }
 
 #' @export
-#' @importFrom utils object.size
 
 summary.sbo_preds <- function(object, ...){
         format_title <- . %>% (cli::style_underline) %>% (cli::style_bold)

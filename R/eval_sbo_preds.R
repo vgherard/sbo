@@ -46,8 +46,6 @@
 #'                 ggplot(aes(x = rank)) + geom_histogram(binwidth = 25)
 #' }
 #' }
-#' @importFrom stats predict
-#' @importFrom stringi stri_split_fixed
 ################################################################################
 
 eval_sbo_preds <- function(model, test, L = attr(model, "L")){

@@ -17,8 +17,6 @@
 #' in the dictionary.
 #' @examples
 #' predict(twitter_freqs, "i love")
-#' @importFrom utils head
-#' @importFrom utils tail
 ################################################################################
 predict.kgram_freqs <- function(object, newdata, lambda = 0.4, ...){
         stopifnot(is.character(newdata) & length(newdata) == 1)
