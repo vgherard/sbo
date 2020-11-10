@@ -27,10 +27,9 @@
 #' @examples
 #' \donttest{
 #' # Evaluating next-word predictions from a Stupid Back-off N-gram model
-#'
+#' if (require(dplyr) && require(ggplot2)) {
 #' set.seed(840) # Set seed for reproducibility
-#' eval <- # May take ~ 2 or 3 minutes!
-#'         eval_sbo_preds(twitter_preds, twitter_test, L = 3)
+#' eval <- eval_sbo_preds(twitter_preds, twitter_test)
 #'
 #' ## Compute three-word accuracies
 #' eval %>% summarise(accuracy = sum(correct)/n()) # Overall accuracy
@@ -39,7 +38,6 @@
 #'        summarise(accuracy = sum(correct)/n())
 #'
 #' ## Make histogram of word-rank distribution for correct predictions
-#' if(require(ggplot2)){
 #'         eval %>% ###
 #'                 filter(correct, true != ".") %>%
 #'                 transmute(rank = match(true, table = twitter_preds$dict)) %>%
@@ -71,10 +69,6 @@ eval_sbo_preds <- function(model, test, L = attr(model, "L")){
                 bind_rows %>%
                 mutate(input = gsub("<BOS>", "", input)) %>%
                 group_by(row_number()) %>%
-                # mutate(preds = sapply(input,
-                #                       function(x) list(predict(model, x, L))
-                #                       ),
-                #        correct = true %in% unlist(preds) ) %>%
                 mutate(preds = matrix(predict(model, input), ncol = L),
                        correct = true %in% preds) %>%
                 ungroup %>%

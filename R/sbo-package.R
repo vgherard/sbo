@@ -10,8 +10,8 @@ NULL
 #' @importFrom tibble tibble as_tibble
 #' @importFrom dplyr 
 #' across vars all_of any_of
-#' row_number cur_column
-#' arrange
+#' row_number cur_column n
+#' arrange desc
 #' select filter distinct slice_max
 #' mutate mutate_all rename
 #' group_by group_by_at ungroup 
