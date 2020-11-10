@@ -38,10 +38,9 @@ distribution of correct prediction, by direct test against a test set corpus.
 \examples{
 \donttest{
 # Evaluating next-word predictions from a Stupid Back-off N-gram model
-
+if (require(dplyr) && require(ggplot2)) {
 set.seed(840) # Set seed for reproducibility
-eval <- # May take ~ 2 or 3 minutes!
-        eval_sbo_preds(twitter_preds, twitter_test, L = 3)
+eval <- eval_sbo_preds(twitter_preds, twitter_test)
 
 ## Compute three-word accuracies
 eval \%>\% summarise(accuracy = sum(correct)/n()) # Overall accuracy
@@ -50,7 +49,6 @@ eval \%>\% # Accuracy for in-sentence predictions
        summarise(accuracy = sum(correct)/n())
 
 ## Make histogram of word-rank distribution for correct predictions
-if(require(ggplot2)){
         eval \%>\% ###
                 filter(correct, true != ".") \%>\%
                 transmute(rank = match(true, table = twitter_preds$dict)) \%>\%
