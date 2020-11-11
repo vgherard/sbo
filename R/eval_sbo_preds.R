@@ -62,7 +62,9 @@ eval_sbo_preds <- function(model, test, L = attr(model, "L")){
                 tokenize_sentences(EOS = EOS) %>%
                 paste(wrap[[1]], ., wrap[[2]], sep = " ") %>%
                 lapply(function(x){
-                        x %<>% stri_split_fixed(" ", omit_empty=TRUE) %>% unlist
+                        x %<>% stringi::stri_split_fixed(" ", 
+                                                         omit_empty = TRUE
+                                                         ) %>% unlist
                         if(length(x) < N + 1) return(tibble())
                         i <- sample(1:(length(x)-N+1), 1)
                         input <- paste0(x[i:(i+N-2)], collapse = " ")

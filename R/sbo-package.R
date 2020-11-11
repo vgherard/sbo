@@ -14,13 +14,11 @@ NULL
 #' arrange desc
 #' select filter distinct slice_max
 #' mutate mutate_all rename
-#' group_by group_by_at ungroup 
+#' group_by group_by_at ungroup
 #' bind_rows left_join anti_join
 #' @importFrom magrittr %>% %<>%
-#' @importFrom tidyr pivot_wider
 #' @importFrom stats predict
 #' @importFrom utils head tail object.size
-#' @importFrom stringi stri_split_fixed
 NULL
 
 #' @description

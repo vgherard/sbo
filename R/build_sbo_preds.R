@@ -62,8 +62,9 @@ build_sbo_preds <- function(freqs, lambda = 0.4, L = 3L, filtered = "<UNK>"){
                 group_by_at( vars(-pred) ) %>%
                 mutate( rank = row_number() ) %>%
                 ungroup %>%
-                pivot_wider(names_from = rank, names_prefix = "pred",
-                            values_from = pred) %>%
+                tidyr::pivot_wider(names_from = rank, 
+                                   names_prefix = "pred",
+                                   values_from = pred) %>%
                 mutate_all(as.integer) %>%
                 as.matrix
 
