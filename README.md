@@ -11,6 +11,8 @@ status](https://travis-ci.com/vgherard/sbo.svg?branch=master)](https://travis-ci
 coverage](https://codecov.io/gh/vgherard/sbo/branch/master/graph/badge.svg)](https://codecov.io/gh/vgherard/sbo?branch=master)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/sbo)](https://CRAN.R-project.org/package=sbo)
+[![CRAN
+downloads](http://cranlogs.r-pkg.org/badges/grand-total/sbo)](https://CRAN.R-project.org/package=sbo)
 <!-- badges: end -->
 
 `sbo` provides utilities for building and evaluating next-word
@@ -54,10 +56,11 @@ text-predictor with `sbo`:
 ``` r
 library(sbo)
 ## Train a next-word prediction function based on 3-gram Stupid Back-off. 
-train <- sbo::twitter_train # 100k tweets, example dataset from sbo
-dict <- get_word_freqs(train) %>% names %>% .[1:1000] # Build rank-sorted dictionary
+train <- sbo::twitter_train # 70k tweets, example dataset from sbo
+word_freqs <- get_word_freqs(train) # word frequencies stored as named integer
+dict <- names(word_freqs)[1:1000] # Build rank-sorted dictionary
 freqs <- get_kgram_freqs(train, N = 3, dict) # Get k-gram frequencies (up to 3-grams)
-preds <- build_sbo_preds(freqs) # Build prediction tables
+preds <- build_sbo_preds(freqs, L = 3) # Build prediction tables pruning to top L = 3 predictions  
 ```
 
 The `preds` object now stores the next-word prediction tables, which can
@@ -66,7 +69,7 @@ be used to generate predictive text as follows:
 ``` r
 predict(preds, "i love") # a character vector
 #> [1] "you" "it"  "the"
-predict(preds, c("Colorless green ideas sleep", "See you")) # a char matrix
+predict(preds, c("Colorless green ideas sleep", "See you")) # a character matrix
 #>      [,1]    [,2]    [,3] 
 #> [1,] "<EOS>" "in"    "and"
 #> [2,] "there" "<EOS>" "at"

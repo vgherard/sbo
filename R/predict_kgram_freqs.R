@@ -17,8 +17,6 @@
 #' in the dictionary.
 #' @examples
 #' predict(twitter_freqs, "i love")
-#' @importFrom utils head
-#' @importFrom utils tail
 ################################################################################
 predict.kgram_freqs <- function(object, newdata, lambda = 0.4, ...){
         stopifnot(is.character(newdata) & length(newdata) == 1)
@@ -36,9 +34,10 @@ predict.kgram_freqs <- function(object, newdata, lambda = 0.4, ...){
         FUN <- function(x){ x == newdata[[cur_column()]] }
         lapply(1:N, function(k)
                 {object[[k]] %>%
-                        filter(across(any_of( names(newdata) ), FUN)) %>%
+                        filter(across(any_of(names(newdata)), FUN)
+                               ) %>%
                         mutate(score = lambda^(N - k) * n / sum(n), k = k) %>%
-                        select(all_of( paste0("w", N) ), score, k )
+                        select(all_of(paste0("w", N)), score, k )
                 }
                ) %>%
                 bind_rows %>%
@@ -49,8 +48,8 @@ predict.kgram_freqs <- function(object, newdata, lambda = 0.4, ...){
                 select(all_of(paste0("w",N)), prob) %>%
                 arrange(desc(prob)) %>%
                 mutate(across(all_of(paste0("w",N)),
-                              function(x) c(dict,"<EOS>", "<UNK>")[x]
-                              )
+                                     function(x) c(dict,"<EOS>", "<UNK>")[x]
+                                     )
                        ) %>%
                 `colnames<-`(c("completion", "probability")) %>%
                 filter(completion != "<UNK>")

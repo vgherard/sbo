@@ -1,5 +1,4 @@
 #' @export
-#' @importFrom utils object.size
 
 print.kgram_freqs <- function(x, ...){
         cat("A k-gram frequency table.", "\n\n")
@@ -12,7 +11,6 @@ print.kgram_freqs <- function(x, ...){
 }
 
 #' @export
-#' @importFrom utils object.size
 
 print.sbo_preds <- function(x, ...){
         cat("A Stupid Back-Off prediction table.", "\n\n")

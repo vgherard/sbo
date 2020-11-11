@@ -7,6 +7,13 @@ NULL
 ## usethis namespace: end
 NULL
 
+#' @importFrom tibble tibble as_tibble
+#' @import dplyr 
+#' @importFrom magrittr %>% %<>%
+#' @importFrom stats predict
+#' @importFrom utils head tail
+NULL
+
 #' @description
 #' Utilities for building and evaluating text prediction functions based on Stupid Back-Off N-gram models.
 #' @keywords internal

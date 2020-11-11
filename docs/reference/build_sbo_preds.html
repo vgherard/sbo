@@ -73,7 +73,7 @@ frequencies observed in a training corpus." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sbo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2.9000</span>
       </span>
     </div>
 
@@ -156,19 +156,21 @@ for a given input.</p></td>
     <p>A <code>sbo_preds</code> object.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This function compiles "prediction tables" from which top-scoring
+    <p>This function returns "prediction tables" from which top-scoring
 next-word predictions of a Stupid Back-off language model can be read off.
 This is done with the purposes of memory compression and efficiency.</p>
-<p>The return value is a <code>sbo_preds</code> object, i.e. a list containing:</p><ol>
-<li><p>The order of the underlying N-gram model, "<code>N</code>".</p></li>
-<li><p>The maximum number of next-word predictions for a given text input.</p></li>
-<li><p>The model dictionary.</p></li>
-<li><p>A list of tibbles storing prediction tables. These are for internal use
-in the <code><a href='predict.sbo_preds.html'>predict.sbo_preds</a></code> method.</p></li>
-<li><p>The function used for text preprocessing.</p></li>
-<li><p>A length one character vector listing all (single character)
+<p>The return value is a <code>sbo_preds</code> object, i.e. a list containing
+the model's prediction tables (for internal use within the <code><a href='https://rdrr.io/r/stats/predict.html'>predict()</a></code>
+method).</p>
+<p>Furthermore, the returned objected has the following attributes:</p><ul>
+<li><p><code>N</code>: The order of the underlying N-gram model, "<code>N</code>".</p></li>
+<li><p><code>dict</code>: The model dictionary.</p></li>
+<li><p><code>lambda</code>: The penalization used in the Stupid Back-Off algorithm.</p></li>
+<li><p><code>L</code>: The maximum number of next-word predictions for a given text input.</p></li>
+<li><p><code>.preprocess</code>: The function used for text preprocessing.</p></li>
+<li><p><code>EOS</code>: A length one character vector listing all (single character)
 end-of-sentence tokens.</p></li>
-</ol>
+</ul>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -184,16 +186,9 @@ end-of-sentence tokens.</p></li>
 <span class='va'>preds</span> <span class='op'>&lt;-</span> <span class='fu'>build_sbo_preds</span><span class='op'>(</span><span class='va'>twitter_freqs</span><span class='op'>)</span>
 <span class='co'>## Print result</span>
 <span class='va'>preds</span>
-</div><div class='output co'>#&gt; <span style='font-weight: bold;text-decoration: underline;'>Next-word prediction table for Stupid Back-off n-gram model</span><span> 
+</div><div class='output co'>#&gt; A Stupid Back-Off prediction table. 
 #&gt; 
-#&gt; </span><span style='color: #555555;font-style: italic;'>Order (N):</span><span> 3 
-#&gt; </span><span style='color: #555555;font-style: italic;'>Dictionary size:</span><span> 1000  words
-#&gt; </span><span style='color: #555555;font-style: italic;'>Back-off penalization (lambda):</span><span> 0.4 
-#&gt; </span><span style='color: #555555;font-style: italic;'>Maximum number of predictions (L):</span><span> 3 
-#&gt; </span><span style='color: #555555;font-style: italic;'>
-#&gt; Object size:</span><span> 1.5 Mb 
-#&gt; 
-#&gt; </span><span style='color: #00BB00;'>See ?build_sbo_preds, ?predict.sbo_preds for help.</span><span> </div><div class='input'><span class='co'>## ...start playing</span>
+#&gt; <span style='color: #00BB00;'>See summary() for more details; ?predict.sbo_preds for usage help.</span><span> </div><div class='input'><span class='co'>## ...start playing</span>
 <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>preds</span>, <span class='st'>"i love"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "you" "it"  "the"</div><div class='input'><span class='co'># }</span>
 </div></span></pre>

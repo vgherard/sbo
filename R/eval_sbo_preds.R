@@ -27,27 +27,25 @@
 #' @examples
 #' \donttest{
 #' # Evaluating next-word predictions from a Stupid Back-off N-gram model
-#'
-#' set.seed(840) # Set seed for reproducibility
-#' eval <- # May take ~ 2 or 3 minutes!
-#'         eval_sbo_preds(twitter_preds, twitter_test, L = 3)
-#'
-#' ## Compute three-word accuracies
-#' eval %>% summarise(accuracy = sum(correct)/n()) # Overall accuracy
-#' eval %>% # Accuracy for in-sentence predictions
-#'         filter(true != ".") %>%
-#'        summarise(accuracy = sum(correct)/n())
-#'
-#' ## Make histogram of word-rank distribution for correct predictions
-#' if(require(ggplot2)){
-#'         eval %>% ###
-#'                 filter(correct, true != ".") %>%
-#'                 transmute(rank = match(true, table = twitter_preds$dict)) %>%
-#'                 ggplot(aes(x = rank)) + geom_histogram(binwidth = 25)
+#' if (require(dplyr) && require(ggplot2)) {
+#'         set.seed(840) # Set seed for reproducibility
+#'         test <- sample(twitter_test, 500)
+#'         eval <- eval_sbo_preds(twitter_preds, test)
+#'         
+#'         ## Compute three-word accuracies
+#'         eval %>% summarise(accuracy = sum(correct)/n()) # Overall accuracy
+#'         eval %>% # Accuracy for in-sentence predictions
+#'                 filter(true != "<EOS>") %>%
+#'                 summarise(accuracy = sum(correct) / n())
+#'         
+#'         ## Make histogram of word-rank distribution for correct predictions
+#'         dict <- attr(twitter_preds, "dict")
+#'         eval %>%
+#'                 filter(correct, true != "<EOS>") %>%
+#'                 transmute(rank = match(true, table = dict)) %>%
+#'                 ggplot(aes(x = rank)) + geom_histogram(binwidth = 30)
 #' }
 #' }
-#' @importFrom stats predict
-#' @importFrom stringi stri_split_fixed
 ################################################################################
 
 eval_sbo_preds <- function(model, test, L = attr(model, "L")){
@@ -64,7 +62,9 @@ eval_sbo_preds <- function(model, test, L = attr(model, "L")){
                 tokenize_sentences(EOS = EOS) %>%
                 paste(wrap[[1]], ., wrap[[2]], sep = " ") %>%
                 lapply(function(x){
-                        x %<>% stri_split_fixed(" ", omit_empty=TRUE) %>% unlist
+                        x %<>% stringi::stri_split_fixed(" ", 
+                                                         omit_empty = TRUE
+                                                         ) %>% unlist
                         if(length(x) < N + 1) return(tibble())
                         i <- sample(1:(length(x)-N+1), 1)
                         input <- paste0(x[i:(i+N-2)], collapse = " ")
@@ -73,10 +73,6 @@ eval_sbo_preds <- function(model, test, L = attr(model, "L")){
                 bind_rows %>%
                 mutate(input = gsub("<BOS>", "", input)) %>%
                 group_by(row_number()) %>%
-                # mutate(preds = sapply(input,
-                #                       function(x) list(predict(model, x, L))
-                #                       ),
-                #        correct = true %in% unlist(preds) ) %>%
                 mutate(preds = matrix(predict(model, input), ncol = L),
                        correct = true %in% preds) %>%
                 ungroup %>%

@@ -6,10 +6,7 @@
 # @param V an integer.
 # @param filtered an integer.
 # @param L an integer.
-#' @importFrom utils tail
 ################################################################################
-
-
 
 build_pps_tables <- function(counts, N, lambda, V, filtered, L){
         k <- length(counts)
@@ -27,12 +24,14 @@ build_pps_tables <- function(counts, N, lambda, V, filtered, L){
         pps_lower <- build_pps_tables(counts[-k], N, lambda, V, filtered, L)
 
         pps_backoff <-
-                {if (k>1) pps_lower[[k - 1]] else tibble(pred = integer())} %>%
-                mutate( across(any_of("score"), function(x) lambda * x) ) %>%
+                {if (k > 1) pps_lower[[k - 1]] else tibble(pred = integer())} %>%
+                mutate(across(any_of("score"), 
+                                     function(x) lambda * x)
+                       ) %>%
                 left_join(distinct(select(pps, any_of(pref))),
-                          by = tail(pref, -1)
-                ) %>%
-                anti_join( select(pps, -score), by = c("pred", pref) )
+                                 by = tail(pref, -1)
+                                 ) %>%
+                anti_join(select(pps, -score), by = c("pred", pref))
 
         pps %<>% bind_rows(pps_backoff) %>%
                 group_by_at(all_of(pref)) %>%

@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sbo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2.9000</span>
       </span>
     </div>
 
@@ -194,21 +194,20 @@ but more efficient (both from the speed and memory point of view).</p>
 <p><code>get_kgram_freqs</code> and <code>get_kgram_freqs_fast</code> employ a fixed
 (user specified) dictionary; any out-of-vocabulary word gets effectively
 replaced by an "unknown word" token.</p>
-<p>The return value is a "<code>kgram_freqs</code>" object, i.e. a list containing:</p><ul>
-<li><p>The highest order of N-grams, N.</p></li>
-<li><p>The reference dictionary, sorted by word frequency. This can be obtained
-using <code><a href='get_word_freqs.html'>get_word_freqs</a></code>.</p></li>
-<li><p>A list of n tibbles, storing frequency counts for each
-k-gram observed in the training corpus, for
-k = 1, 2, ..., N. In these tibbles, words are represented by
+<p>The return value is a "<code>kgram_freqs</code>" object, i.e. a list of N tibbles,
+storing frequency counts for each k-gram observed in the training corpus, for
+k = 1, 2, ..., N. In these tables, words are represented by
 integer numbers corresponding to their position in the
 reference dictionary. The special codes <code>0</code>,
 <code>length(dictionary)+1</code> and <code>length(dictionary)+2</code>
 correspond to the "Begin-Of-Sentence", "End-Of-Sentence"
-and "Unknown word" tokens, respectively.</p></li>
-<li><p>The function used for text preprocessing (i.e. the .preprocess argument)</p></li>
-<li><p>A length one character vector listing all (single character)
-end-of-sentence tokens. (i.e. EOS argument)</p></li>
+and "Unknown word" tokens, respectively.</p>
+<p>Furthermore, the returned objected has the following attributes:</p><ul>
+<li><p><code>N</code>`: The highest order of N-grams.</p></li>
+<li><p><code>dict</code>: The reference dictionary, sorted by word frequency.</p></li>
+<li><p><code>.preprocess</code>: The function used for text preprocessing.</p></li>
+<li><p><code>EOS</code>: A length one character vector listing all (single character)
+end-of-sentence tokens employed in k-gram tokenization.</p></li>
 </ul>
 
 <p>The <code>.preprocess</code> argument of <code>get_kgram_freqs</code> allows the user to
@@ -233,36 +232,18 @@ sentences.</p>
 <span class='va'>freqs</span> <span class='op'>&lt;-</span> <span class='fu'>get_kgram_freqs</span><span class='op'>(</span><span class='va'>twitter_train</span>, N <span class='op'>=</span> <span class='fl'>3</span>, dict <span class='op'>=</span> <span class='va'>twitter_dict</span><span class='op'>)</span>
 <span class='co'>## Print result</span>
 <span class='va'>freqs</span>
-</div><div class='output co'>#&gt; <span style='font-weight: bold;text-decoration: underline;'>k-gram frequency table</span><span> 
+</div><div class='output co'>#&gt; A k-gram frequency table. 
 #&gt; 
-#&gt; </span><span style='color: #555555;font-style: italic;'>Order (N):</span><span> 3 
-#&gt; </span><span style='color: #555555;font-style: italic;'>Dictionary size:</span><span> 1000  words
-#&gt; 
-#&gt; </span><span style='color: #555555;font-style: italic;'># of unique 1-grams:</span><span> 1002 
-#&gt; </span><span style='color: #555555;font-style: italic;'># of unique 2-grams:</span><span> 85677 
-#&gt; </span><span style='color: #555555;font-style: italic;'># of unique 3-grams:</span><span> 318410 
-#&gt; </span><span style='color: #555555;font-style: italic;'>
-#&gt; Object size:</span><span> 5.9 Mb 
-#&gt; 
-#&gt; </span><span style='color: #00BB00;'>See ?get_kgram_freqs for help.</span><span> </div><div class='input'><span class='co'># }</span>
+#&gt; <span style='color: #00BB00;'>See summary() for more details; ?predict.kgram_freqs for usage help.</span><span> </div><div class='input'><span class='co'># }</span>
 <span class='co'># \donttest{</span>
 <span class='co'># Obtain k-gram frequency table from corpus</span>
 <span class='co'>## Get k-gram frequencies, up to k = N = 3.</span>
 <span class='va'>freqs</span> <span class='op'>&lt;-</span> <span class='fu'>get_kgram_freqs_fast</span><span class='op'>(</span><span class='va'>twitter_train</span>, N <span class='op'>=</span> <span class='fl'>3</span>, dict <span class='op'>=</span> <span class='va'>twitter_dict</span><span class='op'>)</span>
 <span class='co'>## Print result</span>
 <span class='va'>freqs</span>
-</div><div class='output co'>#&gt; </span><span style='font-weight: bold;text-decoration: underline;'>k-gram frequency table</span><span> 
+</div><div class='output co'>#&gt; A k-gram frequency table. 
 #&gt; 
-#&gt; </span><span style='color: #555555;font-style: italic;'>Order (N):</span><span> 3 
-#&gt; </span><span style='color: #555555;font-style: italic;'>Dictionary size:</span><span> 1000  words
-#&gt; 
-#&gt; </span><span style='color: #555555;font-style: italic;'># of unique 1-grams:</span><span> 1002 
-#&gt; </span><span style='color: #555555;font-style: italic;'># of unique 2-grams:</span><span> 85677 
-#&gt; </span><span style='color: #555555;font-style: italic;'># of unique 3-grams:</span><span> 318410 
-#&gt; </span><span style='color: #555555;font-style: italic;'>
-#&gt; Object size:</span><span> 5.9 Mb 
-#&gt; 
-#&gt; </span><span style='color: #00BB00;'>See ?get_kgram_freqs for help.</span><span> </div><div class='input'><span class='co'># }</span>
+#&gt; </span><span style='color: #00BB00;'>See summary() for more details; ?predict.kgram_freqs for usage help.</span><span> </div><div class='input'><span class='co'># }</span>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

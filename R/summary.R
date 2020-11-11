@@ -1,5 +1,4 @@
 #' @export
-#' @importFrom utils object.size
 
 summary.kgram_freqs <- function(object, ...){
         format_title <- . %>% (cli::style_underline) %>% (cli::style_bold)
@@ -7,7 +6,7 @@ summary.kgram_freqs <- function(object, ...){
         format_help <- . %>% (cli::col_green)
         N <- attr(object, "N")
         dict_length <- length(attr(object, "dict"))
-        size <- format(object.size(object), units = "MB")
+        size <- format(utils::object.size(object), units = "MB")
         
         "k-gram frequency table" %>%
                 format_title %>%
@@ -29,7 +28,6 @@ summary.kgram_freqs <- function(object, ...){
 }
 
 #' @export
-#' @importFrom utils object.size
 
 summary.sbo_preds <- function(object, ...){
         format_title <- . %>% (cli::style_underline) %>% (cli::style_bold)
@@ -39,7 +37,7 @@ summary.sbo_preds <- function(object, ...){
         dict_length <- length(attr(object, "dict"))
         lambda <- attr(object, "lambda")
         L <- attr(object, "L")
-        size <- format(object.size(object), units = "MB")
+        size <- format(utils::object.size(object), units = "MB")
         "Next-word prediction table for Stupid Back-off n-gram model" %>%
                 format_title %>%
                 cat(., "\n\n")
