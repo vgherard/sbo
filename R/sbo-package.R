@@ -8,14 +8,7 @@ NULL
 NULL
 
 #' @importFrom tibble tibble as_tibble
-#' @importFrom dplyr 
-#' across vars all_of any_of
-#' row_number cur_column n
-#' arrange desc
-#' select filter distinct slice_max
-#' mutate mutate_all rename
-#' group_by group_by_at ungroup
-#' bind_rows left_join anti_join
+#' @import dplyr 
 #' @importFrom magrittr %>% %<>%
 #' @importFrom stats predict
 #' @importFrom utils head tail

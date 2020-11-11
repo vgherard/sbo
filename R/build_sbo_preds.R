@@ -59,8 +59,8 @@ build_sbo_preds <- function(freqs, lambda = 0.4, L = 3L, filtered = "<UNK>"){
 
         extract_preds <- . %>%
                 select(-score) %>%
-                group_by_at( vars(-pred) ) %>%
-                mutate( rank = row_number() ) %>%
+                group_by_at(vars(-pred)) %>%
+                mutate(rank = row_number()) %>%
                 ungroup %>%
                 tidyr::pivot_wider(names_from = rank, 
                                    names_prefix = "pred",
