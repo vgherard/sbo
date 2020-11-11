@@ -18,7 +18,7 @@ NULL
 #' bind_rows left_join anti_join
 #' @importFrom magrittr %>% %<>%
 #' @importFrom stats predict
-#' @importFrom utils head tail object.size
+#' @importFrom utils head tail
 NULL
 
 #' @description

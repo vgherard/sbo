@@ -115,7 +115,7 @@ The advantage provided by `sbo_preds` objects for simple text prediction is two-
 
 1. Memory compression. For instance:
 ```{r}
-size_in_MB <- function(x) format(object.size(x), units = "MB")
+size_in_MB <- function(x) format(utils::object.size(x), units = "MB")
 sapply(list(preds = preds, freqs = freqs), size_in_MB)
 ```
 
