@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sbo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2.9000</span>
       </span>
     </div>
 
@@ -117,9 +117,28 @@
       <small>Source: <a href='https://github.com/vgherard/sbo/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="sbo-development-version" class="section level1">
+<h1 class="page-header" data-toc-text="development version">
+<a href="#sbo-development-version" class="anchor"></a>sbo (development version)<small> Unreleased </small>
+</h1>
+<div id="api-changes" class="section level4">
+<h4 class="hasAnchor">
+<a href="#api-changes" class="anchor"></a>API changes</h4>
+<ul>
+<li>metadata of <code>kgram_freqs</code> and <code>sbo_preds</code> objects are now attributes (<a href='https://github.com/vgherard/sbo/issues/11'>#11</a>).</li>
+</ul>
+</div>
+<div id="new-features" class="section level4">
+<h4 class="hasAnchor">
+<a href="#new-features" class="anchor"></a>New features</h4>
+<ul>
+<li>Added <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> methods for <code>kgram_freqs</code> and <code>sbo_preds</code> objects; correspondingly, the output of <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> has been simplified considerably (<a href='https://github.com/vgherard/sbo/issues/5'>#5</a>).</li>
+</ul>
+</div>
+</div>
     <div id="sbo-032" class="section level1">
 <h1 class="page-header" data-toc-text="0.3.2">
-<a href="#sbo-032" class="anchor"></a>sbo 0.3.2<small> Unreleased </small>
+<a href="#sbo-032" class="anchor"></a>sbo 0.3.2<small> 2020-11-09 </small>
 </h1>
 <ul>
 <li>Patch addressing inexpected behaviour of <code>erase</code> argument in <code><a href="../reference/preprocess.html">preprocess()</a></code> and <code><a href="../reference/get_kgram_freqs.html">get_kgram_freqs_fast()</a></code>, c.f. issue <a href='https://github.com/vgherard/sbo/issues/17'>#17</a>.</li>
