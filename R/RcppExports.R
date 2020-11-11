@@ -13,8 +13,8 @@ get_word_freqsC <- function(text) {
     .Call(`_sbo_get_word_freqsC`, text)
 }
 
-get_Ngram_prefix <- function(line, N, dict, EOS) {
-    .Call(`_sbo_get_Ngram_prefix`, line, N, dict, EOS)
+get_kgram_prefix <- function(line, N, dict, EOS) {
+    .Call(`_sbo_get_kgram_prefix`, line, N, dict, EOS)
 }
 
 predict_sbo_preds <- function(object, input) {

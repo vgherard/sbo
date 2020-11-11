@@ -2,7 +2,7 @@
 using namespace Rcpp;
 using word = unsigned short int;
 
-void fill_Ngram_prefix(const std::string& line, IntegerVector& prefix,
+void fill_kgram_prefix(const std::string& line, IntegerVector& prefix,
                       int N, const std::vector<std::string>& dict,
                       std::string EOS){
         size_t start = line.find_first_not_of(" ", line.find_last_of(EOS) + 1);
@@ -19,11 +19,11 @@ void fill_Ngram_prefix(const std::string& line, IntegerVector& prefix,
 }
 
 // [[Rcpp::export]]
-IntegerVector get_Ngram_prefix(const std::string& line,
+IntegerVector get_kgram_prefix(const std::string& line,
                                int N, const std::vector<std::string>& dict,
                                std::string EOS){
         IntegerVector prefix(N - 1, 0);
-        fill_Ngram_prefix(line, prefix, N, dict, EOS);
+        fill_kgram_prefix(line, prefix, N, dict, EOS);
         return prefix;
 }
 
@@ -87,7 +87,7 @@ CharacterMatrix predict_sbo_preds(List object, std::vector<std::string> input) {
         for(const std::string& line : input)
                 {
                 IntegerVector prefix(N - 1, 0);
-                fill_Ngram_prefix(line, prefix, N, dict, EOS);
+                fill_kgram_prefix(line, prefix, N, dict, EOS);
                 fill_output_matrix(N, prefixes, completions, prefix, L, output,
                                    dict_ext, i);
                 }
