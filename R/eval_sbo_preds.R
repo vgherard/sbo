@@ -28,20 +28,22 @@
 #' \donttest{
 #' # Evaluating next-word predictions from a Stupid Back-off N-gram model
 #' if (require(dplyr) && require(ggplot2)) {
-#' set.seed(840) # Set seed for reproducibility
-#' eval <- eval_sbo_preds(twitter_preds, twitter_test)
-#'
-#' ## Compute three-word accuracies
-#' eval %>% summarise(accuracy = sum(correct)/n()) # Overall accuracy
-#' eval %>% # Accuracy for in-sentence predictions
-#'         filter(true != ".") %>%
-#'        summarise(accuracy = sum(correct)/n())
-#'
-#' ## Make histogram of word-rank distribution for correct predictions
-#'         eval %>% ###
-#'                 filter(correct, true != ".") %>%
-#'                 transmute(rank = match(true, table = twitter_preds$dict)) %>%
-#'                 ggplot(aes(x = rank)) + geom_histogram(binwidth = 25)
+#'         set.seed(840) # Set seed for reproducibility
+#'         test <- sample(twitter_test, 500)
+#'         eval <- eval_sbo_preds(twitter_preds, test)
+#'         
+#'         ## Compute three-word accuracies
+#'         eval %>% summarise(accuracy = sum(correct)/n()) # Overall accuracy
+#'         eval %>% # Accuracy for in-sentence predictions
+#'                 filter(true != "<EOS>") %>%
+#'                 summarise(accuracy = sum(correct) / n())
+#'         
+#'         ## Make histogram of word-rank distribution for correct predictions
+#'         dict <- attr(twitter_preds, "dict")
+#'         eval %>%
+#'                 filter(correct, true != "<EOS>") %>%
+#'                 transmute(rank = match(true, table = dict)) %>%
+#'                 ggplot(aes(x = rank)) + geom_histogram(binwidth = 30)
 #' }
 #' }
 ################################################################################
