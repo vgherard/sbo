@@ -23,12 +23,13 @@
 #' encountered, or when the number of generated words exceeds n_max.
 #' @examples
 #' # Babble!
+#' p <- load_predictor(twitter_predtable)
 #' set.seed(840) # Set seed for reproducibility
-#' babble(twitter_preds)
+#' babble(p)
 ################################################################################
 babble <- function(model, input = NA, n_max = 100L, L = attr(model, "L")){
   stopifnot(is.na(input) | is.character(input) & length(input) == 1)
-  stopifnot(length((n_max %<>% as.integer)) == 1)
+  stopifnot(length(n_max <- as.integer(n_max)) == 1)
   if (is.na(n_max) | n_max < 1L)
     stop("n_max could not be coerced to a positive integer")
   if (n_max < 2L) return( paste(input,"[... reached maximum length ...]") )
