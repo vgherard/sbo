@@ -30,9 +30,9 @@ The `sbo` package provides utilities for building and evaluating next-word predi
 The `sbo` package pivots around two (S3) object classes: 
 
 * `kgram_freqs`: A collection of $k$-gram frequency tables, with $k$ up to a given order $N$. These are obtained from a training corpus through the function `get_kgram_freqs()`.
-* `sbo_preds`: these objects directly store next-word predictions, allowing for memory compression and fast access. They can be built from `kgram_freqs` objects through `build_sbo_preds()`.
+* `sbo_predictor`: these objects directly store next-word predictiors, allowing for memory compression and fast access. They can be built from `kgram_freqs` objects through `train_predictor()`.
 
-In addition, `sbo` features the function `eval_sbo_preds`, which allows to evaluate prediction accuracy on a new test corpus.
+In addition, `sbo` features the function `eval_sbo_predictor`, which allows to evaluate prediction accuracy on a new test corpus.
 
 ## Building a next-word prediction function with `sbo`
 
@@ -71,36 +71,56 @@ Alternatively, if available, one may use a predefined dictionary.
 
 *Step 2*. Build next-word prediction tables:
 ```{r}
-(preds <- build_sbo_preds(freqs, L = 3)) # L = Number of predictions per input k-gram 
+(p <- train_predictor(freqs, L = 3)) # L = number of predictions to output per input k-gram
 ```
-The `preds` object now stores all the information needed to generate next-word predictions according to Stupid Back-Off. The argument `L` fixes the number of predictions to retain per input k-gram (here we prune to the top 3 predictions).
+The `p` object now stores all the information needed to generate next-word predictions according to Stupid Back-Off. The argument `L` fixes the number of predictions to retain per input k-gram (here we prune to the top 3 predictions).
 
-At this point we can predict next words from our model, by using `predict` (see `?predict.sbo_preds` for help on the relevant `predict` method):
+At this point we can predict next words from our model, by using `predict` (here leftmost words are the top predictions):
 
 ```{r}
-predict(preds, "i love") # a character vector
-predict(preds, c("Colorless green ideas sleep", "See you")) # a char matrix
+predict(p, "i love") # a character vector
+predict(p, "you love") # another character vector
+predict(p, c("i love", "you love")) # a character matrix
 ```
+
+See `?predict.sbo_predictor` for further information on the relevant `predict` method.
 
 Last, but not least, we can employ our model for generating some beautiful non-sense:
 
 ```{r}
 set.seed(840)
-babble(preds)
-babble(preds)
-babble(preds)
+babble(p)
+babble(p)
+babble(p)
 ```
 
-If we wish to save the frequency tables, or the final prediction tables, and reload them in a future session, we can easily do this through `save`/`load`, *e.g.*
+### Out of memory use
+
+The above example illustrates how to use a text predictor in interactive mode. If the training process is computationally expensive, one may want to save the text predictor object (i.e. `p` in the example above) out of physical memory (e.g. through `save()`). For this purpose[^1], `sbo` provides the class `sbo_predtable` ("Stupid Back-Off prediction tables"). 
+
+These objects are a "raw" equivalent of a text predictor, and can be created with `build_predtable()`:
+
+```{r}
+t <- build_predtable(freqs)
+```
+
+From `t`, one can rapidly recover the corrisponding text predictor, through `load_predictor()`:
+
+```{r}
+p <- load_predictor(t) # This is the same as 'p' created above
+```
+
+Objects of class `sbo_predtable` can be safely stored out of memory and loaded in other R sessions:
 
 ```{r, eval=FALSE}
-save(preds)
-load("preds.rda")
+save(t)
+# ... and, in another session:
+load("t.rda")
 ```
 
-For convenience, the objects created in this section are preloaded in `sbo` as `twitter_dict`, `twitter_freqs` and `twitter_preds`.
+[^1]: At the present stage of development, this cannot be done directly for the `sbo_predictor` object created above. Technically, this is because `sbo_predictor` objects are external pointers to a convenient C++ class, optimized for fast `predict()`ions. Such a class instance exists only during a single R session.
 
-### Some details on `kgram_freqs` and `sbo_preds` class objects
+### Some details on `kgram_freqs` and `sbo_predictor` class objects
 As the name suggests, objects of class `kgram_freqs` store the counts for each $k$-gram observed in the training corpus. These are the building block
 for *any* $N$-gram based language model, and indeed text prediction can be performed directly from the `freqs` object obtained above:
 
@@ -108,47 +128,48 @@ for *any* $N$-gram based language model, and indeed text prediction can be perfo
 predict(freqs, "i love")
 ```
 
-The output contains the full language model information, i.e. the probabilities[^1] for each possible word completion.
+The output contains the full language model information, i.e. the probabilities[^2] for each possible word completion.
 
-On the contrary, `sbo_preds` objects directly store next-word predictions for each $k$-gram prefix ($k=1,\,2,\dots,\,N-1$) observed in the training corpus.
-The advantage provided by `sbo_preds` objects for simple text prediction is two-fold:
+On the contrary, `sbo_predictor` objects directly store next-word predictions for each $k$-gram prefix ($k=1,\,2,\dots,\,N-1$) observed in the training corpus.
+The advantage provided by `sbo_predictor` objects for simple text prediction is two-fold:
 
-1. Memory compression. For instance:
+1. Memory compression[^3]. For instance:
 ```{r}
 size_in_MB <- function(x) format(utils::object.size(x), units = "MB")
-sapply(list(preds = preds, freqs = freqs), size_in_MB)
+sapply(list(sbo_predtable = t, kgram_freqs = freqs), size_in_MB)
 ```
 
 2. Fast query:
 ```{r}
 chrono_predict <- function(x) system.time(predict(x, "i love"), gcFirst = TRUE)
-lapply(list(preds = preds, freqs = freqs), chrono_predict)
+lapply(list(p = p, freqs = freqs), chrono_predict)
 ```
 
 Both objects store, through attributes, information about the training process. This can be conveniently obtained through the corresponding `summary()` methods, e.g.
 
 ```{r}
-summary(preds)
+summary(p)
 ```
 
 
-[^1]: More precisely, these are the normalized (to unity) scores resulting from
-the Stupid Back-Off smoothing method.
+[^2]: More precisely, these are the normalized (to unity) scores resulting from the Stupid Back-Off smoothing method.
 
-##### Internal structure of `sbo_preds` object
-Here are some details on the current (under development) implementation of `sbo_preds` objects. Consider:
+[^3]: I compute the object size from the equivalent `sbo_predtable` object `t` created above since, as explained in a previous footnote, `sbo_predictor` objects are implemented as pointers to a C++ class, so that `object.size(p)` does not correctly account for the actual memory occupied by these objects.  
+
+#### Internal structure of `sbo_predictor` and `sbo_predtable`  objects
+Here are some details on the current (still under development) implementation of `sbo_predictor` and `sbo_predtable` objects. For clarity, I will refer to the `sbo_predtable` instance `t` created above:
 
 ```{r}
-head(preds[[3]])
+head(t[[3]])
 ```
 
-The first two columns correspond to the word codes [^2] of $2$-gram prefixes observed in the training corpus, and the other columns code the top $L=3$ predictions for these $2$-grams. When a $2$-gram $w_1 w_2$ is given as input for text prediction, it is first looked for in the prefix columns of `preds[[3]]`. If not found, $w_2$ is looked for in the prefix column of `preds[[2]]`. If this also fails, the prediction is performed without any prefix, that is, we simply `predict()` the `L` most frequent words, stored in:
+The first two columns correspond to the word codes[^4] of $2$-gram prefixes observed in the training corpus, and the other columns code the top $L=3$ predictions for these $2$-grams. When a $2$-gram $w_1 w_2$ is given as input for text prediction, it is first looked for in the prefix columns of `t[[3]]`. If not found, $w_2$ is looked for in the prefix column of `t[[2]]`. If this also fails, the prediction is performed without any prefix, that is, we simply predict the `L` most frequent words, stored in:
 
 ```{r}
-preds[[1]]
+t[[1]]
 ```
 
-[^2]: Coded with respect to the rank sorted dictionary `dict` (the codes `0`, `length(dict) + 1` and `length(dict) + 2` correspond to the Begin-Of-Sentence, End-Of-Sentence and Unknown-Word tokens, respectively).
+[^4]: Coded with respect to the rank sorted dictionary `dict` (the codes `0`, `length(dict) + 1` and `length(dict) + 2` correspond to the Begin-Of-Sentence, End-Of-Sentence and Unknown-Word tokens, respectively).
 
 ### Text preprocessing
 
@@ -170,7 +191,7 @@ This Section leverages, for convenience, on:
 library(dplyr) # installed with `sbo`
 ```
 
-Once we have built our next-word predictor, we may want to directly test its predictions on an independent corpus. For this purpose, `sbo` offers the function `eval_sbo_preds`, which performs the following test:
+Once we have built our next-word predictor, we may want to directly test its predictions on an independent corpus. For this purpose, `sbo` offers the function `eval_sbo_predictor`, which performs the following test:
 
 1. Sample a single $N$-gram from each sentence of test corpus.
 1. Predict next words from the $(N-1)$-gram prefix.
@@ -180,15 +201,15 @@ As a concrete example, we test the text-predictor trained in the previous sectio
 
 ```{r}
 set.seed(840)
-(eval <- eval_sbo_preds(preds, test)) # test <- sbo::twitter_test
+(evaluation <- eval_sbo_predictor(p, test)) # test <- sbo::twitter_test
 ```
 
-As it is seen, `eval_sbo_preds` returns a tibble containing the input $(N-1)$-grams, the true completions, the predicted completions and a column indicating whether one of the predictions were correct or not.
+As it is seen, `eval_sbo_predictor()` returns a tibble containing the input $(N-1)$-grams, the true completions, the predicted completions and a column indicating whether one of the predictions were correct or not.
 
 We can estimate predictive accuracy as follows (the uncertainty in the estimate is approximated by the binomial formula $\sigma = \sqrt{\frac{p(1-p)}{M}}$, where $M$ is the number of trials):
 
 ```{r}
-eval %>% summarise(accuracy = sum(correct)/n(), 
+evaluation %>% summarise(accuracy = sum(correct)/n(), 
                    uncertainty = sqrt(accuracy * (1 - accuracy) / n())
                    )
 ```
@@ -196,7 +217,7 @@ eval %>% summarise(accuracy = sum(correct)/n(),
 We may want to exclude from the test $N$-grams ending by the End-Of-Sentence token (here represented by `"<EOS>"`):
 
 ```{r}
-eval %>% # Accuracy for in-sentence predictions
+evaluation %>% # Accuracy for in-sentence predictions
         filter(true != "<EOS>") %>%
         summarise(accuracy = sum(correct) / n(),
                   uncertainty = sqrt(accuracy * (1 - accuracy) / n())
@@ -208,10 +229,10 @@ In trying to reduce the size (in physical memory) of your text-predictor, it mig
 
 ```{r}
 if (require(ggplot2)) {
-        eval %>%
+        evaluation %>%
                 filter(correct, true != "<EOS>") %>%
                 select(true) %>%
-                transmute(rank = match(true, table = attr(preds, "dict"))) %>%
+                transmute(rank = match(true, table = attr(p, "dict"))) %>%
                 ggplot(aes(x = rank)) + geom_histogram(binwidth = 25)
 }
 ```
