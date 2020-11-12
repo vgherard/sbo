@@ -39,7 +39,8 @@ get_kgram_freqs <- function(text, N, dict, .preprocess = preprocess,
                          )
 
         structure(counts,
-                  N = N, dict = dict, .preprocess = .preprocess, EOS = EOS,
+                  N = N, dict = dict, 
+                  .preprocess = utils::removeSource(.preprocess), EOS = EOS,
                   class = "kgram_freqs"
                   ) # return
 }
