@@ -25,6 +25,17 @@ public:
         void save_to_R_list(Rcpp::List&) const;
 };
 
+struct PrefixCompletion{
+        int N;
+        int L;
+        std::string EOS;
+        std::vector<std::string> dict;
+        std::vector<std::string> dict_ext;
+        std::pair<std::vector<Rcpp::IntegerMatrix>, 
+                  std::vector<Rcpp::IntegerMatrix>> pc;
+        PrefixCompletion(const Rcpp::List &);
+};
+
 // Functions
 
 unsigned short int match(const std::string&, const std::vector<std::string>&);
