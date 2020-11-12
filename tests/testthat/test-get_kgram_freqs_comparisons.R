@@ -7,10 +7,10 @@ test_that("coincidence on long char vector", {
         transform <- . %>% arrange(across(starts_with("w")))
         
         freqs_attr_bckp <- attributes(freqs)
-        freqs %<>% lapply(transform)
+        freqs <- lapply(freqs, transform)
         attributes(freqs) <- freqs_attr_bckp
         freqs_fast_attr_bckp <- attributes(freqs_fast) 
-        freqs_fast %<>% lapply(transform)
+        freqs_fast <- lapply(freqs_fast, transform)
         attributes(freqs_fast) <- freqs_fast_attr_bckp 
         
         attr(freqs_fast, ".preprocess") <- attr(freqs, ".preprocess")

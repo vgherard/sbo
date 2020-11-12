@@ -7,7 +7,7 @@
 babble(model, input = NA, n_max = 100L, L = attr(model, "L"))
 }
 \arguments{
-\item{model}{a \code{sbo_preds} object.}
+\item{model}{a \code{sbo_predictor} object.}
 
 \item{input}{a length one character vector. Starting point for babbling!
 If \code{NA}, as by default, a random word is sampled from the model's
@@ -33,8 +33,9 @@ encountered, or when the number of generated words exceeds n_max.
 }
 \examples{
 # Babble!
+p <- load_predictor(twitter_predtable)
 set.seed(840) # Set seed for reproducibility
-babble(twitter_preds)
+babble(p)
 }
 \author{
 Valerio Gherardi

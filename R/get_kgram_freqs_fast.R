@@ -16,12 +16,12 @@ get_kgram_freqs_fast <- function(text, N, dict,
                                  EOS = ".?!:;"
                                  ){
         stopifnot(is.character(text))
-        N %<>% as.integer
+        N <- as.integer(N)
         stopifnot(length(N) == 1 & !is.na(N) & N >= 1L)
         .preprocess <- function(x) preprocess(x, erase, lower_case)
 
         if (!is.character(dict)) {
-                dict %<>% as.integer
+                dict <- as.integer(dict)
                 if (is.na(dict) | length(dict) != 1)
                         stop("'dict' should be either a character vector or a
                              length one numeric or integer.")

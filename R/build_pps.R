@@ -25,12 +25,12 @@ build_pps <- function(freqs, N, lambda, filtered, L) {
                           by = tail(prefixes, -1)) %>%
                 anti_join(select(pps, -score), by = c("prediction", prefixes))
 
-        pps %<>% 
+        pps %>% 
                 bind_rows(pps_backoff) %>%
                 group_by_at(all_of(prefixes)) %>%
                 slice_max(score, n = L, with_ties = FALSE) %>%
                 arrange(desc(score), .by_group = TRUE) %>%
-                ungroup
+                ungroup -> pps
         
         if (k == 1) pps_lower <- list()
         return(append(pps_lower, list(pps)))

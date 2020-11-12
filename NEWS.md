@@ -1,13 +1,25 @@
 # sbo (development version)
 
-#### API changes 
-* metadata of `kgram_freqs` and `sbo_preds` objects are now attributes (#11).
+#### API and UI changes 
+* Former `sbo_preds` S3 class is now substituted by two classes.
+        - `sbo_predictor`: for interactive use
+        - `sbo_predtable`: for storing text predictors out of memory (e.g. `save()` to file)
+* `sbo_predictor` and `sbo_predtable` objects are obtained by `train_predictor()` and `build_predtable()` respectively.
+* `load_predictor()` allows to rapidly recover a `sbo_predictor` from a `sbo_predtable`.
+* The `sbo_predictor` implementation dramatically improves the speed of `predict()` (by a factor of x10). A single call to `predict()` now allocates a few kBs of RAM (whereas it previously allocated few MBs, c.f. issue #10)
+* metadata of `kgram_freqs` and `sbo_pred*` objects are now attributes (#11).
 
 #### New features
-* Added `summary()` methods for `kgram_freqs` and `sbo_preds` objects; correspondingly, the output of `print()` has been simplified considerably (#5).
+* Added `summary()` methods for `kgram_freqs` and `sbo_pred*` objects; correspondingly, the output of `print()` has been simplified considerably (#5).
+
+#### Patches
+* Removed unnecessary `Depends` from DESCRIPTION.
+
+#### Documentation
+* Added package entry.
 
 # sbo 0.3.2
-* Patch addressing inexpected behaviour of `erase` argument in 
+* Patch addressing unexpected behaviour of `erase` argument in 
 `preprocess()` and `get_kgram_freqs_fast()`, c.f. issue #17.
 
 # sbo 0.3.1

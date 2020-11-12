@@ -28,8 +28,9 @@ predict.kgram_freqs <- function(object, newdata, lambda = 0.4, ...){
         V <- length(dict) + 3
 
         newdata <- .preprocess(newdata)
-        newdata %<>% get_kgram_prefix(N, dict, EOS) %>%
-                `names<-`(paste0("w", 1:(N - 1)))
+        newdata %>% 
+                get_kgram_prefix(N, dict, EOS) %>%
+                `names<-`(paste0("w", 1:(N - 1))) -> newdata
 
         FUN <- function(x){ x == newdata[[cur_column()]] }
         lapply(1:N, function(k)

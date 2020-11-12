@@ -1,7 +1,7 @@
 Package: sbo
 Type: Package
 Title: Text Prediction via Stupid Back-Off N-Gram Models
-Version: 0.3.2.9000
+Version: 0.4.0.9000
 Author: Valerio Gherardi
 Maintainer: Valerio Gherardi <vgherard@sissa.it>
 Description: Utilities for building and evaluating text prediction functions based on Stupid Back-Off N-gram models (Brants et al., 2007, <https://www.aclweb.org/anthology/D07-1090/>).
@@ -11,7 +11,7 @@ LazyData: true
 RoxygenNote: 7.1.1.9000
 Depends: R (>= 3.5.0)
 LinkingTo: Rcpp, testthat
-Imports: Rcpp, tibble, magrittr, tidyr, dplyr, stringi, utils, stats
+Imports: Rcpp, tidyr, dplyr, stringi, utils, stats
 Suggests: 
     ggplot2,
     knitr,

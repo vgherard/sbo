@@ -21,8 +21,8 @@ get_word_freqsC <- function(text) {
     .Call(`_sbo_get_word_freqsC`, text)
 }
 
-predict_sbo_preds <- function(ptr_sexp, input) {
-    .Call(`_sbo_predict_sbo_preds`, ptr_sexp, input)
+predict_sbo_predictor <- function(ptr_sexp, input) {
+    .Call(`_sbo_predict_sbo_predictor`, ptr_sexp, input)
 }
 
 #' Preprocess text corpus

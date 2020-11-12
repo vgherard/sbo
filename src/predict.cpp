@@ -52,8 +52,9 @@ void fill_output_matrix(CharacterMatrix& out_mat,
 }
 
 // [[Rcpp::export]]
-CharacterMatrix predict_sbo_preds(SEXP ptr_sexp,
-                                  std::vector<std::string> input) {
+CharacterMatrix predict_sbo_predictor(
+                SEXP ptr_sexp, std::vector<std::string> input
+        ) {
         XPtr<PrefixCompletion> ptr(ptr_sexp);
         CharacterMatrix output_matrix(input.size(), ptr->L);
         int current_row = 0;

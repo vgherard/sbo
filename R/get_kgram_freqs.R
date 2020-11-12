@@ -15,14 +15,14 @@ get_kgram_freqs <- function(text, N, dict, .preprocess = preprocess,
                             EOS = ".?!:;"
                             ){
         stopifnot(is.character(text))
-        N %<>% as.integer
+        N <- as.integer(N)
         stopifnot(length(N) == 1 & !is.na(N) & N >= 1L)
         stopifnot(is.function(.preprocess))
 
         text <- .preprocess(text)
         if (EOS != "") text <- tokenize_sentences(text, EOS = EOS)
         if (!is.character(dict)) {
-                dict %<>% as.integer
+                dict <- as.integer(dict)
                 if (is.na(dict) | length(dict) != 1)
                         stop("'dict' should be either a character vector or a
                              length one numeric or integer.")
@@ -39,7 +39,8 @@ get_kgram_freqs <- function(text, N, dict, .preprocess = preprocess,
                          )
 
         structure(counts,
-                  N = N, dict = dict, .preprocess = .preprocess, EOS = EOS,
+                  N = N, dict = dict, 
+                  .preprocess = utils::removeSource(.preprocess), EOS = EOS,
                   class = "kgram_freqs"
                   ) # return
 }
