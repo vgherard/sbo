@@ -23,13 +23,14 @@ summary.kgram_freqs <- function(object, ...){
                 cat(size, "\n")
         cat("\n")
         "See ?predict.kgram_freqs for usage help." %>% format_help %>% cat("\n")
-
+        
         return(invisible(object))
 }
 
 #' @export
-
-summary.sbo_preds <- function(object, ...){
+summary.sbo_predictions <- function(object, ...){
+        what <- "text predictor"
+        if (class(object)[1] == "sbo_predtable") what <- "prediction table"
         format_title <- . %>% (cli::style_underline) %>% (cli::style_bold)
         format_item <- . %>% (cli::col_silver) %>% (cli::style_italic)
         format_help <- . %>% (cli::col_green)
@@ -38,9 +39,9 @@ summary.sbo_preds <- function(object, ...){
         lambda <- attr(object, "lambda")
         L <- attr(object, "L")
         size <- format(utils::object.size(object), units = "MB")
-        "Next-word prediction table for Stupid Back-off n-gram model" %>%
+        paste("Next-word", what, "from Stupid Back-off N-gram model") %>%
                 format_title %>%
-                cat(., "\n\n")
+                cat("\n\n")
         "Order (N):" %>% format_item %>% cat(N, "\n")
         "Dictionary size:" %>% format_item %>% cat(dict_length, " words\n")
         "Back-off penalization (lambda):" %>% format_item %>% cat(lambda, "\n")
@@ -48,7 +49,7 @@ summary.sbo_preds <- function(object, ...){
         cat("\n")
         "Object size:" %>% format_item %>% cat(size, "\n")
         cat("\n")
-        "See ?predict.sbo_preds for usage help." %>% format_help %>% cat("\n")
-
+        "See ?predict.sbo_predictor for usage help.\n" %>% format_help %>% cat
+        
         return(invisible(object))
 }
