@@ -8,7 +8,7 @@
 #' @author Valerio Gherardi
 #' @md
 #'
-#' @param model a \code{sbo_preds} object.
+#' @param model a \code{sbo_predictor} object.
 #' @param input a length one character vector. Starting point for babbling!
 #' If \code{NA}, as by default, a random word is sampled from the model's
 #' dictionary.
