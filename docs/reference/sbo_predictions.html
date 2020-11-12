@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sbo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9000</span>
       </span>
     </div>
 
@@ -148,7 +148,9 @@ for a given input (top scoring predictions are retained).</p></td>
     </tr>
     <tr>
       <th>filtered</th>
-      <td><p>a character vector. Words to exclude from predictions.</p></td>
+      <td><p>a character vector. Words to exclude from next-word
+predictions. The strings '&lt;UNK&gt;' and '&lt;EOS&gt;' are reserved keywords
+referring to the Unknown-Word and End-Of-Sentence tokens, respectively.</p></td>
     </tr>
     </table>
 

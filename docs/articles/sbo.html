@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sbo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9000</span>
       </span>
     </div>
 
@@ -221,11 +221,11 @@
 <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>p <span class="op">=</span> <span class="va">p</span>, freqs <span class="op">=</span> <span class="va">freqs</span><span class="op">)</span>, <span class="va">chrono_predict</span><span class="op">)</span>
 <span class="co">#&gt; $p</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.001   0.000   0.000 </span>
+<span class="co">#&gt;   0.001   0.000   0.001 </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $freqs</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.135   0.000   0.135</span></code></pre></div>
+<span class="co">#&gt;   0.139   0.000   0.139</span></code></pre></div>
 <p>Both objects store, through attributes, information about the training process. This can be conveniently obtained through the corresponding <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> methods, e.g.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>
