@@ -47,32 +47,29 @@
 #' }
 ################################################################################
 
-build_sbo_preds <- function(freqs, lambda = 0.4, L = 3L, filtered = "<UNK>"){
+build_sbo_preds <- function(freqs, lambda = 0.4, L = 3L, filtered = "<UNK>") {
         N <- attr(freqs, "N")
         dict <- attr(freqs, "dict")
-        V <- length(dict) + 2 # Dict. length including EOS and UNK.
-        .preprocess <- attr(freqs, ".preprocess")
-        EOS <- attr(freqs, "EOS")
+        
         filtered %<>% match(table = c(dict, "<EOS>", "<UNK>"), nomatch = -1)
 
-        pps_tbls <- build_pps_tables(freqs, N, lambda, V, filtered, L)
-
-        extract_preds <- . %>%
+        extract_preds <- . %>% 
                 select(-score) %>%
-                group_by_at(vars(-pred)) %>%
+                group_by_at(vars(-prediction)) %>%
                 mutate(rank = row_number()) %>%
                 ungroup %>%
                 tidyr::pivot_wider(names_from = rank, 
-                                   names_prefix = "pred",
-                                   values_from = pred) %>%
-                mutate_all(as.integer) %>%
+                                   names_prefix = "prediction", 
+                                   values_from = prediction
+                                   ) %>%
                 as.matrix
-
-        preds <- lapply(pps_tbls, . %>% extract_preds)
-
+        
+        preds <- lapply(build_pps(freqs, N, lambda, filtered, L), extract_preds)
+        
         structure(preds, 
                   N = N, dict = dict, lambda = lambda, L = L,
-                  .preprocess = .preprocess, EOS = EOS,
+                  .preprocess = attr(freqs, ".preprocess"), 
+                  EOS = attr(freqs, "EOS"),
                   class = "sbo_preds"
                   ) # return
 }

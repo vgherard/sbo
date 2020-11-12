@@ -9,16 +9,20 @@ get_kgram_freqs_fastC <- function(input, N, dict, erase = "[^.?!:;'\\w\\s]", low
     .Call(`_sbo_get_kgram_freqs_fastC`, input, N, dict, erase, lower_case, EOS)
 }
 
+get_kgram_prefix <- function(line, N, dict, EOS) {
+    .Call(`_sbo_get_kgram_prefix`, line, N, dict, EOS)
+}
+
+get_pc_ptr <- function(object) {
+    .Call(`_sbo_get_pc_ptr`, object)
+}
+
 get_word_freqsC <- function(text) {
     .Call(`_sbo_get_word_freqsC`, text)
 }
 
-get_Ngram_prefix <- function(line, N, dict, EOS) {
-    .Call(`_sbo_get_Ngram_prefix`, line, N, dict, EOS)
-}
-
-predict_sbo_preds <- function(object, input) {
-    .Call(`_sbo_predict_sbo_preds`, object, input)
+predict_sbo_preds <- function(ptr_sexp, input) {
+    .Call(`_sbo_predict_sbo_preds`, ptr_sexp, input)
 }
 
 #' Preprocess text corpus

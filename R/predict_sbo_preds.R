@@ -1,3 +1,4 @@
+################################################################################
 #' Predict method for Stupid Back-off prediction tables
 #'
 #' Predictive text based on Stupid Back-off N-gram model.
@@ -19,7 +20,8 @@ predict.sbo_preds <- function(object, newdata, ...){
         stopifnot(is.character(newdata) & length(newdata) > 0)
         .preprocess <- attr(object, ".preprocess")
         newdata <- .preprocess(newdata)
-        output <- predict_sbo_preds(object, newdata);
+        if (!exists("ptr")) ptr <<- get_pc_ptr(object)
+        output <- predict_sbo_preds(ptr, newdata);
         if (nrow(output) == 1) return(as.character(output))
         else return(output)
 }
