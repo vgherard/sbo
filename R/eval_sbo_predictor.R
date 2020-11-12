@@ -9,7 +9,7 @@
 #'
 #' @export
 #'
-#' @param model a \code{sbo_preds} object.
+#' @param model a \code{sbo_predictor} object.
 #' @param test a character vector. Test corpus for model evaluation.
 #' @param L Maximum number of predictions for each input sentence
 #' (maximum allowed is \code{attr(model, "L")})
@@ -20,7 +20,7 @@
 #' predictions, such as next-word prediction accuracy, or the word-rank
 #' distribution of correct prediction, by direct test against a test set corpus.
 #'
-#' \code{eval_sbo_preds} performs the following operations:
+#' \code{eval_sbo_predictor} performs the following operations:
 #' 1. Sample a single $N$-gram from each sentence of test corpus.
 #' 1. Predict next words from the $(N-1)$-gram prefix.
 #' 1. Return all predictions, together with the true word completions.
@@ -28,9 +28,10 @@
 #' \donttest{
 #' # Evaluating next-word predictions from a Stupid Back-off N-gram model
 #' if (require(dplyr) && require(ggplot2)) {
+#'         p <- load_predictor(twitter_predtable)
 #'         set.seed(840) # Set seed for reproducibility
 #'         test <- sample(twitter_test, 500)
-#'         eval <- eval_sbo_preds(twitter_preds, test)
+#'         eval <- eval_sbo_predictor(p, test)
 #'         
 #'         ## Compute three-word accuracies
 #'         eval %>% summarise(accuracy = sum(correct)/n()) # Overall accuracy
@@ -39,7 +40,7 @@
 #'                 summarise(accuracy = sum(correct) / n())
 #'         
 #'         ## Make histogram of word-rank distribution for correct predictions
-#'         dict <- attr(twitter_preds, "dict")
+#'         dict <- attr(twitter_predtable, "dict")
 #'         eval %>%
 #'                 filter(correct, true != "<EOS>") %>%
 #'                 transmute(rank = match(true, table = dict)) %>%
@@ -48,9 +49,9 @@
 #' }
 ################################################################################
 
-eval_sbo_preds <- function(model, test, L = attr(model, "L")){
+eval_sbo_predictor <- function(model, test, L = attr(model, "L")){
         stopifnot(is.character(test))
-        if (is.na((L %<>% as.integer)) | L < 1L)
+        if (is.na(L <- as.integer(L)) | L < 1L)
                 stop("L could not be coerced to a positive integer")
         N <- attr(model, "N")
         dict <- attr(model, "dict")
@@ -62,14 +63,13 @@ eval_sbo_preds <- function(model, test, L = attr(model, "L")){
                 tokenize_sentences(EOS = EOS) %>%
                 paste(wrap[[1]], ., wrap[[2]], sep = " ") %>%
                 lapply(function(x){
-                        x %<>% stringi::stri_split_fixed(" ", 
-                                                         omit_empty = TRUE
-                                                         ) %>% unlist
-                        if(length(x) < N + 1) return(tibble())
-                        i <- sample(1:(length(x)-N+1), 1)
-                        input <- paste0(x[i:(i+N-2)], collapse = " ")
-                        tibble(input = input, true = x[i+N-1] )
-                        }) %>%
+                        x <- stringi::stri_split_fixed(x, " ", omit_empty = TRUE
+                                                       ) %>% unlist
+                        if (length(x) < N + 1) return(tibble())
+                        i <- sample(1:(length(x) - N + 1), 1)
+                        input <- paste0(x[i:(i + N - 2)], collapse = " ")
+                        tibble(input = input, true = x[i + N - 1])
+                }) %>%
                 bind_rows %>%
                 mutate(input = gsub("<BOS>", "", input)) %>%
                 group_by(row_number()) %>%
