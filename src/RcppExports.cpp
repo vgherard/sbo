@@ -70,15 +70,15 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// predict_sbo_preds
-CharacterMatrix predict_sbo_preds(SEXP ptr_sexp, std::vector<std::string> input);
-RcppExport SEXP _sbo_predict_sbo_preds(SEXP ptr_sexpSEXP, SEXP inputSEXP) {
+// predict_sbo_predictor
+CharacterMatrix predict_sbo_predictor(SEXP ptr_sexp, std::vector<std::string> input);
+RcppExport SEXP _sbo_predict_sbo_predictor(SEXP ptr_sexpSEXP, SEXP inputSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type ptr_sexp(ptr_sexpSEXP);
     Rcpp::traits::input_parameter< std::vector<std::string> >::type input(inputSEXP);
-    rcpp_result_gen = Rcpp::wrap(predict_sbo_preds(ptr_sexp, input));
+    rcpp_result_gen = Rcpp::wrap(predict_sbo_predictor(ptr_sexp, input));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -114,7 +114,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_sbo_get_kgram_prefix", (DL_FUNC) &_sbo_get_kgram_prefix, 4},
     {"_sbo_get_pc_ptr", (DL_FUNC) &_sbo_get_pc_ptr, 1},
     {"_sbo_get_word_freqsC", (DL_FUNC) &_sbo_get_word_freqsC, 1},
-    {"_sbo_predict_sbo_preds", (DL_FUNC) &_sbo_predict_sbo_preds, 2},
+    {"_sbo_predict_sbo_predictor", (DL_FUNC) &_sbo_predict_sbo_predictor, 2},
     {"_sbo_preprocess", (DL_FUNC) &_sbo_preprocess, 3},
     {"_sbo_tokenize_sentences", (DL_FUNC) &_sbo_tokenize_sentences, 2},
     {NULL, NULL, 0}
