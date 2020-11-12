@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • sbo</title>
+<title>Next-word prediction tables from 3-gram model trained on Twitter training
+set — twitter_predtable • sbo</title>
 
 
 <!-- jquery -->
@@ -39,7 +40,10 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Next-word prediction tables from 3-gram model trained on Twitter training
+set — twitter_predtable" />
+<meta property="og:description" content="Next-word prediction tables from 3-gram model trained on Twitter training
+set" />
 
 
 
@@ -58,7 +62,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -111,127 +115,32 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Next-word prediction tables from 3-gram model trained on Twitter training
+set</h1>
+    <small class="dont-index">Source: <a href='https://github.com/vgherard/sbo/blob/master/R/data.R'><code>R/data.R</code></a></small>
+    <div class="hidden name"><code>twitter_predtable.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>Next-word prediction tables from 3-gram model trained on Twitter training
+set</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='va'>twitter_predtable</span></pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="babble.html">babble()</a></code> </p>
-        </td>
-        <td><p>Babble!</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="eval_sbo_predictor.html">eval_sbo_predictor()</a></code> </p>
-        </td>
-        <td><p>Evaluate Stupid Back-off next-word predictions</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_kgram_freqs.html">get_kgram_freqs()</a></code> <code><a href="get_kgram_freqs.html">get_kgram_freqs_fast()</a></code> </p>
-        </td>
-        <td><p>k-gram frequency tables</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_word_freqs.html">get_word_freqs()</a></code> </p>
-        </td>
-        <td><p>Word frequency tables</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="load_predictor.html">load_predictor()</a></code> </p>
-        </td>
-        <td><p>Load Stupid Back-off text predictor.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="predict.kgram_freqs.html">predict(<i>&lt;kgram_freqs&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Predict method for k-gram frequency tables</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="predict.sbo_predictor.html">predict(<i>&lt;sbo_predictor&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Predict method for Stupid Back-off text predictor</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="preprocess.html">preprocess()</a></code> </p>
-        </td>
-        <td><p>Preprocess text corpus</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sbo_predictions.html">build_predtable()</a></code> <code><a href="sbo_predictions.html">train_predictor()</a></code> </p>
-        </td>
-        <td><p>Stupid Back-off text predictions.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="tokenize_sentences.html">tokenize_sentences()</a></code> </p>
-        </td>
-        <td><p>Sentence tokenizer</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="twitter_dict.html">twitter_dict</a></code> </p>
-        </td>
-        <td><p>Top 1000 dictionary from Twitter training set</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="twitter_freqs.html">twitter_freqs</a></code> </p>
-        </td>
-        <td><p>k-gram frequencies from Twitter training set</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="twitter_predtable.html">twitter_predtable</a></code> </p>
-        </td>
-        <td><p>Next-word prediction tables from 3-gram model trained on Twitter training
-set</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="twitter_test.html">twitter_test</a></code> </p>
-        </td>
-        <td><p>Twitter test set</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="twitter_train.html">twitter_train</a></code> </p>
-        </td>
-        <td><p>Twitter training set</p></td>
-      </tr>
-    </tbody>
-    </table>
+
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+
+    <p>A <code>sbo_predtable</code> object. Contains prediction tables of a 3-gram
+Stupid Back-off model trained on the example training set
+<code><a href='twitter_train.html'>twitter_train</a></code>.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='twitter_train.html'>twitter_train</a></code></p></div>
+
   </div>
-
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>

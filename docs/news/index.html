@@ -121,18 +121,38 @@
 <h1 class="page-header" data-toc-text="development version">
 <a href="#sbo-development-version" class="anchor"></a>sbo (development version)<small> Unreleased </small>
 </h1>
-<div id="api-changes" class="section level4">
+<div id="api-and-ui-changes" class="section level4">
 <h4 class="hasAnchor">
-<a href="#api-changes" class="anchor"></a>API changes</h4>
+<a href="#api-and-ui-changes" class="anchor"></a>API and UI changes</h4>
 <ul>
-<li>metadata of <code>kgram_freqs</code> and <code>sbo_preds</code> objects are now attributes (<a href='https://github.com/vgherard/sbo/issues/11'>#11</a>).</li>
+<li>Former <code>sbo_preds</code> S3 class is now substituted by two classes. - <code>sbo_predictor</code>: for interactive use - <code>sbo_predtable</code>: for storing text predictors out of memory (e.g. <code><a href="https://rdrr.io/r/base/save.html">save()</a></code> to file)</li>
+<li>
+<code>sbo_predictor</code> and <code>sbo_predtable</code> objects are obtained by <code><a href="../reference/build_predtable.html">train_predictor()</a></code> and <code><a href="../reference/build_predtable.html">build_predtable()</a></code> respectively.</li>
+<li>
+<code><a href="../reference/load_predictor.html">load_predictor()</a></code> allows to rapidly recover a <code>sbo_predictor</code> from a <code>sbo_predtable</code>.</li>
+<li>The <code>sbo_predictor</code> implementation dramatically improves the speed of <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> (by a factor of x10). A single call to <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> now allocates a few kBs of RAM (whereas it previously allocated few MBs, c.f. issue <a href='https://github.com/vgherard/sbo/issues/10'>#10</a>)</li>
+<li>metadata of <code>kgram_freqs</code> and <code>sbo_pred*</code> objects are now attributes (<a href='https://github.com/vgherard/sbo/issues/11'>#11</a>).</li>
 </ul>
 </div>
 <div id="new-features" class="section level4">
 <h4 class="hasAnchor">
 <a href="#new-features" class="anchor"></a>New features</h4>
 <ul>
-<li>Added <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> methods for <code>kgram_freqs</code> and <code>sbo_preds</code> objects; correspondingly, the output of <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> has been simplified considerably (<a href='https://github.com/vgherard/sbo/issues/5'>#5</a>).</li>
+<li>Added <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> methods for <code>kgram_freqs</code> and <code>sbo_pred*</code> objects; correspondingly, the output of <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> has been simplified considerably (<a href='https://github.com/vgherard/sbo/issues/5'>#5</a>).</li>
+</ul>
+</div>
+<div id="patches" class="section level4">
+<h4 class="hasAnchor">
+<a href="#patches" class="anchor"></a>Patches</h4>
+<ul>
+<li>Removed unnecessary <code>Depends</code> from DESCRIPTION.</li>
+</ul>
+</div>
+<div id="documentation" class="section level4">
+<h4 class="hasAnchor">
+<a href="#documentation" class="anchor"></a>Documentation</h4>
+<ul>
+<li>Added package entry.</li>
 </ul>
 </div>
 </div>
@@ -141,7 +161,7 @@
 <a href="#sbo-032" class="anchor"></a>sbo 0.3.2<small> 2020-11-09 </small>
 </h1>
 <ul>
-<li>Patch addressing inexpected behaviour of <code>erase</code> argument in <code><a href="../reference/preprocess.html">preprocess()</a></code> and <code><a href="../reference/get_kgram_freqs.html">get_kgram_freqs_fast()</a></code>, c.f. issue <a href='https://github.com/vgherard/sbo/issues/17'>#17</a>.</li>
+<li>Patch addressing unexpected behaviour of <code>erase</code> argument in <code><a href="../reference/preprocess.html">preprocess()</a></code> and <code><a href="../reference/get_kgram_freqs.html">get_kgram_freqs_fast()</a></code>, c.f. issue <a href='https://github.com/vgherard/sbo/issues/17'>#17</a>.</li>
 </ul>
 </div>
     <div id="sbo-031" class="section level1">
@@ -166,7 +186,7 @@
 <a href="#sbo-020" class="anchor"></a>sbo 0.2.0<small> Unreleased </small>
 </h1>
 <ul>
-<li>The infrastructure of <code><a href="../reference/get_kgram_freqs.html">get_kgram_freqs()</a></code>, <code><a href="../reference/get_word_freqs.html">get_word_freqs()</a></code>, <code><a href="../reference/preprocess.html">preprocess()</a></code>, and <code><a href="../reference/predict.sbo_preds.html">predict.sbo_preds()</a></code> has been entirely rewritten in C++.</li>
+<li>The infrastructure of <code><a href="../reference/get_kgram_freqs.html">get_kgram_freqs()</a></code>, <code><a href="../reference/get_word_freqs.html">get_word_freqs()</a></code>, <code><a href="../reference/preprocess.html">preprocess()</a></code>, and <code>predict.sbo_preds()</code> has been entirely rewritten in C++.</li>
 <li>Added <code><a href="../reference/tokenize_sentences.html">tokenize_sentences()</a></code> function for sentence level tokenization.</li>
 <li>
 <code><a href="../reference/get_kgram_freqs.html">get_kgram_freqs()</a></code> now accepts any user defined single character EOS token, through the <code>EOS</code> argument.</li>
