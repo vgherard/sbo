@@ -2,29 +2,23 @@
 using namespace Rcpp;
 using word = unsigned short int;
 
-void fill_kgram_prefix(const std::string& line, IntegerVector& prefix,
-                      int N, const std::vector<std::string>& dict,
-                      std::string EOS){
-        size_t start = line.find_first_not_of(" ", line.find_last_of(EOS) + 1);
+void fill_kgram_prefix(IntegerVector & kgram_prefix, 
+                       const std::string& line,
+                       XPtr<PrefixCompletion> ptr){
+        size_t start = line.find_last_of(ptr->EOS);
+        start = line.find_first_not_of(" ", start + 1);
         size_t end;
         while((end = line.find_first_of(" ", start)) != std::string::npos){
-                prefix.push_back(match(line.substr(start, end - start), dict));
-                prefix.erase(0);
+                word w = match(line.substr(start, end - start), ptr->dict);
+                kgram_prefix.push_back(w);
+                kgram_prefix.erase(0);
                 start = line.find_first_not_of(" ", end);
         }
         if(start != std::string::npos){
-                prefix.push_back(match(line.substr(start), dict));
-                prefix.erase(0);
+                word w = match(line.substr(start), ptr->dict);
+                kgram_prefix.push_back(w);
+                kgram_prefix.erase(0);
         }
-}
-
-// [[Rcpp::export]]
-IntegerVector get_kgram_prefix(const std::string& line,
-                               int N, const std::vector<std::string>& dict,
-                               std::string EOS){
-        IntegerVector prefix(N - 1, 0);
-        fill_kgram_prefix(line, prefix, N, dict, EOS);
-        return prefix;
 }
 
 int get_row(const IntegerMatrix& m, const IntegerVector& ref) {
@@ -39,57 +33,35 @@ int get_row(const IntegerMatrix& m, const IntegerVector& ref) {
         return -1;
 }
 
-void fill_output_matrix(const int& N,
-                        const std::vector<IntegerMatrix>& prefixes,
-                        const std::vector<IntegerMatrix>& completions,
-                        IntegerVector& prefix,
-                        const int& L, CharacterMatrix& output,
-                        const std::vector<std::string>& dict_ext,
-                        int& i
+void fill_output_matrix(CharacterMatrix& out_mat,
+                        int cur_row,
+                        IntegerVector & prefix,
+                        XPtr<PrefixCompletion> ptr
                         ){
-        for(int k = N - 1; k >= 0; k--){
-                int r = get_row(prefixes[k], prefix);
+        for(int k = ptr->N - 1; k >= 0; k--){
+                int r = get_row(ptr->pc.first[k], prefix);
                 if(r != -1){
-                        for(int j = 0; j < L; j++){
-                                int w = completions[k](r, j);
-                                output(i, j) = dict_ext[w - 1];
+                        for(int j = 0; j < ptr->L; j++){
+                                int w = ptr->pc.second[k](r, j);
+                                out_mat(cur_row, j) = ptr->dict_ext[w - 1];
                         }
                         break;
                 }
                 prefix.erase(0);
         }
-        i++;
 }
 
 // [[Rcpp::export]]
-CharacterMatrix predict_sbo_preds(List object, std::vector<std::string> input) {
-        std::vector<std::string> dict = object.attr("dict");
-        std::vector<std::string> dict_ext = dict;
-        dict_ext.push_back("<EOS>");
-        dict_ext.push_back("<UNK>");
-        std::string EOS = object.attr("EOS");
-        int N = object.attr("N");
-        int L = object.attr("L");
-        const List & preds(object);
-        std::vector<IntegerMatrix> prefixes;
-        std::vector<IntegerMatrix> completions;
-        for(int k = 0; k < N; k++){
-                if(k == 0) prefixes.push_back(IntegerMatrix(1,0));
-                else prefixes.push_back(
-                                as<IntegerMatrix>(preds[k])(_, Range(0, k - 1))
-                        );
-                completions.push_back(
-                        as<IntegerMatrix>(preds[k])(_, Range(k, k + L - 1))
-                );
+CharacterMatrix predict_sbo_preds(SEXP ptr_sexp,
+                                  std::vector<std::string> input) {
+        XPtr<PrefixCompletion> ptr(ptr_sexp);
+        CharacterMatrix output_matrix(input.size(), ptr->L);
+        int current_row = 0;
+        for(const std::string & line : input){
+                IntegerVector prefix(ptr->N - 1, 0);
+                fill_kgram_prefix(prefix, line, ptr);
+                fill_output_matrix(output_matrix, current_row, prefix, ptr);
+                current_row++;
         }
-        CharacterMatrix output(input.size(), L);
-        int i = 0;
-        for(const std::string& line : input)
-                {
-                IntegerVector prefix(N - 1, 0);
-                fill_kgram_prefix(line, prefix, N, dict, EOS);
-                fill_output_matrix(N, prefixes, completions, prefix, L, output,
-                                   dict_ext, i);
-                }
-        return output;
+        return output_matrix;
 }
