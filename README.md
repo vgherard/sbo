@@ -23,10 +23,9 @@ functions such as:
 
   - `get_kgram_freqs()`: Extract \(k\)-gram frequency tables from a text
     corpus
-  - `build_sbo_preds()`: Build next-word prediction tables from Stupid
-    Back-off \(N\)-gram model. Allows compact and efficient
-    storage/retrieval of a text prediction function.
-  - `eval_sbo_preds()`: Test model predictions against an independent
+  - `train_predictor()`: Train a next-word predictor via Stupid
+    Back-off.
+  - `eval_sbo_predictor()`: Test text predictions against an independent
     corpus.
 
 ## Installation
@@ -60,19 +59,21 @@ train <- sbo::twitter_train # 70k tweets, example dataset from sbo
 word_freqs <- get_word_freqs(train) # word frequencies stored as named integer
 dict <- names(word_freqs)[1:1000] # Build rank-sorted dictionary
 freqs <- get_kgram_freqs(train, N = 3, dict) # Get k-gram frequencies (up to 3-grams)
-preds <- build_sbo_preds(freqs, L = 3) # Build prediction tables pruning to top L = 3 predictions  
+p <- train_predictor(freqs, L = 3) # Train next-word predictor, store top L = 3 predictions
 ```
 
-The `preds` object now stores the next-word prediction tables, which can
-be used to generate predictive text as follows:
+The object `p` now stores the next-word prediction tables, which can be
+used to generate predictive text as follows:
 
 ``` r
-predict(preds, "i love") # a character vector
+predict(p, "i love") # a character vector
 #> [1] "you" "it"  "the"
-predict(preds, c("Colorless green ideas sleep", "See you")) # a character matrix
-#>      [,1]    [,2]    [,3] 
-#> [1,] "<EOS>" "in"    "and"
-#> [2,] "there" "<EOS>" "at"
+predict(p, "you love") # another character vector
+#> [1] "me"    "<EOS>" "it"
+predict(p, c("i love", "you love")) # a character matrix
+#>      [,1]  [,2]    [,3] 
+#> [1,] "you" "it"    "the"
+#> [2,] "me"  "<EOS>" "it"
 ```
 
 ## Help
