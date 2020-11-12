@@ -21,6 +21,6 @@ head(twitter_train)
 }
 \seealso{
 \code{\link[sbo]{twitter_test}}, \code{\link[sbo]{twitter_dict}},
-\code{\link[sbo]{twitter_freqs}}, \code{\link[sbo]{twitter_preds}}
+\code{\link[sbo]{twitter_freqs}}, \code{\link[sbo]{twitter_predtable}}
 }
 \keyword{datasets}
