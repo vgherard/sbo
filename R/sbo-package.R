@@ -7,9 +7,7 @@ NULL
 ## usethis namespace: end
 NULL
 
-#' @importFrom tibble tibble as_tibble
-#' @import dplyr 
-#' @importFrom magrittr %>% %<>%
+#' @import dplyr
 #' @importFrom stats predict
 #' @importFrom utils head tail
 NULL
