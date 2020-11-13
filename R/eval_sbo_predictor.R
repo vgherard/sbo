@@ -27,7 +27,7 @@
 #' @examples
 #' \donttest{
 #' # Evaluating next-word predictions from a Stupid Back-off N-gram model
-#' if (require(dplyr) && require(ggplot2)) {
+#' if (suppressMessages(require(dplyr) && require(ggplot2))) {
 #'         p <- load_predictor(twitter_predtable)
 #'         set.seed(840) # Set seed for reproducibility
 #'         test <- sample(twitter_test, 500)
