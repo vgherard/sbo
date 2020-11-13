@@ -203,7 +203,7 @@ reference dictionary. The special codes <code>0</code>,
 correspond to the "Begin-Of-Sentence", "End-Of-Sentence"
 and "Unknown word" tokens, respectively.</p>
 <p>Furthermore, the returned objected has the following attributes:</p><ul>
-<li><p><code>N</code>`: The highest order of N-grams.</p></li>
+<li><p><code>N</code>: The highest order of N-grams.</p></li>
 <li><p><code>dict</code>: The reference dictionary, sorted by word frequency.</p></li>
 <li><p><code>.preprocess</code>: The function used for text preprocessing.</p></li>
 <li><p><code>EOS</code>: A length one character vector listing all (single character)
@@ -218,6 +218,18 @@ according to end-of-sentence (single character) tokens, as specified
 by the <code>EOS</code> argument. Additionally text belonging to different entries of
 the preprocessed input vector which are understood to belong to different
 sentences.</p>
+<p><strong><em>Nota Bene</em></strong>: It is useful to keep in mind that the function
+passed through the  <code>.preprocess</code> argument also captures its enclosing
+environment, which is by default the environment in which the former
+was defined.
+If, for instance, <code>.preprocess</code> was defined in the global environment,
+and the latter binds heavy objects, the resulting <code>kgram_freqs</code> will
+contain bindings to the same objects. If <code>kgram_freqs</code> is stored out of
+memory and recalled in another R session, these objects will also be reloaded
+in memory.
+For this reason, for non interactive use, it is advisable to avoid using
+preprocessing functions defined in the global environment
+(for instance, <code><a href='https://rdrr.io/r/base/identity.html'>base::identity</a></code> is preferred to <code>function(x) x</code>).</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='get_word_freqs.html'>get_word_freqs</a></code></p></div>
