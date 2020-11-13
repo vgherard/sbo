@@ -22,12 +22,15 @@ get_kgram_freqs <- function(text, N, dict, .preprocess = preprocess,
         text <- .preprocess(text)
         if (EOS != "") text <- tokenize_sentences(text, EOS = EOS)
         if (!is.character(dict)) {
-                dict <- as.integer(dict)
-                if (is.na(dict) | length(dict) != 1)
+                if (!is.numeric(dict) | length(dict) != 1)
                         stop("'dict' should be either a character vector or a
-                             length one numeric or integer.")
-                dict <- get_word_freqs(text, .preprocess = identity,
-                                       EOS = EOS)[1:dict] %>% names
+                             length one numeric.")
+                if (dict < 0) stop("Dictionary length should be >= 0!")
+                word_freqs <- get_word_freqs(text, 
+                                             .preprocess = identity, 
+                                             EOS = EOS)
+                V <- min(length(word_freqs), dict)
+                dict <- names(word_freqs)[seq_len(V)]
         }
 
         counts <- lapply(get_kgram_freqsC(text, N, dict),

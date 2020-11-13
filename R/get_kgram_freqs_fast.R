@@ -21,12 +21,15 @@ get_kgram_freqs_fast <- function(text, N, dict,
         .preprocess <- function(x) preprocess(x, erase, lower_case)
 
         if (!is.character(dict)) {
-                dict <- as.integer(dict)
-                if (is.na(dict) | length(dict) != 1)
+                if (!is.numeric(dict) | length(dict) != 1)
                         stop("'dict' should be either a character vector or a
-                             length one numeric or integer.")
-                dict <- get_word_freqs(text, .preprocess = .preprocess,
-                                       EOS = EOS)[1:dict] %>% names
+                             length one numeric.")
+                if (dict < 0) stop("Dictionary length should be >= 0!")
+                word_freqs <- get_word_freqs(text, 
+                                             .preprocess = .preprocess, 
+                                             EOS = EOS)
+                V <- min(length(word_freqs), dict)
+                dict <- names(word_freqs)[seq_len(V)]
         }
 
         counts <- lapply(get_kgram_freqs_fastC(text, N, dict, erase, lower_case,

@@ -14,5 +14,6 @@ test_that("coincidence on long char vector", {
         attributes(freqs_fast) <- freqs_fast_attr_bckp 
         
         attr(freqs_fast, ".preprocess") <- attr(freqs, ".preprocess")
+        
         expect_identical(freqs, freqs_fast)
 })

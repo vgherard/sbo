@@ -52,7 +52,7 @@
 #' 
 #' Furthermore, the returned objected has the following attributes: 
 #'
-#' - \code{N}`: The highest order of N-grams.
+#' - \code{N}: The highest order of N-grams.
 #' - \code{dict}: The reference dictionary, sorted by word frequency.
 #' - \code{.preprocess}: The function used for text preprocessing.
 #' - \code{EOS}: A length one character vector listing all (single character)
@@ -67,6 +67,20 @@
 #' by the \code{EOS} argument. Additionally text belonging to different entries of
 #' the preprocessed input vector which are understood to belong to different
 #' sentences.
+#' 
+#' \strong{\emph{Nota Bene}}: It is useful to keep in mind that the function 
+#' passed through the  \code{.preprocess} argument also captures its enclosing 
+#' environment, which is by default the environment in which the former 
+#' was defined.
+#' If, for instance, \code{.preprocess} was defined in the global environment, 
+#' and the latter binds heavy objects, the resulting \code{kgram_freqs} will
+#' contain bindings to the same objects. If \code{kgram_freqs} is stored out of
+#' memory and recalled in another R session, these objects will also be reloaded
+#' in memory.
+#' For this reason, for non interactive use, it is advisable to avoid using 
+#' preprocessing functions defined in the global environment 
+#' (for instance, \code{base::identity} is preferred to \code{function(x) x}).
+#' 
 #'
 #' @seealso \code{\link[sbo]{get_word_freqs}}
 #' @name get_kgram_freqs
