@@ -9,7 +9,6 @@ build_pps <- function(freqs, N, lambda, filtered, L) {
         prefixes <- names(freqs[[k]]) %>% .[!(. %in% c("prediction", "n"))]
 
         pps <- freqs[[k]] %>%
-                filter(!(prediction %in% filtered)) %>%
                 group_by_at(all_of(prefixes)) %>%
                 mutate(score = n / sum(n)) %>%
                 ungroup %>%
@@ -28,6 +27,7 @@ build_pps <- function(freqs, N, lambda, filtered, L) {
         pps %>% 
                 bind_rows(pps_backoff) %>%
                 group_by_at(all_of(prefixes)) %>%
+                filter(!(prediction %in% filtered)) %>%
                 slice_max(score, n = L, with_ties = FALSE) %>%
                 arrange(desc(score), .by_group = TRUE) %>%
                 ungroup -> pps
