@@ -60,7 +60,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // get_word_freqsC
-std::map<std::string, int> get_word_freqsC(const std::vector<std::string>& text);
+std::unordered_map<std::string, int> get_word_freqsC(const std::vector<std::string>& text);
 RcppExport SEXP _sbo_get_word_freqsC(SEXP textSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;

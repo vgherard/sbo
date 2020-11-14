@@ -2,7 +2,7 @@
 using namespace Rcpp;
 
 void get_word_freqsC(const std::string& sentence,
-                     std::map<std::string, int>& freqs){
+                     std::unordered_map<std::string, int>& freqs){
         if(sentence == "") return;
         size_t start = 0;
         size_t end;
@@ -16,9 +16,10 @@ void get_word_freqsC(const std::string& sentence,
 }
 
 // [[Rcpp::export]]
-std::map<std::string, int> get_word_freqsC(const std::vector<std::string>& text)
+std::unordered_map<std::string, int> 
+        get_word_freqsC(const std::vector<std::string>& text)
 {
-        std::map<std::string, int> freqs;
+        std::unordered_map<std::string, int> freqs;
         for(const std::string& sentence: text) get_word_freqsC(sentence, freqs);
         return freqs;
 }
