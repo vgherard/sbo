@@ -27,7 +27,7 @@ Get word frequency tables from a training corpus.
 # Get word frequencies and extract dictionary of top 1000 words
 word_freqs <- get_word_freqs(twitter_train)
 head(word_freqs)
-dict <- names(words_freqs)[1:1000]
+dict <- names(word_freqs)[1:1000]
 }
 }
 \author{
