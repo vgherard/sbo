@@ -1,4 +1,4 @@
-context("Stupid Back-Off algorithm")
+context("Stupid Back-Off algorithm: predict.kgram_freqs()")
 
 test_that("Scores correctly assigned: 2-gram model predictions",{
         train <- c("a a b a", "a b b a", "a c b", "b c a a b")
