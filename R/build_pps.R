@@ -28,8 +28,9 @@ build_pps <- function(freqs, N, lambda, filtered, L) {
                 bind_rows(pps_backoff) %>%
                 group_by_at(all_of(prefixes)) %>%
                 filter(!(prediction %in% filtered)) %>%
+                slice_max(score, n = L, with_ties = TRUE) %>%
+                arrange(desc(score), prediction, .by_group = TRUE) %>%
                 slice_max(score, n = L, with_ties = FALSE) %>%
-                arrange(desc(score), .by_group = TRUE) %>%
                 ungroup -> pps
         
         if (k == 1) pps_lower <- list()
