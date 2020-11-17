@@ -43,3 +43,15 @@ test_that("EOS tokens correctly managed",{
         expect_identical(variant2, reference)
         expect_identical(variant3, reference)
 })
+
+test_that("vector input returns matrix",{
+        input <- c("i love", "you love", "she loves", 
+                   "we love", "you love", "they love")
+        output <- predict(p, input)
+        expect_type(output, "character")
+        expect_identical(dim(output), c(6L, attr(p, "L")))
+})
+
+test_that("predicting from 'predtable' object throws an error",{
+        expect_error(predict(twitter_predtable, "i love"))
+})
