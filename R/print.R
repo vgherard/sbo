@@ -1,12 +1,12 @@
 #' @export
 
 print.kgram_freqs <- function(x, ...){
-        cat("A k-gram frequency table.", "\n\n")
+        cat(paste0("A k-gram frequency table.", "\n\n"))
         paste0("See summary() for more details; ",
-               "?predict.kgram_freqs for usage help."
+               "?predict.kgram_freqs for usage help.\n"
                ) %>%
                 (cli::col_green) %>%
-                cat("\n")
+                cat
         return(invisible(x))
 }
 
@@ -15,11 +15,11 @@ print.kgram_freqs <- function(x, ...){
 print.sbo_predictions <- function(x, ...){
         what <- "text predictor"
         if (class(x)[1] == "sbo_predtable") what <- "prediction table"
-        cat("A Stupid Back-Off", what, ".\n\n")
+        cat(paste0("A Stupid Back-Off ", what, ".\n\n"))
         paste0("See summary() for more details; ",
-               "?predict.sbo_predictor for usage help."
+               "?predict.sbo_predictor for usage help.\n"
         ) %>%
                 (cli::col_green) %>%
-                cat("\n")
+                cat
         return(invisible(x))
 }
