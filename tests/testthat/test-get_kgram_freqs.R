@@ -107,3 +107,13 @@ test_that("Argument dict = Inf works", {
 })
 
 rm(expected_1grams, expected_2grams)
+
+test_that("Error on 'dict' argument not character or numeric", {
+        input <- c("a a b a", "a b b a", "a c b", "b c a a b")
+        expect_error(get_kgram_freqs(text = input, N = 2, dict = TRUE))
+})
+
+test_that("Error on 'dict' argument negative numeric", {
+        input <- c("a a b a", "a b b a", "a c b", "b c a a b")
+        expect_error(get_kgram_freqs(text = input, N = 2, dict = -1))
+})
