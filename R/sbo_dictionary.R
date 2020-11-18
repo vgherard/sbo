@@ -1,5 +1,5 @@
 ################################################################################
-#' Dictionary
+#' Dictionaries
 #'
 #' Build dictionary from training corpus.
 #'
@@ -34,10 +34,11 @@
 #' \code{EOS} argument allows to specify a set of characters to be identified
 #' as End-Of-Sentence tokens (and thus not part of words).
 #' 
-#' The returned object is a \code{sbo_dictionary} object, that is just a 
-#' character vector decorated with the \code{sbo_dictionary} class attribute,
-#' allowing for a well defined interaction with other functions and methods 
-#' of \code{sbo}.  
+#' The returned object is a \code{sbo_dictionary} object, which is a 
+#' character vector containing words sorted by decreasing corpus frequency.
+#' Furthermore, the object stores as attributes the original values of 
+#' \code{.preprocess} and \code{EOS} (i.e. the function used in corpus 
+#' preprocessing and the End-Of-Sentence characters for sentence tokenization).
 #' @examples
 #' \donttest{
 #' # Extract dictionary from `twitter_train` corpus (all words)
@@ -49,7 +50,7 @@
 #' }
 ################################################################################
 sbo_dictionary <- function(corpus, max_size = Inf, target = 1,
-                           .preprocess = preprocess, EOS = ".?!:;") {
+                           .preprocess = identity, EOS = "") {
         if (!is.character(corpus)) 
                 stop("'corpus' must be a character vector.")
         if (!is.numeric(max_size) || length(max_size) > 1)
@@ -73,6 +74,26 @@ sbo_dictionary <- function(corpus, max_size = Inf, target = 1,
                 size_cover <- which(cumsum(wfreqs) > target)[1]
                 size <- min(size, size_cover)
         }
-        dict <- names(wfreqs)[size]
-        return(new_sbo_dictionary(dict))
+        dictionary <- names(wfreqs)[seq_len(size)]
+        return(new_sbo_dictionary(dictionary, .preprocess, EOS))
+}
+
+new_sbo_dictionary <- function(dictionary, .preprocess, EOS) {
+        stopifnot(is.character(dictionary))
+        stopifnot(is.function(.preprocess))
+        stopifnot(is.character(EOS), length(EOS) == 1)
+        structure(dictionary,
+                  .preprocess = utils::removeSource(.preprocess), 
+                  EOS = EOS,
+                  class = "sbo_dictionary"
+        ) # return
+}
+
+is_sbo_dictionary <- function(x) {
+        is.object(x) &&
+                class(x) == "sbo_dictionary" &&
+                is.character(x) &&
+                setequal(attributes(x), c(".preprocess", "EOS", "class")) &&
+                is.character(attr(x, "EOS")) && attr(x, "EOS") == 1 &&
+                is.function(attr(x, ".preprocess"))
 }
