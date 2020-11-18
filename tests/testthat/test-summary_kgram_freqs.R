@@ -1,4 +1,4 @@
-context("summary.kgram_freqs")
+context("summary.sbo_kgramfreqs")
 
 test_that("returns invisibly the correct value", {
         capture_output({

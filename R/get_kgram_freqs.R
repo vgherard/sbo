@@ -1,17 +1,17 @@
 ################################################################################
-#' @rdname get_kgram_freqs
+#' @rdname get_sbo_kgramfreqs
 #' @export
 #' @examples
 #' \donttest{
 #' # Obtain k-gram frequency table from corpus
 #' ## Get k-gram frequencies, up to k = N = 3.
-#' freqs <- get_kgram_freqs(twitter_train, N = 3, dict = twitter_dict)
+#' freqs <- get_sbo_kgramfreqs(twitter_train, N = 3, dict = twitter_dict)
 #' ## Print result
 #' freqs
 #' }
 ################################################################################
 
-get_kgram_freqs <- function(text, N, dict, .preprocess = preprocess,
+get_sbo_kgramfreqs <- function(text, N, dict, .preprocess = preprocess,
                             EOS = ".?!:;"
                             ){
         stopifnot(is.character(text))
@@ -33,7 +33,7 @@ get_kgram_freqs <- function(text, N, dict, .preprocess = preprocess,
                 dict <- names(word_freqs)[seq_len(V)]
         }
 
-        counts <- lapply(get_kgram_freqsC(text, N, dict),
+        counts <- lapply(get_sbo_kgramfreqsC(text, N, dict),
                          function(x) {
                                  word_names <- paste0("w", (N + 2 - ncol(x)):N)
                                  colnames(x) <- c(word_names, "n")
@@ -44,6 +44,6 @@ get_kgram_freqs <- function(text, N, dict, .preprocess = preprocess,
         structure(counts,
                   N = N, dict = dict, 
                   .preprocess = utils::removeSource(.preprocess), EOS = EOS,
-                  class = "kgram_freqs"
+                  class = "sbo_kgramfreqs"
                   ) # return
 }

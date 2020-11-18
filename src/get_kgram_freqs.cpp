@@ -2,7 +2,7 @@
 using namespace Rcpp;
 
 // [[Rcpp::export]]
-List get_kgram_freqsC(const std::vector<std::string>& sentences,
+List get_sbo_kgramfreqsC(const std::vector<std::string>& sentences,
                       int N,
                       const std::vector<std::string>& dict){
         List l;

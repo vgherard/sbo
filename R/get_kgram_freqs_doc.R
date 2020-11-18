@@ -26,22 +26,22 @@
 #' lower case.
 #' @param EOS a length one character vector listing all (single character)
 #' end-of-sentence tokens.
-#' @return A \code{kgram_freqs} object, containing the k-gram
+#' @return A \code{sbo_kgramfreqs} object, containing the k-gram
 #' frequency tables for k = 1, 2, ..., N.
 #' @details These functions extract all k-gram frequency tables from a text
 #' corpus up to a specified k-gram order N. These are
 #' the building blocks to train any N-gram model.
 #'
-#' The optimized version \code{get_kgram_freqs_fast(erase = x, lower_case = y)}
+#' The optimized version \code{get_sbo_kgramfreqs_fast(erase = x, lower_case = y)}
 #' is equivalent to
-#' \code{get_kgram_freqs(.preprocess = preprocess(erase = x, lower_case = y))},
+#' \code{get_sbo_kgramfreqs(.preprocess = preprocess(erase = x, lower_case = y))},
 #' but more efficient (both from the speed and memory point of view).
 #'
-#' \code{get_kgram_freqs} and \code{get_kgram_freqs_fast} employ a fixed
+#' \code{get_sbo_kgramfreqs} and \code{get_sbo_kgramfreqs_fast} employ a fixed
 #' (user specified) dictionary; any out-of-vocabulary word gets effectively
 #' replaced by an "unknown word" token.
 #'
-#' The return value is a "\code{kgram_freqs}" object, i.e. a list of N tibbles, 
+#' The return value is a "\code{sbo_kgramfreqs}" object, i.e. a list of N tibbles, 
 #' storing frequency counts for each k-gram observed in the training corpus, for
 #' k = 1, 2, ..., N. In these tables, words are represented by
 #' integer numbers corresponding to their position in the
@@ -58,7 +58,7 @@
 #' - \code{EOS}: A length one character vector listing all (single character)
 #' end-of-sentence tokens employed in k-gram tokenization.
 #'
-#' The \code{.preprocess} argument of \code{get_kgram_freqs} allows the user to
+#' The \code{.preprocess} argument of \code{get_sbo_kgramfreqs} allows the user to
 #' employ a custom corpus preprocessing function.
 #'
 #' The algorithm for k-gram tokenization considers anything separated by
@@ -73,8 +73,8 @@
 #' environment, which is by default the environment in which the former 
 #' was defined.
 #' If, for instance, \code{.preprocess} was defined in the global environment, 
-#' and the latter binds heavy objects, the resulting \code{kgram_freqs} will
-#' contain bindings to the same objects. If \code{kgram_freqs} is stored out of
+#' and the latter binds heavy objects, the resulting \code{sbo_kgramfreqs} will
+#' contain bindings to the same objects. If \code{sbo_kgramfreqs} is stored out of
 #' memory and recalled in another R session, these objects will also be reloaded
 #' in memory.
 #' For this reason, for non interactive use, it is advisable to avoid using 
@@ -83,6 +83,6 @@
 #' 
 #'
 #' @seealso \code{\link[sbo]{get_word_freqs}}
-#' @name get_kgram_freqs
+#' @name get_sbo_kgramfreqs
 ################################################################################
 NULL

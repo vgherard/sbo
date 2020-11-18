@@ -5,22 +5,22 @@
 
 using namespace Rcpp;
 
-// get_kgram_freqsC
-List get_kgram_freqsC(const std::vector<std::string>& sentences, int N, const std::vector<std::string>& dict);
-RcppExport SEXP _sbo_get_kgram_freqsC(SEXP sentencesSEXP, SEXP NSEXP, SEXP dictSEXP) {
+// get_sbo_kgramfreqsC
+List get_sbo_kgramfreqsC(const std::vector<std::string>& sentences, int N, const std::vector<std::string>& dict);
+RcppExport SEXP _sbo_get_sbo_kgramfreqsC(SEXP sentencesSEXP, SEXP NSEXP, SEXP dictSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const std::vector<std::string>& >::type sentences(sentencesSEXP);
     Rcpp::traits::input_parameter< int >::type N(NSEXP);
     Rcpp::traits::input_parameter< const std::vector<std::string>& >::type dict(dictSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_kgram_freqsC(sentences, N, dict));
+    rcpp_result_gen = Rcpp::wrap(get_sbo_kgramfreqsC(sentences, N, dict));
     return rcpp_result_gen;
 END_RCPP
 }
-// get_kgram_freqs_fastC
-List get_kgram_freqs_fastC(std::vector<std::string>& input, int N, const std::vector<std::string>& dict, std::string erase, bool lower_case, std::string EOS);
-RcppExport SEXP _sbo_get_kgram_freqs_fastC(SEXP inputSEXP, SEXP NSEXP, SEXP dictSEXP, SEXP eraseSEXP, SEXP lower_caseSEXP, SEXP EOSSEXP) {
+// get_sbo_kgramfreqs_fastC
+List get_sbo_kgramfreqs_fastC(std::vector<std::string>& input, int N, const std::vector<std::string>& dict, std::string erase, bool lower_case, std::string EOS);
+RcppExport SEXP _sbo_get_sbo_kgramfreqs_fastC(SEXP inputSEXP, SEXP NSEXP, SEXP dictSEXP, SEXP eraseSEXP, SEXP lower_caseSEXP, SEXP EOSSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -30,7 +30,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< std::string >::type erase(eraseSEXP);
     Rcpp::traits::input_parameter< bool >::type lower_case(lower_caseSEXP);
     Rcpp::traits::input_parameter< std::string >::type EOS(EOSSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_kgram_freqs_fastC(input, N, dict, erase, lower_case, EOS));
+    rcpp_result_gen = Rcpp::wrap(get_sbo_kgramfreqs_fastC(input, N, dict, erase, lower_case, EOS));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -109,8 +109,8 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_sbo_get_kgram_freqsC", (DL_FUNC) &_sbo_get_kgram_freqsC, 3},
-    {"_sbo_get_kgram_freqs_fastC", (DL_FUNC) &_sbo_get_kgram_freqs_fastC, 6},
+    {"_sbo_get_sbo_kgramfreqsC", (DL_FUNC) &_sbo_get_sbo_kgramfreqsC, 3},
+    {"_sbo_get_sbo_kgramfreqs_fastC", (DL_FUNC) &_sbo_get_sbo_kgramfreqs_fastC, 6},
     {"_sbo_get_kgram_prefix", (DL_FUNC) &_sbo_get_kgram_prefix, 4},
     {"_sbo_get_pc_ptr", (DL_FUNC) &_sbo_get_pc_ptr, 1},
     {"_sbo_get_word_freqsC", (DL_FUNC) &_sbo_get_word_freqsC, 1},

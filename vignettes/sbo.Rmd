@@ -29,8 +29,8 @@ The `sbo` package provides utilities for building and evaluating next-word predi
 
 The `sbo` package pivots around two (S3) object classes: 
 
-* `kgram_freqs`: A collection of $k$-gram frequency tables, with $k$ up to a given order $N$. These are obtained from a training corpus through the function `get_kgram_freqs()`.
-* `sbo_predictor`: these objects directly store next-word predictiors, allowing for memory compression and fast access. They can be built from `kgram_freqs` objects through `train_predictor()`.
+* `sbo_kgramfreqs`: A collection of $k$-gram frequency tables, with $k$ up to a given order $N$. These are obtained from a training corpus through the function `get_sbo_kgramfreqs()`.
+* `sbo_predictor`: these objects directly store next-word predictiors, allowing for memory compression and fast access. They can be built from `sbo_kgramfreqs` objects through `train_predictor()`.
 
 In addition, `sbo` features the function `eval_sbo_predictor`, which allows to evaluate prediction accuracy on a new test corpus.
 
@@ -66,7 +66,7 @@ Alternatively, if available, one may use a predefined dictionary.
 
 *Step 1*. Obtain $k$-gram frequencies from training corpus:
 ```{r}
-(freqs <- get_kgram_freqs(train, N = 3, dict)) # 'N' is the order of n-grams
+(freqs <- get_sbo_kgramfreqs(train, N = 3, dict)) # 'N' is the order of n-grams
 ```
 
 *Step 2*. Build next-word prediction tables:
@@ -120,8 +120,8 @@ load("t.rda")
 
 [^1]: At the present stage of development, this cannot be done directly for the `sbo_predictor` object created above. Technically, this is because `sbo_predictor` objects are external pointers to a convenient C++ class, optimized for fast `predict()`ions. Such a class instance exists only during a single R session.
 
-### Some details on `kgram_freqs` and `sbo_predictor` class objects
-As the name suggests, objects of class `kgram_freqs` store the counts for each $k$-gram observed in the training corpus. These are the building block
+### Some details on `sbo_kgramfreqs` and `sbo_predictor` class objects
+As the name suggests, objects of class `sbo_kgramfreqs` store the counts for each $k$-gram observed in the training corpus. These are the building block
 for *any* $N$-gram based language model, and indeed text prediction can be performed directly from the `freqs` object obtained above:
 
 ```{r}
@@ -136,7 +136,7 @@ The advantage provided by `sbo_predictor` objects for simple text prediction is 
 1. Memory compression[^3]. For instance:
 ```{r}
 size_in_MB <- function(x) format(utils::object.size(x), units = "MB")
-sapply(list(sbo_predtable = t, kgram_freqs = freqs), size_in_MB)
+sapply(list(sbo_predtable = t, sbo_kgramfreqs = freqs), size_in_MB)
 ```
 
 2. Fast query:
@@ -173,15 +173,15 @@ t[[1]]
 
 ### Text preprocessing
 
-Usually text corpora require preprocessing before word and $k$-gram tokenization can take place. The `.preprocess` argument of `get_kgram_freqs()` allows for an user specified preprocessing function. The default is the minimal `sbo::preprocess()`, and the optimized `get_kgram_freqs_fast(erase = x, EOS = y)` is equivalent to `get_kgram_freqs(.preprocess = sbo::preprocess(erase = x, EOS = y))` (but substantially more efficient).
+Usually text corpora require preprocessing before word and $k$-gram tokenization can take place. The `.preprocess` argument of `get_sbo_kgramfreqs()` allows for an user specified preprocessing function. The default is the minimal `sbo::preprocess()`, and the optimized `get_sbo_kgramfreqs_fast(erase = x, EOS = y)` is equivalent to `get_sbo_kgramfreqs(.preprocess = sbo::preprocess(erase = x, EOS = y))` (but substantially more efficient).
 
 ### Sentence tokenization
 
 Tokenization at the sentence level is required to obtain terminal $k$-grams (i.e. $k$-grams containing Begin-Of-Sentence or End-Of-Sentence tokens). In the training process, sentence tokenization takes place after text preprocessing.
 
-End-Of-Sentence (single character) tokens are specified by the `EOS` argument of `get_kgram_freqs()` and `get_kgram_freqs_fast()`; empty sentences are always skipped. Also, if the input vector `text` has `length(text) > 1`, the various elements of `text` belong to different entries. 
+End-Of-Sentence (single character) tokens are specified by the `EOS` argument of `get_sbo_kgramfreqs()` and `get_sbo_kgramfreqs_fast()`; empty sentences are always skipped. Also, if the input vector `text` has `length(text) > 1`, the various elements of `text` belong to different entries. 
 
-The process of sentence tokenization can also be performed directly, through `sbo::tokenize_sentences()`, but this is not required for use with `get_kgram_freqs*()`.
+The process of sentence tokenization can also be performed directly, through `sbo::tokenize_sentences()`, but this is not required for use with `get_sbo_kgramfreqs*()`.
 
 ## Evaluating next-word predictions
 

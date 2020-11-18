@@ -1,6 +1,6 @@
 #' @export
 
-summary.kgram_freqs <- function(object, ...){
+summary.sbo_kgramfreqs <- function(object, ...){
         format_title <- . %>% (cli::style_underline) %>% (cli::style_bold)
         format_item <- . %>% (cli::col_silver) %>% (cli::style_italic)
         format_help <- . %>% (cli::col_green)
@@ -20,7 +20,7 @@ summary.kgram_freqs <- function(object, ...){
                 format_item %>%
                 cat(size, "\n")
         cat("\n")
-        "See ?predict.kgram_freqs for usage help." %>% format_help %>% cat("\n")
+        "See ?predict.sbo_kgramfreqs for usage help." %>% format_help %>% cat("\n")
         
         return(invisible(object))
 }
