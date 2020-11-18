@@ -13,4 +13,5 @@ test_that("Prints simple title and an empty line followed by some text", {
         expect_length(output, 3)
         expect_identical(output[1], "A k-gram frequency table.")
         expect_identical(output[2], "")
+        expect_true(output[3] != "")
 })
