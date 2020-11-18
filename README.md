@@ -23,7 +23,7 @@ Back-off](https://www.aclweb.org/anthology/D07-1090.pdf) [N-gram
 models](https://en.wikipedia.org/wiki/N-gram) in R. It includes
 functions such as:
 
-  - `get_sbo_kgramfreqs()`: Extract \(k\)-gram frequency tables from a
+  - `kgram_freqs()`: Extract \(k\)-gram frequency tables from a
     text corpus
   - `train_predictor()`: Train a next-word predictor via Stupid
     Back-off.
@@ -60,7 +60,7 @@ library(sbo)
 train <- sbo::twitter_train # 70k tweets, example dataset from sbo
 word_freqs <- get_word_freqs(train) # word frequencies stored as named integer
 dict <- names(word_freqs)[1:1000] # Build rank-sorted dictionary
-freqs <- get_sbo_kgramfreqs(train, N = 3, dict) # Get k-gram frequencies (up to 3-grams)
+freqs <- kgram_freqs(train, N = 3, dict) # Get k-gram frequencies (up to 3-grams)
 p <- train_predictor(freqs, L = 3) # Train next-word predictor, store top L = 3 predictions
 ```
 

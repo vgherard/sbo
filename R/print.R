@@ -1,9 +1,9 @@
 #' @export
 
-print.sbo_kgramfreqs <- function(x, ...){
+print.sbo_kgram_freqs <- function(x, ...){
         cat(paste0("A k-gram frequency table.", "\n\n"))
         paste0("See summary() for more details; ",
-               "?predict.sbo_kgramfreqs for usage help.\n"
+               "?predict.sbo_kgram_freqs for usage help.\n"
                ) %>%
                 (cli::col_green) %>%
                 cat

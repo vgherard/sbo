@@ -2,7 +2,7 @@ context("build_predtable")
 
 test_that("return value has the correct structure", {
         input <- c("a a b a", "a b b a", "a c b", "b c a a b")
-        freqs <- get_sbo_kgramfreqs(input, N = 3, dict = c("a", "b", "c"))
+        freqs <- kgram_freqs(input, N = 3, dict = c("a", "b", "c"))
         predtable <- build_predtable(freqs)
         
         expect_s3_class(predtable, c("sbo_predtable", "sbo_predictions"), T)

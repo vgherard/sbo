@@ -6,8 +6,8 @@
 #' @author Valerio Gherardi
 #' @md
 #'
-#' @param freqs a \code{sbo_kgramfreqs} object obtained with 
-#' \code{\link[sbo]{get_sbo_kgramfreqs}}, containing k-gram frequencies 
+#' @param freqs a \code{sbo_kgram_freqs} object obtained with 
+#' \code{\link[sbo]{kgram_freqs}}, containing k-gram frequencies 
 #' extracted from a training corpus.
 #' @param lambda a length one numeric. Penalization in the
 #' Stupid Back-off algorithm.

@@ -2,13 +2,12 @@
 using namespace Rcpp;
 
 // [[Rcpp::export]]
-List get_sbo_kgramfreqs_fastC(std::vector<std::string>& input,
-                      int N,
-                      const std::vector<std::string>& dict,
-                      std::string erase = "[^.?!:;'\\w\\s]",
-                      bool lower_case = true,
-                      std::string EOS = ".?!:;"
-                      ){
+List fast_kgram_freqs_cpp(std::vector<std::string>& input,
+                          int N,
+                          const std::vector<std::string>& dict,
+                          std::string erase = "[^.?!:;'\\w\\s]",
+                          bool lower_case = true,
+                          std::string EOS = ".?!:;"){
         kgramFreqs freqs(N);
         std::regex erase_(erase);
         for(std::string str : input){

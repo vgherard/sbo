@@ -12,8 +12,8 @@ build_predtable(freqs, lambda = 0.4, L = 3L, filtered = "<UNK>")
 train_predictor(freqs, lambda = 0.4, L = 3L, filtered = "<UNK>")
 }
 \arguments{
-\item{freqs}{a \code{sbo_kgramfreqs} object obtained with
-\code{\link[sbo]{get_sbo_kgramfreqs}}, containing k-gram frequencies
+\item{freqs}{a \code{sbo_kgram_freqs} object obtained with
+\code{\link[sbo]{kgram_freqs}}, containing k-gram frequencies
 extracted from a training corpus.}
 
 \item{lambda}{a length one numeric. Penalization in the

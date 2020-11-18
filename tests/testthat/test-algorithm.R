@@ -1,4 +1,4 @@
-context("Stupid Back-Off algorithm: predict.sbo_kgramfreqs()")
+context("Stupid Back-Off algorithm: predict.sbo_kgram_freqs()")
 
 test_that("Scores correctly assigned: 2-gram model predictions",{
         train <- c("a a b a", "a b b a", "a c b", "b c a a b")
@@ -34,7 +34,7 @@ test_that("Scores correctly assigned: 2-gram model predictions",{
                         x <- filter(x, completion != "<UNK>")
                         return(arrange(x, desc(probability)))
                 })
-        f <- get_sbo_kgramfreqs(text = train, N = 2, dict = dict,
+        f <- kgram_freqs(text = train, N = 2, dict = dict,
                              .preprocess = identity, EOS = "")
         actual <- lapply(c(" ", "a", "b", "x"), 
                          function(input) predict(f, input))
@@ -76,7 +76,7 @@ test_that("Scores correctly assigned: 3-gram model predictions",{
                         x <- filter(x, completion != "<UNK>")
                         return(arrange(x, desc(probability)))
                 })
-        f <- get_sbo_kgramfreqs(text = train, N = 3, dict = dict,
+        f <- kgram_freqs(text = train, N = 3, dict = dict,
                              .preprocess = identity, EOS = "")
         actual <- lapply(c(" ", "a", "b", "x"), 
                          function(input) predict(f, input))

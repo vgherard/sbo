@@ -17,7 +17,7 @@ word_coverage.character <- function(object, corpus,
 }
 
 #' @export
-word_coverage.sbo_kgramfreqs <- function(object, corpus, ...){
+word_coverage.sbo_kgram_freqs <- function(object, corpus, ...){
         dict <- attr(object, "dict")
         .preprocess <- attr(object, ".preprocess")
         EOS <- attr(object, "EOS")

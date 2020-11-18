@@ -1,4 +1,4 @@
-context("comparing predict.sbo_kgramfreqs() and predict.sbo_predictor()")
+context("comparing predict.sbo_kgram_freqs() and predict.sbo_predictor()")
 
 p <- load_predictor(twitter_predtable)
 L <- attr(p, "L")

@@ -1,4 +1,4 @@
-context("predict.sbo_kgramfreqs")
+context("predict.sbo_kgram_freqs")
 
 test_that("empty input works",{
         expect_type(predict(twitter_freqs, ""), "list")
