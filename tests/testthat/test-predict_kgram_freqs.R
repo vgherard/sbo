@@ -1,9 +1,7 @@
 context("predict.kgram_freqs")
 
 test_that("empty input works",{
-        actual <- predict(twitter_freqs, "")
-
-        expect_type(actual, "list")
+        expect_type(predict(twitter_freqs, ""), "list")
 })
 
 test_that("whitespace inputs work",{

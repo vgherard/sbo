@@ -18,9 +18,9 @@
 #' @examples
 #' \donttest{
 #' # Get word frequencies and extract dictionary of top 1000 words
-#' words <- get_word_freqs(twitter_train)
-#' words
-#' dict <- names(words)[1:1000]
+#' word_freqs <- get_word_freqs(twitter_train)
+#' head(word_freqs)
+#' dict <- names(word_freqs)[1:1000]
 #' }
 ################################################################################
 

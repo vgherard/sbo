@@ -8,9 +8,7 @@ summary.kgram_freqs <- function(object, ...){
         dict_length <- length(attr(object, "dict"))
         size <- format(utils::object.size(object), units = "MB")
         
-        "k-gram frequency table" %>%
-                format_title %>%
-                cat(., "\n\n")
+        "k-gram frequency table\n\n" %>% format_title %>% cat
         "Order (N):" %>% format_item %>% cat(N, "\n")
         "Dictionary size:" %>% format_item %>% cat(dict_length, " words\n\n")
         for (i in 1:N) {
@@ -38,17 +36,19 @@ summary.sbo_predictions <- function(object, ...){
         dict_length <- length(attr(object, "dict"))
         lambda <- attr(object, "lambda")
         L <- attr(object, "L")
-        size <- format(utils::object.size(object), units = "MB")
-        paste("Next-word", what, "from Stupid Back-off N-gram model") %>%
+        paste("Next-word", what, "from Stupid Back-off N-gram model\n\n") %>%
                 format_title %>%
-                cat("\n\n")
+                cat
         "Order (N):" %>% format_item %>% cat(N, "\n")
         "Dictionary size:" %>% format_item %>% cat(dict_length, " words\n")
         "Back-off penalization (lambda):" %>% format_item %>% cat(lambda, "\n")
         "Maximum number of predictions (L):" %>% format_item %>% cat(L, "\n")
         cat("\n")
-        "Object size:" %>% format_item %>% cat(size, "\n")
-        cat("\n")
+        if (what == "prediction table") {
+                size <- format(utils::object.size(object), units = "MB")
+                "Object size:" %>% format_item %>% cat(size, "\n")
+                cat("\n")
+        }
         "See ?predict.sbo_predictor for usage help.\n" %>% format_help %>% cat
         
         return(invisible(object))

@@ -53,5 +53,6 @@ predict.kgram_freqs <- function(object, newdata, lambda = 0.4, ...){
                                      )
                        ) %>%
                 `colnames<-`(c("completion", "probability")) %>%
-                filter(completion != "<UNK>")
+                filter(completion != "<UNK>") %>%
+                arrange(desc(probability), match(completion, c(dict, "<EOS>")))
 }
