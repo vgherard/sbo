@@ -33,7 +33,7 @@ encountered, or when the number of generated words exceeds n_max.
 }
 \examples{
 # Babble!
-p <- load_predictor(twitter_predtable)
+p <- sbo_predictor(twitter_predtable)
 set.seed(840) # Set seed for reproducibility
 babble(p)
 }

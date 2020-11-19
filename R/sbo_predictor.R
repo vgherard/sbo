@@ -12,7 +12,8 @@ sbo_predictor <- function(object, ...)
 #'                    .preprocess = preprocess, EOS = ".?!:;")
 #' }
 sbo_predictor.character <- function(object, N, dict, .preprocess = identity, 
-                                    EOS = "", lambda, L, filtered, ...) {
+                                    EOS = "", lambda = 0.4, L = 3L, 
+                                    filtered = "<UNK>", ...) {
         predtable <- sbo_predtable(object, N = N, dict = dict, 
                                    .preprocess = .preprocess, EOS = EOS,
                                    lambda = lambda, L = L, filtered = filtered)
@@ -42,9 +43,9 @@ sbo_predictor.sbo_kgram_freqs <- function(object, lambda = 0.4, L = 3L,
 #' }
 sbo_predictor.sbo_predtable <- function(object, ...){
         predictor <- get_pc_ptr(object)
-        attributes(object) <- attributes(object)
-        class(object) <- c("sbo_predictor", "sbo_predictions")
-        return(object)
+        attributes(predictor) <- attributes(object)
+        class(predictor) <- c("sbo_predictor", "sbo_predictions")
+        return(predictor)
 }
 
 #' @rdname sbo_predictions

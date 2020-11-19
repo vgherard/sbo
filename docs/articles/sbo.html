@@ -174,9 +174,9 @@
 <p>These objects are a “raw” equivalent of a text predictor, and can be created with <code><a href="../reference/sbo_predtable.html">sbo_predtable()</a></code>:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">t</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sbo_predtable.html">sbo_predtable</a></span><span class="op">(</span><span class="va">freqs</span><span class="op">)</span></code></pre></div>
-<p>From <code>t</code>, one can rapidly recover the corrisponding text predictor, through <code><a href="../reference/load_predictor.html">load_predictor()</a></code>:</p>
+<p>From <code>t</code>, one can rapidly recover the corrisponding text predictor, through <code><a href="../reference/sbo_predictor.html">sbo_predictor()</a></code>:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_predictor.html">load_predictor</a></span><span class="op">(</span><span class="va">t</span><span class="op">)</span> <span class="co"># This is the same as 'p' created above</span></code></pre></div>
+<code class="sourceCode R"><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sbo_predictor.html">sbo_predictor</a></span><span class="op">(</span><span class="va">t</span><span class="op">)</span> <span class="co"># This is the same as 'p' created above</span></code></pre></div>
 <p>Objects of class <code>sbo_predtable</code> can be safely stored out of memory and loaded in other R sessions:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/save.html">save</a></span><span class="op">(</span><span class="va">t</span><span class="op">)</span>

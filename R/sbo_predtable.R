@@ -24,7 +24,7 @@ sbo_predtable <- function(object, lambda = 0.4, L = 3L, filtered = "<UNK>", ...)
 #' }
 sbo_predtable.character <- 
         function(object, N, dict, .preprocess = identity, EOS = "", 
-                 lambda, L, filtered, ...) {
+                 lambda = 0.4, L = 3L, filtered = "<UNK>", ...) {
         freqs <- kgram_freqs(object, N = N, dict = dict, .preprocess = identity, 
                              EOS = "")
         return(sbo_predtable(freqs, lambda, L, filtered))
@@ -37,7 +37,9 @@ sbo_predtable.character <-
 #' # Build Stupid Back-Off prediction tables from kgram_freqs object
 #' t <- sbo_predtable(twitter_freqs)
 #' }
-sbo_predtable.sbo_kgram_freqs <- function(object, lambda, L, filtered) {
+sbo_predtable.sbo_kgram_freqs <- function(object, 
+                                          lambda = 0.4, 
+                                          L = 3L, filtered = "<UNK>", ...) {
         N <- attr(object, "N")
         dict <- attr(object, "dict")
         if (L > length(dict))

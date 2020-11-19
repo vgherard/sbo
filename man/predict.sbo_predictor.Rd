@@ -29,7 +29,7 @@ one should load a \code{sbo_predictor} object and use this one to predict(),
 as shown in the example below.
 }
 \examples{
-p <- load_predictor(twitter_predtable)
+p <- sbo_predictor(twitter_predtable)
 x <- predict(p, "i love")
 x
 x <- predict(p, "you love")

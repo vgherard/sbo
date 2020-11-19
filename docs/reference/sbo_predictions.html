@@ -171,7 +171,7 @@ text predictor through <code>sbo_predtable()</code>, which can be safely
 saved out of memory (with e.g. <code><a href='https://rdrr.io/r/base/save.html'>save()</a></code>).
 The resulting object (a <code>sbo_predtable</code>) can be restored
 in another R session, and the corresponding <code>sbo_predictor</code> object
-can be loaded rapidly using <code><a href='load_predictor.html'>load_predictor()</a></code> (see the example below).</p>
+can be loaded rapidly using <code><a href='sbo_predictor.html'>sbo_predictor()</a></code> (see the example below).</p>
 <p>The returned objects are a <code>sbo_predictor</code> and a <code>sbo_predtable</code>
 object, for <code>train_predictor</code> and <code>sbo_predtable</code> respectively.
 The latter contains Stupid Back-Off prediction tables, storing next-word
@@ -191,7 +191,7 @@ end-of-sentence tokens.</p></li>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='predict.sbo_predictor.html'>predict.sbo_predictor</a></code>,
-<code><a href='load_predictor.html'>load_predictor</a></code></p></div>
+<code><a href='sbo_predictor.html'>sbo_predictor</a></code></p></div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Valerio Gherardi</p>
@@ -200,7 +200,7 @@ end-of-sentence tokens.</p></li>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
 <span class='co'># Build Stupid Back-Off prediction tables</span>
 <span class='va'>t</span> <span class='op'>&lt;-</span> <span class='fu'>sbo_predtable</span><span class='op'>(</span><span class='va'>twitter_freqs</span><span class='op'>)</span>
-<span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'><a href='load_predictor.html'>load_predictor</a></span><span class='op'>(</span><span class='va'>t</span><span class='op'>)</span> <span class='co'># Load text predictor</span>
+<span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sbo_predictor.html'>sbo_predictor</a></span><span class='op'>(</span><span class='va'>t</span><span class='op'>)</span> <span class='co'># Load text predictor</span>
 <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>p</span>, <span class='st'>"i love"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "you" "it"  "the"</div><div class='input'><span class='co'>## Use `save(t)` to save prediction tables for the next R session</span>
 <span class='co'># }</span>

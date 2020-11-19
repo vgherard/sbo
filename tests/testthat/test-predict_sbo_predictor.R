@@ -1,6 +1,6 @@
 context("predict.sbo_predictor")
 
-p <- load_predictor(twitter_predtable)
+p <- sbo_predictor(twitter_predtable)
 
 test_that("empty input works",{
         actual <- predict(p, "")
