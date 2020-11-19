@@ -41,7 +41,7 @@ sbo_predictor.sbo_kgram_freqs <- function(object, lambda = 0.4, L = 3L,
 #' # Load a text predictor from a Stupid Back-Off prediction table
 #' p <- sbo_predictor(twitter_predtable)
 #' }
-#' #' \donttest{
+#' \donttest{
 #' # Predict from Stupid Back-Off text predictor
 #' p <- sbo_predictor(twitter_predtable)
 #' predict(p, "i love")
