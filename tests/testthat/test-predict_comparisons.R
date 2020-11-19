@@ -1,6 +1,6 @@
 context("comparing predict.sbo_kgram_freqs() and predict.sbo_predictor()")
 
-p <- load_predictor(twitter_predtable)
+p <- sbo_predictor(twitter_predtable)
 L <- attr(p, "L")
 
 test_that("empty input works",{

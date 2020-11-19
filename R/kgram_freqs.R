@@ -4,9 +4,19 @@
 #' @examples
 #' \donttest{
 #' # Obtain k-gram frequency table from corpus
-#' ## Get k-gram frequencies, up to k = N = 3.
-#' freqs <- kgram_freqs(twitter_train, N = 3, dict = twitter_dict)
-#' ## Print result
+#' ## Get k-gram frequencies, for k <= N = 3.
+#' ## The dictionary is built on the fly, using the most frequent 1000 words.
+#' freqs <- kgram_freqs(corpus = twitter_train, N = 3, dict = max_size ~ 1000,
+#'                      .preprocess = preprocess, EOS = ".?!:;")
+#' freqs
+#' ## Using a predefined dictionary
+#' freqs <- kgram_freqs_fast(twitter_train, N = 3, dict = twitter_dict,
+#'                           erase = "[^.?!:;'\\w\\s]", lower_case = TRUE,
+#'                           EOS = ".?!:;")
+#' freqs
+#' ## 2-grams, no preprocessing, use a dictionary covering 50% of corpus
+#' freqs <- kgram_freqs(corpus = twitter_train, N = 2, dict = target ~ 0.5,
+#'                      EOS = ".?!:;")
 #' freqs
 #' }
 ################################################################################

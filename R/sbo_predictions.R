@@ -1,5 +1,5 @@
 ################################################################################
-#' Stupid Back-off text predictions.
+#' Stupid Back-off text predictions
 #'
 #' Train a text predictor via Stupid Back-off
 #'
@@ -25,7 +25,7 @@
 #' by directly storing the top \code{L} next-word predictions for each
 #' k-gram prefix observed in the training corpus.
 #' 
-#' The \code{sbo_predictor} class is for interactive use. If the training
+#' The \code{sbo_predictor} objects are for interactive use. If the training
 #' process is computationally heavy, one can store a "raw" version of the 
 #' text predictor in a \code{sbo_predtable} class object, which can be safely 
 #' saved out of memory (with e.g. \code{save()}). 

@@ -20,7 +20,7 @@
 #' one should load a \code{sbo_predictor} object and use this one to predict(), 
 #' as shown in the example below. 
 #' @examples
-#' p <- load_predictor(twitter_predtable)
+#' p <- sbo_predictor(twitter_predtable)
 #' x <- predict(p, "i love")
 #' x
 #' x <- predict(p, "you love")
@@ -32,7 +32,7 @@ predict.sbo_predictor <- function(object, newdata, ...){
         stopifnot(is.character(newdata) & length(newdata) > 0)
         .preprocess <- attr(object, ".preprocess")
         newdata <- .preprocess(newdata)
-        output <- predict_sbo_predictor(object, newdata);
+        output <- predict_sbo_predictor(object, newdata)
         if (nrow(output) == 1) return(as.character(output))
         else return(output)
 }
@@ -40,5 +40,5 @@ predict.sbo_predictor <- function(object, newdata, ...){
 #' @export
 predict.sbo_predtable <- function(object, newdata, ...){
         error("Cannot predict() from 'sbo_predtable' class object.",
-              "Use 'load_predictor()' to set up a 'sbo_predictor' object.")
+              "Use 'sbo_predictor()' to set up a 'sbo_predictor' object.")
 }

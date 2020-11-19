@@ -104,10 +104,10 @@ These objects are a "raw" equivalent of a text predictor, and can be created wit
 t <- sbo_predtable(freqs)
 ```
 
-From `t`, one can rapidly recover the corrisponding text predictor, through `load_predictor()`:
+From `t`, one can rapidly recover the corrisponding text predictor, through `sbo_predictor()`:
 
 ```{r}
-p <- load_predictor(t) # This is the same as 'p' created above
+p <- sbo_predictor(t) # This is the same as 'p' created above
 ```
 
 Objects of class `sbo_predtable` can be safely stored out of memory and loaded in other R sessions:

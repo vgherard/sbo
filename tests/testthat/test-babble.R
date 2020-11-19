@@ -1,6 +1,6 @@
 context("Babble")
 
-p <- load_predictor(twitter_predtable)
+p <- sbo_predictor(twitter_predtable)
 
 test_that("some text is generated with default input argument",{
         set.seed(840)

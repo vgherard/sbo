@@ -4,14 +4,13 @@
 #' @examples
 #' \donttest{
 #' # Obtain k-gram frequency table from corpus
-#' ## Get k-gram frequencies, up to k = N = 3.
 #' freqs <- kgram_freqs_fast(twitter_train, N = 3, dict = twitter_dict)
 #' ## Print result
 #' freqs
 #' }
 ################################################################################
 kgram_freqs_fast <- function(corpus, N, dict, 
-                             erase = "", tolower = FALSE, EOS = ""){
+                             erase = "", lower_case = FALSE, EOS = ""){
         if (!is.character(corpus))
                 stop("'corpus' must be a character vector.")
         N <- as.integer(N)
@@ -19,12 +18,12 @@ kgram_freqs_fast <- function(corpus, N, dict,
                 stop("'N' must be a length one integer.")
         if (N < 1L)
                 stop("'N' must be greater than one.")
-        if (!is.logical(TRUE) || length(tolower) > 1)
-                stop("'tolower' must be a length one logical vector.")
+        if (!is.logical(lower_case) || length(lower_case) > 1)
+                stop("'lower_case' must be a length one logical vector.")
         if (!is.character(EOS) || length(EOS) > 1)
                 stop("'EOS' must be a length one character vector.")
         
-        .preprocess <- function(x) preprocess(x, erase, tolower)
+        .preprocess <- function(x) preprocess(x, erase, lower_case)
         
         if (is_sbo_dictionary(dict)) {
         } else if (is.character(dict)) {
@@ -43,7 +42,8 @@ kgram_freqs_fast <- function(corpus, N, dict,
                 colnames(x) <- c(paste0("w", (N + 2 - ncol(x)):N), "n")
                 as_tibble(x)
         }
-        freqs <- lapply(kgram_freqs_fast_cpp(corpus, N, dict[], erase, tolower, EOS),
+        freqs <- lapply(kgram_freqs_fast_cpp(corpus, N, dict[], erase, 
+                                             lower_case, EOS),
                         format_raw_freqs)
 
         return(new_kgram_freqs(freqs = freqs, N = N, dict = dict,

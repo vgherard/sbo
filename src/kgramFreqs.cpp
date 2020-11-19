@@ -26,10 +26,12 @@ void kgramFreqs::insert(const string& sentence, const vector<string>& dict){
                 words_queue.pop_front();
                 start = sentence.find_first_not_of(" ", end);
         }
-        word last_w = match(sentence.substr(start), dict);
-        words_queue.push_back(std::to_string(last_w));
-        insert(words_queue);
-        words_queue.pop_front();
+        if(start != string::npos){
+                word last_w = match(sentence.substr(start), dict);
+                words_queue.push_back(std::to_string(last_w));
+                insert(words_queue);
+                words_queue.pop_front();
+        }
         words_queue.push_back(std::to_string(dict.size() + 1));
         insert(words_queue);
 }

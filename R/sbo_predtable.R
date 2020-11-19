@@ -19,14 +19,14 @@ sbo_predtable <- function(object, lambda = 0.4, L = 3L, filtered = "<UNK>", ...)
 #' @examples
 #' \donttest{
 #' # Build Stupid Back-Off prediction tables directly from corpus
-#' t <- sbo_predtable(twitter_train, N = 3, dict = size_max ~ 1000, 
+#' t <- sbo_predtable(twitter_train, N = 3, dict = max_size ~ 1000, 
 #'                    .preprocess = preprocess, EOS = ".?!:;")
 #' }
 sbo_predtable.character <- 
         function(object, N, dict, .preprocess = identity, EOS = "", 
-                 lambda, L, filtered, ...) {
-        freqs <- kgram_freqs(object, N = N, dict = dict, .preprocess = identity, 
-                             EOS = "")
+                 lambda = 0.4, L = 3L, filtered = "<UNK>", ...) {
+        freqs <- kgram_freqs(object, N = N, dict = dict, 
+                             .preprocess = .preprocess, EOS = EOS)
         return(sbo_predtable(freqs, lambda, L, filtered))
 }
 
@@ -37,7 +37,14 @@ sbo_predtable.character <-
 #' # Build Stupid Back-Off prediction tables from kgram_freqs object
 #' t <- sbo_predtable(twitter_freqs)
 #' }
-sbo_predtable.sbo_kgram_freqs <- function(object, lambda, L, filtered) {
+#' \dontrun{
+#' # Save and reload a 'sbo_predtable' object with base::save()
+#' save(t)
+#' load("t.rda")
+#' }
+sbo_predtable.sbo_kgram_freqs <- function(object, 
+                                          lambda = 0.4, 
+                                          L = 3L, filtered = "<UNK>", ...) {
         N <- attr(object, "N")
         dict <- attr(object, "dict")
         if (L > length(dict))
@@ -66,12 +73,3 @@ sbo_predtable.sbo_kgram_freqs <- function(object, lambda, L, filtered) {
                           .preprocess = .preprocess, EOS = EOS
                           ) # return
 }
-
-#' @rdname sbo_predictions
-#' @examples
-#' \dontrun{
-#' # Save and reload a 'sbo_predtable' object with base::save()
-#' save(t)
-#' load("t.rda")
-#' }
-NULL

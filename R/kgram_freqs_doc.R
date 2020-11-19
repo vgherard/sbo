@@ -11,10 +11,8 @@
 #' k-gram frequencies.
 #' @param N a length one integer. The maximum order of k-grams
 #' for which frequencies are sought.
-#' @param dict either a character vector, or a length one integer/numeric.
-#' The language model fixed dictionary (see details), sorted by word frequency.
-#' If numeric, the dictionary is obtained from the training corpus using
-#' the \code{dict} most frequent words.
+#' @param dict either a \code{sbo_dictionary} object, a character vector, 
+#' or a formula (see details). The language model dictionary.
 #' @param .preprocess a function to apply before k-gram
 #' tokenization.
 #' @param erase a length one character vector. Regular expression matching
@@ -36,9 +34,16 @@
 #' \code{kgram_freqs(.preprocess = preprocess(erase = x, lower_case = y))},
 #' but more efficient (both from the speed and memory point of view).
 #'
-#' \code{kgram_freqs} and \code{kgram_freqs_fast} employ a fixed
-#' (user specified) dictionary; any out-of-vocabulary word gets effectively
-#' replaced by an "unknown word" token.
+#' Both \code{kgram_freqs()} and \code{kgram_freqs_fast()} employ a fixed
+#' (user specified) dictionary: any out-of-vocabulary word gets effectively
+#' replaced by an "unknown word" token. This is specified through the argument
+#' \code{dict}, which accepts three types of arguments: a `sbo_dictionary` 
+#' object, a character vector (containing the words of the dictionary) or a 
+#' formula. In this last case, valid formulas can be either \code{max_size ~ V} 
+#' or \code{target ~ f}, where \code{V} and \code{f} represent a dictionary size
+#' and a corpus word coverage fraction (of \code{corpus}), respectively. This 
+#' usage of the \code{dict} argument allows to build the model dictionary 
+#' 'on the fly'.
 #'
 #' The return value is a "\code{sbo_kgram_freqs}" object, i.e. a list of N tibbles, 
 #' storing frequency counts for each k-gram observed in the training corpus, for
@@ -58,7 +63,8 @@
 #' end-of-sentence tokens employed in k-gram tokenization.
 #'
 #' The \code{.preprocess} argument of \code{kgram_freqs} allows the user to
-#' employ a custom corpus preprocessing function.
+#' apply a custom transformation to the training corpus, before kgram 
+#' tokenization takes place.
 #'
 #' The algorithm for k-gram tokenization considers anything separated by
 #' (any number of) white spaces (i.e. " ") as a single word. Sentences are split
@@ -67,7 +73,7 @@
 #' the preprocessed input vector which are understood to belong to different
 #' sentences.
 #' 
-#' \strong{\emph{Nota Bene}}: It is useful to keep in mind that the function 
+#' \emph{Nota Bene}: It is useful to keep in mind that the function 
 #' passed through the  \code{.preprocess} argument also captures its enclosing 
 #' environment, which is by default the environment in which the former 
 #' was defined.

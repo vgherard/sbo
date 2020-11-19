@@ -8,16 +8,14 @@
 \usage{
 kgram_freqs(corpus, N, dict, .preprocess = identity, EOS = "")
 
-kgram_freqs_fast(corpus, N, dict, erase = "", tolower = FALSE, EOS = "")
+kgram_freqs_fast(corpus, N, dict, erase = "", lower_case = FALSE, EOS = "")
 }
 \arguments{
 \item{N}{a length one integer. The maximum order of k-grams
 for which frequencies are sought.}
 
-\item{dict}{either a character vector, or a length one integer/numeric.
-The language model fixed dictionary (see details), sorted by word frequency.
-If numeric, the dictionary is obtained from the training corpus using
-the \code{dict} most frequent words.}
+\item{dict}{either a \code{sbo_dictionary} object, a character vector,
+or a formula (see details). The language model dictionary.}
 
 \item{.preprocess}{a function to apply before k-gram
 tokenization.}
@@ -30,11 +28,11 @@ parts  of text to be erased from input. The default removes anything not
 alphanumeric, white space, apostrophes or punctuation characters
 (i.e. ".?!:;").}
 
-\item{text}{a character vector. The training corpus from which to extract
-k-gram frequencies.}
-
 \item{lower_case}{a length one logical vector. If TRUE, puts everything to
 lower case.}
+
+\item{text}{a character vector. The training corpus from which to extract
+k-gram frequencies.}
 }
 \value{
 A \code{sbo_kgram_freqs} object, containing the k-gram
@@ -53,9 +51,16 @@ is equivalent to
 \code{kgram_freqs(.preprocess = preprocess(erase = x, lower_case = y))},
 but more efficient (both from the speed and memory point of view).
 
-\code{kgram_freqs} and \code{kgram_freqs_fast} employ a fixed
-(user specified) dictionary; any out-of-vocabulary word gets effectively
-replaced by an "unknown word" token.
+Both \code{kgram_freqs()} and \code{kgram_freqs_fast()} employ a fixed
+(user specified) dictionary: any out-of-vocabulary word gets effectively
+replaced by an "unknown word" token. This is specified through the argument
+\code{dict}, which accepts three types of arguments: a \code{sbo_dictionary}
+object, a character vector (containing the words of the dictionary) or a
+formula. In this last case, valid formulas can be either \code{max_size ~ V}
+or \code{target ~ f}, where \code{V} and \code{f} represent a dictionary size
+and a corpus word coverage fraction (of \code{corpus}), respectively. This
+usage of the \code{dict} argument allows to build the model dictionary
+'on the fly'.
 
 The return value is a "\code{sbo_kgram_freqs}" object, i.e. a list of N tibbles,
 storing frequency counts for each k-gram observed in the training corpus, for
@@ -76,7 +81,8 @@ end-of-sentence tokens employed in k-gram tokenization.
 }
 
 The \code{.preprocess} argument of \code{kgram_freqs} allows the user to
-employ a custom corpus preprocessing function.
+apply a custom transformation to the training corpus, before kgram
+tokenization takes place.
 
 The algorithm for k-gram tokenization considers anything separated by
 (any number of) white spaces (i.e. " ") as a single word. Sentences are split
@@ -85,7 +91,7 @@ by the \code{EOS} argument. Additionally text belonging to different entries of
 the preprocessed input vector which are understood to belong to different
 sentences.
 
-\strong{\emph{Nota Bene}}: It is useful to keep in mind that the function
+\emph{Nota Bene}: It is useful to keep in mind that the function
 passed through the  \code{.preprocess} argument also captures its enclosing
 environment, which is by default the environment in which the former
 was defined.
@@ -101,14 +107,23 @@ preprocessing functions defined in the global environment
 \examples{
 \donttest{
 # Obtain k-gram frequency table from corpus
-## Get k-gram frequencies, up to k = N = 3.
-freqs <- kgram_freqs(twitter_train, N = 3, dict = twitter_dict)
-## Print result
+## Get k-gram frequencies, for k <= N = 3.
+## The dictionary is built on the fly, using the most frequent 1000 words.
+freqs <- kgram_freqs(corpus = twitter_train, N = 3, dict = max_size ~ 1000,
+                     .preprocess = preprocess, EOS = ".?!:;")
+freqs
+## Using a predefined dictionary
+freqs <- kgram_freqs_fast(twitter_train, N = 3, dict = twitter_dict,
+                          erase = "[^.?!:;'\\\\w\\\\s]", lower_case = TRUE,
+                          EOS = ".?!:;")
+freqs
+## 2-grams, no preprocessing, use a dictionary covering 50\% of corpus
+freqs <- kgram_freqs(corpus = twitter_train, N = 2, dict = target ~ 0.5,
+                     EOS = ".?!:;")
 freqs
 }
 \donttest{
 # Obtain k-gram frequency table from corpus
-## Get k-gram frequencies, up to k = N = 3.
 freqs <- kgram_freqs_fast(twitter_train, N = 3, dict = twitter_dict)
 ## Print result
 freqs
