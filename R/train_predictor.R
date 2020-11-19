@@ -12,6 +12,6 @@
 ################################################################################
 
 train_predictor <- function(freqs, lambda = 0.4, L = 3L, filtered = "<UNK>") {
-        predtable <- build_predtable(freqs, lambda, L, filtered)
+        predtable <- sbo_predtable(freqs, lambda, L, filtered)
         return(load_predictor(predtable))
 }

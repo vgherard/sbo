@@ -9,14 +9,14 @@
 #' @export
 #'
 #' @param predtable a \code{sbo_predtable} object, obtained through 
-#' \code{build_predtable()}.
+#' \code{sbo_predtable()}.
 #' @return A \code{sbo_predictor} object.
 #' @details This function restores a Stupid Back-Off text predictor 
 #' (i.e. a \code{sbo_predictor} object) from a "raw" prediction table 
 #' (a \code{sbo_predtable} object). The latter objects provide a convenient way 
 #' to store heavy N-gram models out of memory (e.g. with `save()`). 
 #'
-#' @seealso \code{\link[sbo]{build_predtable}}
+#' @seealso \code{\link[sbo]{sbo_predtable}}
 #' @examples
 #' \donttest{
 #' # Load text predictor from sbo::twitter_predtable

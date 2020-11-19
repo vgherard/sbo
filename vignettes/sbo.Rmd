@@ -98,10 +98,10 @@ babble(p)
 
 The above example illustrates how to use a text predictor in interactive mode. If the training process is computationally expensive, one may want to save the text predictor object (i.e. `p` in the example above) out of physical memory (e.g. through `save()`). For this purpose[^1], `sbo` provides the class `sbo_predtable` ("Stupid Back-Off prediction tables"). 
 
-These objects are a "raw" equivalent of a text predictor, and can be created with `build_predtable()`:
+These objects are a "raw" equivalent of a text predictor, and can be created with `sbo_predtable()`:
 
 ```{r}
-t <- build_predtable(freqs)
+t <- sbo_predtable(freqs)
 ```
 
 From `t`, one can rapidly recover the corrisponding text predictor, through `load_predictor()`:

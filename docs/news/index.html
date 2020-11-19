@@ -127,7 +127,7 @@
 <ul>
 <li>Former <code>sbo_preds</code> S3 class is now substituted by two classes. - <code>sbo_predictor</code>: for interactive use - <code>sbo_predtable</code>: for storing text predictors out of memory (e.g. <code><a href="https://rdrr.io/r/base/save.html">save()</a></code> to file)</li>
 <li>
-<code>sbo_predictor</code> and <code>sbo_predtable</code> objects are obtained by <code><a href="../reference/build_predtable.html">train_predictor()</a></code> and <code><a href="../reference/build_predtable.html">build_predtable()</a></code> respectively.</li>
+<code>sbo_predictor</code> and <code>sbo_predtable</code> objects are obtained by <code><a href="../reference/sbo_predtable.html">train_predictor()</a></code> and <code><a href="../reference/sbo_predtable.html">sbo_predtable()</a></code> respectively.</li>
 <li>
 <code><a href="../reference/load_predictor.html">load_predictor()</a></code> allows to rapidly recover a <code>sbo_predictor</code> from a <code>sbo_predtable</code>.</li>
 <li>The <code>sbo_predictor</code> implementation dramatically improves the speed of <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> (by a factor of x10). A single call to <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> now allocates a few kBs of RAM (whereas it previously allocated few MBs, c.f. issue <a href='https://github.com/vgherard/sbo/issues/10'>#10</a>)</li>

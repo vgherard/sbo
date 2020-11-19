@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Stupid Back-off text predictions. — build_predtable • sbo</title>
+<title>Stupid Back-off text predictions. — sbo_predtable • sbo</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Stupid Back-off text predictions. — build_predtable" />
+<meta property="og:title" content="Stupid Back-off text predictions. — sbo_predtable" />
 <meta property="og:description" content="Train a text predictor via Stupid Back-off" />
 
 
@@ -115,7 +115,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Stupid Back-off text predictions.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/vgherard/sbo/blob/master/R/build_predtable.R'><code>R/build_predtable.R</code></a>, <a href='https://github.com/vgherard/sbo/blob/master/R/sbo_predictions.R'><code>R/sbo_predictions.R</code></a>, <a href='https://github.com/vgherard/sbo/blob/master/R/train_predictor.R'><code>R/train_predictor.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/vgherard/sbo/blob/master/R/sbo_predtable.R'><code>R/sbo_predtable.R</code></a>, <a href='https://github.com/vgherard/sbo/blob/master/R/sbo_predictions.R'><code>R/sbo_predictions.R</code></a>, <a href='https://github.com/vgherard/sbo/blob/master/R/train_predictor.R'><code>R/train_predictor.R</code></a></small>
     <div class="hidden name"><code>sbo_predictions.Rd</code></div>
     </div>
 
@@ -123,7 +123,7 @@
     <p>Train a text predictor via Stupid Back-off</p>
     </div>
 
-    <pre class="usage"><span class='fu'>build_predtable</span><span class='op'>(</span><span class='va'>freqs</span>, lambda <span class='op'>=</span> <span class='fl'>0.4</span>, L <span class='op'>=</span> <span class='fl'>3L</span>, filtered <span class='op'>=</span> <span class='st'>"&lt;UNK&gt;"</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>sbo_predtable</span><span class='op'>(</span><span class='va'>freqs</span>, lambda <span class='op'>=</span> <span class='fl'>0.4</span>, L <span class='op'>=</span> <span class='fl'>3L</span>, filtered <span class='op'>=</span> <span class='st'>"&lt;UNK&gt;"</span><span class='op'>)</span>
 
 <span class='fu'>train_predictor</span><span class='op'>(</span><span class='va'>freqs</span>, lambda <span class='op'>=</span> <span class='fl'>0.4</span>, L <span class='op'>=</span> <span class='fl'>3L</span>, filtered <span class='op'>=</span> <span class='st'>"&lt;UNK&gt;"</span><span class='op'>)</span></pre>
 
@@ -157,7 +157,7 @@ referring to the Unknown-Word and End-Of-Sentence tokens, respectively.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A <code>sbo_predictor</code> object for <code>train_predictor()</code>, a
-<code>sbo_predtable</code> object for <code>build_predtable()</code>.</p>
+<code>sbo_predtable</code> object for <code>sbo_predtable()</code>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>These functions are used to train a text predictor using Stupid
@@ -167,13 +167,13 @@ by directly storing the top <code>L</code> next-word predictions for each
 k-gram prefix observed in the training corpus.</p>
 <p>The function <code>train_predictor()</code> is for interactive use. If the training
 process is computationally heavy, one can obtain a "raw" version of the
-text predictor through <code>build_predtable()</code>, which can be safely
+text predictor through <code>sbo_predtable()</code>, which can be safely
 saved out of memory (with e.g. <code><a href='https://rdrr.io/r/base/save.html'>save()</a></code>).
 The resulting object (a <code>sbo_predtable</code>) can be restored
 in another R session, and the corresponding <code>sbo_predictor</code> object
 can be loaded rapidly using <code><a href='load_predictor.html'>load_predictor()</a></code> (see the example below).</p>
 <p>The returned objects are a <code>sbo_predictor</code> and a <code>sbo_predtable</code>
-object, for <code>train_predictor</code> and <code>build_predtable</code> respectively.
+object, for <code>train_predictor</code> and <code>sbo_predtable</code> respectively.
 The latter contains Stupid Back-Off prediction tables, storing next-word
 prediction for each k-gram prefix observed in the text, whereas the former
 is an external pointer to an equivalent (but processed) C++ structure.</p>
@@ -199,7 +199,7 @@ end-of-sentence tokens.</p></li>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
 <span class='co'># Build Stupid Back-Off prediction tables</span>
-<span class='va'>t</span> <span class='op'>&lt;-</span> <span class='fu'>build_predtable</span><span class='op'>(</span><span class='va'>twitter_freqs</span><span class='op'>)</span>
+<span class='va'>t</span> <span class='op'>&lt;-</span> <span class='fu'>sbo_predtable</span><span class='op'>(</span><span class='va'>twitter_freqs</span><span class='op'>)</span>
 <span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'><a href='load_predictor.html'>load_predictor</a></span><span class='op'>(</span><span class='va'>t</span><span class='op'>)</span> <span class='co'># Load text predictor</span>
 <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>p</span>, <span class='st'>"i love"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "you" "it"  "the"</div><div class='input'><span class='co'>## Use `save(t)` to save prediction tables for the next R session</span>

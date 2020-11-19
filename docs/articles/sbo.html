@@ -105,7 +105,7 @@
 <li>
 <code>kgram_freqs</code>: A collection of <span class="math inline">\(k\)</span>-gram frequency tables, with <span class="math inline">\(k\)</span> up to a given order <span class="math inline">\(N\)</span>. These are obtained from a training corpus through the function <code><a href="../reference/get_kgram_freqs.html">get_kgram_freqs()</a></code>.</li>
 <li>
-<code>sbo_predictor</code>: these objects directly store next-word predictiors, allowing for memory compression and fast access. They can be built from <code>kgram_freqs</code> objects through <code><a href="../reference/build_predtable.html">train_predictor()</a></code>.</li>
+<code>sbo_predictor</code>: these objects directly store next-word predictiors, allowing for memory compression and fast access. They can be built from <code>kgram_freqs</code> objects through <code><a href="../reference/sbo_predtable.html">train_predictor()</a></code>.</li>
 </ul>
 <p>In addition, <code>sbo</code> features the function <code>eval_sbo_predictor</code>, which allows to evaluate prediction accuracy on a new test corpus.</p>
 </div>
@@ -142,7 +142,7 @@
 <span class="co">#&gt; See summary() for more details; ?predict.kgram_freqs for usage help.</span></code></pre></div>
 <p><em>Step 2</em>. Build next-word prediction tables:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="op">(</span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_predtable.html">train_predictor</a></span><span class="op">(</span><span class="va">freqs</span>, L <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span> <span class="co"># L = number of predictions to output per input k-gram</span>
+<code class="sourceCode R"><span class="op">(</span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sbo_predtable.html">train_predictor</a></span><span class="op">(</span><span class="va">freqs</span>, L <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span> <span class="co"># L = number of predictions to output per input k-gram</span>
 <span class="co">#&gt; A Stupid Back-Off text predictor .</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; See summary() for more details; ?predict.sbo_predictor for usage help.</span></code></pre></div>
@@ -171,9 +171,9 @@
 <h3 class="hasAnchor">
 <a href="#out-of-memory-use" class="anchor"></a>Out of memory use</h3>
 <p>The above example illustrates how to use a text predictor in interactive mode. If the training process is computationally expensive, one may want to save the text predictor object (i.e. <code>p</code> in the example above) out of physical memory (e.g. through <code><a href="https://rdrr.io/r/base/save.html">save()</a></code>). For this purpose<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>, <code>sbo</code> provides the class <code>sbo_predtable</code> (“Stupid Back-Off prediction tables”).</p>
-<p>These objects are a “raw” equivalent of a text predictor, and can be created with <code><a href="../reference/build_predtable.html">build_predtable()</a></code>:</p>
+<p>These objects are a “raw” equivalent of a text predictor, and can be created with <code><a href="../reference/sbo_predtable.html">sbo_predtable()</a></code>:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">t</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_predtable.html">build_predtable</a></span><span class="op">(</span><span class="va">freqs</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">t</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sbo_predtable.html">sbo_predtable</a></span><span class="op">(</span><span class="va">freqs</span><span class="op">)</span></code></pre></div>
 <p>From <code>t</code>, one can rapidly recover the corrisponding text predictor, through <code><a href="../reference/load_predictor.html">load_predictor()</a></code>:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_predictor.html">load_predictor</a></span><span class="op">(</span><span class="va">t</span><span class="op">)</span> <span class="co"># This is the same as 'p' created above</span></code></pre></div>

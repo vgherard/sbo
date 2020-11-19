@@ -15,6 +15,6 @@ twitter_freqs <- do.call(
                             ...),
         args = train_control
         )
-twitter_predtable <- build_predtable(twitter_freqs)
+twitter_predtable <- sbo_predtable(twitter_freqs)
 
 usethis::use_data(twitter_dict, twitter_freqs, twitter_predtable, overwrite = T)

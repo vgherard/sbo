@@ -8,7 +8,7 @@ load_predictor(predtable)
 }
 \arguments{
 \item{predtable}{a \code{sbo_predtable} object, obtained through
-\code{build_predtable()}.}
+\code{sbo_predtable()}.}
 }
 \value{
 A \code{sbo_predictor} object.
@@ -31,7 +31,7 @@ predict(p, "i love")
 }
 }
 \seealso{
-\code{\link[sbo]{build_predtable}}
+\code{\link[sbo]{sbo_predtable}}
 }
 \author{
 Valerio Gherardi

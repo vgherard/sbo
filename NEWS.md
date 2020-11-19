@@ -4,7 +4,7 @@
 * Former `sbo_preds` S3 class is now substituted by two classes.
         - `sbo_predictor`: for interactive use
         - `sbo_predtable`: for storing text predictors out of memory (e.g. `save()` to file)
-* `sbo_predictor` and `sbo_predtable` objects are obtained by `train_predictor()` and `build_predtable()` respectively.
+* `sbo_predictor` and `sbo_predtable` objects are obtained by `train_predictor()` and `sbo_predtable()` respectively.
 * `load_predictor()` allows to rapidly recover a `sbo_predictor` from a `sbo_predtable`.
 * The `sbo_predictor` implementation dramatically improves the speed of `predict()` (by a factor of x10). A single call to `predict()` now allocates a few kBs of RAM (whereas it previously allocated few MBs, c.f. issue #10)
 * metadata of `sbo_kgram_freqs` and `sbo_pred*` objects are now attributes (#11).
