@@ -20,72 +20,77 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
-The `sbo` package provides utilities for building and evaluating next-word prediction functions based on [Stupid Back-off](https://www.aclweb.org/anthology/D07-1090.pdf) [N-gram models](https://en.wikipedia.org/wiki/N-gram) in R. In this vignette, I illustrate the main feature of `sbo`, including in particular: 
+The `sbo` package provides utilities for building and evaluating next-word prediction functions based on [Stupid Back-off](https://www.aclweb.org/anthology/D07-1090.pdf) N-gram models in R. In this vignette, I illustrate the main features of `sbo`, including in particular: 
 
 * the typical workflow for building a text predictor from a given training corpus, and 
 * the evaluation of next-word predictions through a test corpus.
 
-## Functions and classes
-
-The `sbo` package pivots around two (S3) object classes: 
-
-* `sbo_kgram_freqs`: A collection of $k$-gram frequency tables, with $k$ up to a given order $N$. These are obtained from a training corpus through the function `kgram_freqs()`.
-* `sbo_predictor`: these objects directly store next-word predictiors, allowing for memory compression and fast access. They can be built from `sbo_kgram_freqs` objects through `train_predictor()`.
-
-In addition, `sbo` features the function `eval_sbo_predictor`, which allows to evaluate prediction accuracy on a new test corpus.
-
-## Building a next-word prediction function with `sbo`
-
-```{r setup, warning=FALSE, message=FALSE}
+```{r}
 library(sbo)
 ```
 
-In this and the next section we will employ the `twitter_train` and `twitter_test` example datasets, included in `sbo` for illustrative purpose:
+## Building a text predictor with `sbo`
+
+In this and the next section we will employ the `sbo::twitter_train` example dataset[^1], each entry of which consists in a single tweet in English, *e.g.*:
 
 ```{r}
-train <- twitter_train
-test <- twitter_test
+head(sbo::twitter_train, 3)
 ```
 
-These are small samples of $7·10^4$ and $10^4$ entries, respectively, from the "Tweets" Swiftkey dataset fully available [here](https://www.kaggle.com/crmercado/tweets-blogs-news-swiftkey-dataset-4million). Each entry consists of a single tweet in English, *e.g.*:
+[^1]: This is a small samples of $7·10^4$ entries from the "Tweets" Swiftkey dataset fully available [here](https://www.kaggle.com/crmercado/tweets-blogs-news-swiftkey-dataset-4million).
+
+Given the training corpus, the typical workflow for building a text-predictor consists of the following steps:
+
+1. *Preprocessing*. Apply some transformations to the training corpus before
+$k$-gram extraction.
+1. *Sentence tokenization*. Split the training corpus into sentences.
+1. *Extract $k$-gram frequencies*. These are the building blocks for any 
+$N$-gram language model.
+1. *Train a text predictor*. Build a prediction function $f$, which takes some
+text input and returns as output a next-word prediction (or more than one, 
+ordered by decreasing probability).
+
+Also, implicit in the previous steps is the *choice of a model dictionary*, which can be done a priori, or during the training process. 
+
+All these steps (including building a dictionary) can be performed in `sbo` as follows:
 
 ```{r}
-head(train, 3)
+p <- sbo_predictor(object = sbo::twitter_train, # preloaded example dataset
+                   N = 3, # Train a 3-gram model
+                   dict = target ~ 0.75, # cover 75% of training corpus
+                   .preprocess = sbo::preprocess, # Preprocessing transformation 
+                   EOS = ".?!:;", # End-Of-Sentence tokens
+                   lambda = 0.4, # Back-off penalization in SBO algorithm
+                   L = 3L, # Number of predictions for input
+                   filtered = "<UNK>" # Exclude the <UNK> token from predictions
+                   )
 ```
 
-The prototypical workflow for building a text-predictor in `sbo` goes as follows:
-
-*Step 0 (optional)*. Build a dictionary from training set,  keeping the top $V=1000$ most frequent words: 
-```{r}
-# N.B.: get_word_freqs(train) stores word counts in a sorted named integer.
-word_freqs <- get_word_freqs(train)
-dict <- names(word_freqs)[1:1000]
-head(dict)
-```
-Alternatively, if available, one may use a predefined dictionary.
-
-*Step 1*. Obtain $k$-gram frequencies from training corpus:
-```{r}
-(freqs <- kgram_freqs(train, N = 3, dict)) # 'N' is the order of n-grams
-```
-
-*Step 2*. Build next-word prediction tables:
-```{r}
-(p <- train_predictor(freqs, L = 3)) # L = number of predictions to output per input k-gram
-```
-The `p` object now stores all the information needed to generate next-word predictions according to Stupid Back-Off. The argument `L` fixes the number of predictions to retain per input k-gram (here we prune to the top 3 predictions).
-
-At this point we can predict next words from our model, by using `predict` (here leftmost words are the top predictions):
+This creates an object `p` of class `sbo_predictor`, which can be used to 
+generate text predictions as follows:
 
 ```{r}
-predict(p, "i love") # a character vector
-predict(p, "you love") # another character vector
-predict(p, c("i love", "you love")) # a character matrix
+predict(p, "i love")
 ```
 
-See `?predict.sbo_predictor` for further information on the relevant `predict` method.
+Let us comment the various arguments in the previous call to  `sbo_predictor()`:
 
-Last, but not least, we can employ our model for generating some beautiful non-sense:
+- `object`. The training corpus used to train the text predictor.
+- `N`. The order $N$ of the $N$-gram model.
+- `dict`. This argument specifies the model dictionary. In this case, we build
+our dictionary directly from the training corpus, using the most frequent words which cover a fraction `target = 0.75` of the corpus. In alternative, one can prune the corpus word set to a fixed vocabulary size, or use a predefined dictionary.
+- `.preprocess`. The function used in corpus preprocessing. Here we leverage on 
+the minimal `sbo::preprocess`, but this can be in principle any function taking
+a character input and returning a character output.
+- `EOS`. This argument lists, in a single string, all End-Of-Sentence characters, employed for sentence tokenization (moreover, text belonging to different entries of the preprocessed input vector are understood to belong to different sentences).
+- `lambda`. The penalization $\lambda$ employed in the Stupid Back-Off algorithm.
+Here $\lambda = 0.4$ is the benchmark value given in the original work by Brants *et al.*.
+- `L`. Number of predictions to return for any given input. This needs to be specified a priori, because the object `p` does not store the full $k$-gram frequency tables, but only a fixed number (i.e. $L$) of predictions for any
+$k$-gram prefix ($k\leq N -1$) observed in the training corpus. This is commented more at length below.
+- `filtered`. Words to exclude from next-word predictions. Here the reserved string
+`<UNK>` excludes the Unknown-Word token (similarly, one can use the reserved string `<EOS>` to exclude End-Of-Sentence tokens).
+
+Before proceeding, let us take a little break and introduce the most important function of `sbo`:
 
 ```{r}
 set.seed(840)
@@ -96,15 +101,23 @@ babble(p)
 
 ### Out of memory use
 
-The above example illustrates how to use a text predictor in interactive mode. If the training process is computationally expensive, one may want to save the text predictor object (i.e. `p` in the example above) out of physical memory (e.g. through `save()`). For this purpose[^1], `sbo` provides the class `sbo_predtable` ("Stupid Back-Off prediction tables"). 
+The example in the previous Section illustrates how to use a text predictor in interactive mode. If the training process is computationally expensive, one may want to save the text predictor object (i.e. `p` in the example above) out of physical memory (e.g. through `save()`). For this purpose[^2], `sbo` provides the class `sbo_predtable` ("Stupid Back-Off prediction tables"). 
 
-These objects are a "raw" equivalent of a text predictor, and can be created with `sbo_predtable()`:
+These objects are a "raw" equivalent of a text predictor, and can be created with `sbo_predtable()`, which has the same user interface of `sbo_predictor()`. For example, the definition of `p` above would be replaced by:
 
 ```{r}
-t <- sbo_predtable(freqs)
+t <- sbo_predtable(object = sbo::twitter_train, # preloaded example dataset
+                   N = 3, # Train a 3-gram model
+                   dict = target ~ 0.75, # cover 75% of training corpus
+                   .preprocess = sbo::preprocess, # Preprocessing transformation 
+                   EOS = ".?!:;", # End-Of-Sentence tokens
+                   lambda = 0.4, # Back-off penalization in SBO algorithm
+                   L = 3L, # Number of predictions for input
+                   filtered = "<UNK>" # Exclude the <UNK> token from predictions
+                   )
 ```
 
-From `t`, one can rapidly recover the corrisponding text predictor, through `sbo_predictor()`:
+From `t`, one can rapidly recover the corrisponding text predictor, using `sbo_predictor()`[^3]:
 
 ```{r}
 p <- sbo_predictor(t) # This is the same as 'p' created above
@@ -118,43 +131,18 @@ save(t)
 load("t.rda")
 ```
 
-[^1]: At the present stage of development, this cannot be done directly for the `sbo_predictor` object created above. Technically, this is because `sbo_predictor` objects are external pointers to a convenient C++ class, optimized for fast `predict()`ions. Such a class instance exists only during a single R session.
+[^2]: At the present stage of development, this cannot be done directly for the `sbo_predictor` object created above. Technically, this is because `sbo_predictor` objects are external pointers to a convenient C++ class, optimized for fast `predict()`ions. Such a class instance exists only during a single R session.
 
-### Some details on `sbo_kgram_freqs` and `sbo_predictor` class objects
-As the name suggests, objects of class `sbo_kgram_freqs` store the counts for each $k$-gram observed in the training corpus. These are the building block
-for *any* $N$-gram based language model, and indeed text prediction can be performed directly from the `freqs` object obtained above:
+[^3]: As this example makes clear, both `sbo_predictor()` and `sbo_predtable()` are S3 generics. The corresponding available methods are listed under `?sbo_predictions`.
 
-```{r}
-predict(freqs, "i love")
-```
-
-The output contains the full language model information, i.e. the probabilities[^2] for each possible word completion.
-
-On the contrary, `sbo_predictor` objects directly store next-word predictions for each $k$-gram prefix ($k=1,\,2,\dots,\,N-1$) observed in the training corpus.
-The advantage provided by `sbo_predictor` objects for simple text prediction is two-fold:
-
-1. Memory compression[^3]. For instance:
-```{r}
-size_in_MB <- function(x) format(utils::object.size(x), units = "MB")
-sapply(list(sbo_predtable = t, sbo_kgram_freqs = freqs), size_in_MB)
-```
-
-2. Fast query:
-```{r}
-chrono_predict <- function(x) system.time(predict(x, "i love"), gcFirst = TRUE)
-lapply(list(p = p, freqs = freqs), chrono_predict)
-```
+### Some details on `sbo_predictor` and `sbo_predtable` class objects
+`sbo_predictor` and `sbo_predtable` objects directly store next-word predictions for each $k$-gram prefix ($k=1,\,2,\dots,\,N-1$) observed in the training corpus, allowing for memory compression and fast query.
 
 Both objects store, through attributes, information about the training process. This can be conveniently obtained through the corresponding `summary()` methods, e.g.
 
 ```{r}
 summary(p)
 ```
-
-
-[^2]: More precisely, these are the normalized (to unity) scores resulting from the Stupid Back-Off smoothing method.
-
-[^3]: I compute the object size from the equivalent `sbo_predtable` object `t` created above since, as explained in a previous footnote, `sbo_predictor` objects are implemented as pointers to a C++ class, so that `object.size(p)` does not correctly account for the actual memory occupied by these objects.  
 
 #### Internal structure of `sbo_predictor` and `sbo_predtable`  objects
 Here are some details on the current (still under development) implementation of `sbo_predictor` and `sbo_predtable` objects. For clarity, I will refer to the `sbo_predtable` instance `t` created above:
@@ -171,17 +159,6 @@ t[[1]]
 
 [^4]: Coded with respect to the rank sorted dictionary `dict` (the codes `0`, `length(dict) + 1` and `length(dict) + 2` correspond to the Begin-Of-Sentence, End-Of-Sentence and Unknown-Word tokens, respectively).
 
-### Text preprocessing
-
-Usually text corpora require preprocessing before word and $k$-gram tokenization can take place. The `.preprocess` argument of `kgram_freqs()` allows for an user specified preprocessing function. The default is the minimal `sbo::preprocess()`, and the optimized `kgram_freqs_fast(erase = x, EOS = y)` is equivalent to `kgram_freqs(.preprocess = sbo::preprocess(erase = x, EOS = y))` (but substantially more efficient).
-
-### Sentence tokenization
-
-Tokenization at the sentence level is required to obtain terminal $k$-grams (i.e. $k$-grams containing Begin-Of-Sentence or End-Of-Sentence tokens). In the training process, sentence tokenization takes place after text preprocessing.
-
-End-Of-Sentence (single character) tokens are specified by the `EOS` argument of `kgram_freqs()` and `kgram_freqs_fast()`; empty sentences are always skipped. Also, if the input vector `text` has `length(text) > 1`, the various elements of `text` belong to different entries. 
-
-The process of sentence tokenization can also be performed directly, through `sbo::tokenize_sentences()`, but this is not required for use with `kgram_freqs*()`.
 
 ## Evaluating next-word predictions
 
@@ -197,11 +174,11 @@ Once we have built our next-word predictor, we may want to directly test its pre
 1. Predict next words from the $(N-1)$-gram prefix.
 1. Return all predictions, together with the true word completions.
 
-As a concrete example, we test the text-predictor trained in the previous section over the Twitter (independent) test set.
+As a concrete example, we test the text-predictor trained in the previous section over the example dataset `sbo::twitter_test`.
 
 ```{r}
 set.seed(840)
-(evaluation <- eval_sbo_predictor(p, test)) # test <- sbo::twitter_test
+(evaluation <- eval_sbo_predictor(p, sbo::twitter_test)) # test <- sbo::twitter_test
 ```
 
 As it is seen, `eval_sbo_predictor()` returns a tibble containing the input $(N-1)$-grams, the true completions, the predicted completions and a column indicating whether one of the predictions were correct or not.
@@ -238,3 +215,78 @@ if (require(ggplot2)) {
 ```
 
 Apparently, the large majority of correct predictions come from the first ~ 300 words of the dictionary, so that if we prune the dictionary excluding words with rank greater than, *e.g.*, 500 we can reduce the size of our model without seriously affecting its prediction accuracy.
+
+## Other functionalities
+
+In this Section, I briefly survey other functionalities provided by `sbo`. See the corresponding help pages for more details.
+
+### Dictionaries
+
+Dictionaries can be directly built using `sbo_dictionary()`. For example, the command:
+
+```{r}
+dict <- sbo_dictionary(corpus = sbo::twitter_train, 
+                       max_size = 100, 
+                       target = 0.5, 
+                       .preprocess = sbo::preprocess,
+                       EOS = ".?!:;")
+```
+
+constructs a dictionary applying the most restrictive of the two constraint `max_size = 100` or `target = 0.5`, where `target` denotes the coverage fraction of `corpus`. The arguments `.preprocess` and `EOS` work as described above.
+
+The output is an object of class `sbo_dictionary`, which stores,
+along with a vector of words (sorted by decreasing frequency), also the original values of `.preprocess` and `EOS`.
+
+### $k$-gram tokenization
+
+$k$-gram frequency tables form the building blocks of *any* $N$-gram based language model. The function `sbo::kgram_freqs()` extracts frequency tables from a training corpus and stores them into a class `sbo_kgram_freq` object. For example:
+
+```{r}
+f <- kgram_freqs(corpus = sbo::twitter_train, 
+                 N = 3, 
+                 dict = target ~ 0.75,
+                 .preprocess = sbo::preprocess,
+                 EOS = ".?!:;"
+                 )
+```
+
+stores $k$-gram frequency tables into `f`. This object can itself be used for text prediction:
+
+```{r}
+predict(f, "i love")
+```
+
+The output contains the full language model information, i.e. the probabilities[^5] for each possible word completion. Compare this with:
+
+```{r}
+predict(p, "i love")
+```
+
+The extra information contained in `f` comes at a price. In fact, the advantage provided by `sbo_predictor`/`sbo_predtable` objects for simple text prediction is two-fold:
+
+1. Memory compression:
+```{r}
+size_in_MB <- function(x) format(utils::object.size(x), units = "MB")
+sapply(list(sbo_predtable = t, kgram_freqs = f), size_in_MB)
+```
+
+2. Fast query:
+
+```{r}
+chrono_predict <- function(x) system.time(predict(x, "i love"), gcFirst = TRUE)
+lapply(list(sbo_predictor = p, kgram_freqs = f), chrono_predict)
+```
+
+[^5]: More precisely, these are the normalized (to unity) scores resulting from the Stupid Back-Off smoothing method.
+
+### Text preprocessing
+
+Usually text corpora require preprocessing before word and $k$-gram tokenization can take place. The `.preprocess` argument of `kgram_freqs()` allows for an user specified preprocessing function. The default is the minimal `sbo::preprocess()`, and the optimized `kgram_freqs_fast(erase = x, EOS = y)` is equivalent to `kgram_freqs(.preprocess = sbo::preprocess(erase = x, EOS = y))` (but more efficient).
+
+### Sentence tokenization
+
+Tokenization at the sentence level is required to obtain terminal $k$-grams (i.e. $k$-grams containing Begin-Of-Sentence or End-Of-Sentence tokens). In the training process, sentence tokenization takes place after text preprocessing.
+
+End-Of-Sentence (single character) tokens are specified by the `EOS` argument of `kgram_freqs()` and `kgram_freqs_fast()`; empty sentences are always skipped. Also, if the input vector `text` has `length(text) > 1`, the various elements of `text` belong to different entries. 
+
+The process of sentence tokenization can also be performed directly, through `sbo::tokenize_sentences()`, but this is not required for use with `kgram_freqs*()`.

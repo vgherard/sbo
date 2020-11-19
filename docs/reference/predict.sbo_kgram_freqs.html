@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>k-gram frequencies from Twitter training set — twitter_freqs • sbo</title>
+<title>Predict method for k-gram frequency tables — predict.sbo_kgram_freqs • sbo</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="k-gram frequencies from Twitter training set — twitter_freqs" />
-<meta property="og:description" content="k-gram frequencies from Twitter training set" />
+<meta property="og:title" content="Predict method for k-gram frequency tables — predict.sbo_kgram_freqs" />
+<meta property="og:description" content="Predictive text based on Stupid Back-off N-gram model." />
 
 
 
@@ -114,26 +114,65 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>k-gram frequencies from Twitter training set</h1>
-    <small class="dont-index">Source: <a href='https://github.com/vgherard/sbo/blob/master/R/data.R'><code>R/data.R</code></a></small>
-    <div class="hidden name"><code>twitter_freqs.Rd</code></div>
+    <h1>Predict method for k-gram frequency tables</h1>
+    <small class="dont-index">Source: <a href='https://github.com/vgherard/sbo/blob/master/R/predict_kgram_freqs.R'><code>R/predict_kgram_freqs.R</code></a></small>
+    <div class="hidden name"><code>predict.sbo_kgram_freqs.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>k-gram frequencies from Twitter training set</p>
+    <p>Predictive text based on Stupid Back-off N-gram model.</p>
     </div>
 
-    <pre class="usage"><span class='va'>twitter_freqs</span></pre>
+    <pre class="usage"><span class='co'># S3 method for sbo_kgram_freqs</span>
+<span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>newdata</span>, lambda <span class='op'>=</span> <span class='fl'>0.4</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>object</th>
+      <td><p>a <code>sbo_kgram_freqs</code> object.</p></td>
+    </tr>
+    <tr>
+      <th>newdata</th>
+      <td><p>a length one character vector, containing the input for
+next-word prediction.</p></td>
+    </tr>
+    <tr>
+      <th>lambda</th>
+      <td><p>a numeric vector of length one. The back-off penalization
+in Stupid Back-off algorithm.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>further arguments passed to or from other methods.</p></td>
+    </tr>
+    </table>
 
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>sbo_kgram_freqs</code> object. Contains k-gram frequencies from
-the example training set <code><a href='twitter_train.html'>twitter_train</a></code>.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <p>A tibble containing the next-word probabilities for all words
+in the dictionary.</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
-    <div class='dont-index'><p><code><a href='twitter_train.html'>twitter_train</a></code></p></div>
+    <p>Valerio Gherardi</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>twitter_freqs</span>, <span class='st'>"i love"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1,001 x 2</span><span>
+#&gt;    completion probability
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> you             0.216 
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> it              0.062</span><span style='text-decoration: underline;'>6</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> the             0.054</span><span style='text-decoration: underline;'>1</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> my              0.048</span><span style='text-decoration: underline;'>2</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> that            0.040</span><span style='text-decoration: underline;'>6</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> how             0.037</span><span style='text-decoration: underline;'>2</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> u               0.034</span><span style='text-decoration: underline;'>7</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> your            0.027</span><span style='text-decoration: underline;'>9</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> this            0.021</span><span style='text-decoration: underline;'>1</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> &lt;EOS&gt;           0.013</span><span style='text-decoration: underline;'>5</span><span>
+#&gt; </span><span style='color: #949494;'># … with 991 more rows</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
