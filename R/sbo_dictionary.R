@@ -91,9 +91,11 @@ new_sbo_dictionary <- function(dictionary, .preprocess, EOS) {
 
 is_sbo_dictionary <- function(x) {
         is.object(x) &&
-                class(x) == "sbo_dictionary" &&
-                is.character(x) &&
-                setequal(attributes(x), c(".preprocess", "EOS", "class")) &&
-                is.character(attr(x, "EOS")) && attr(x, "EOS") == 1 &&
+                (class(x) == "sbo_dictionary") &&
+                (is.character(x)) &&
+                setequal(names(attributes(x)),
+                         c(".preprocess", "EOS", "class")
+                         ) &&
+                is.character(attr(x, "EOS")) && (length(attr(x, "EOS")) == 1) &&
                 is.function(attr(x, ".preprocess"))
 }

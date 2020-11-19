@@ -2,7 +2,7 @@
 using namespace Rcpp;
 
 // [[Rcpp::export]]
-List fast_kgram_freqs_cpp(std::vector<std::string>& input,
+List kgram_freqs_fast_cpp(std::vector<std::string>& input,
                           int N,
                           const std::vector<std::string>& dict,
                           std::string erase = "[^.?!:;'\\w\\s]",

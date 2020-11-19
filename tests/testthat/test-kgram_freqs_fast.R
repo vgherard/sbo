@@ -1,11 +1,11 @@
 context("kgram_freqs_fast")
 
 test_that("return value has the correct structure", {
-        f <- kgram_freqs_fast(text = "some text",
+        f <- kgram_freqs_fast(corpus = "some text",
                              N = 3,
                              dict = c("some", "text"),
                              erase = "",
-                             lower_case = FALSE,
+                             tolower = FALSE,
                              EOS = "")
         expect_true(is.list(f))
         expect_true(length(f) == 3)
@@ -20,18 +20,18 @@ test_that("return value has the correct structure", {
 })
 
 test_that("input `N <= 0` produces error", {
-        expect_error(kgram_freqs_fast(text = "some text",
+        expect_error(kgram_freqs_fast(corpus = "some text",
                                      N = 0,
                                      dict = c("some", "text"),
                                      erase = "",
-                                     lower_case = FALSE,
+                                     tolower = FALSE,
                                      EOS = "")
                      )
-        expect_error(kgram_freqs_fast(text = "some text",
+        expect_error(kgram_freqs_fast(corpus = "some text",
                                      N = -1,
                                      dict = c("some", "text"),
                                      erase = "",
-                                     lower_case = FALSE,
+                                     tolower = FALSE,
                                      EOS = "")
         )
 })
@@ -51,8 +51,8 @@ test_that("correct 1-gram and 2-gram counts on simple input", {
         input <- c("a a b a", "a b b a", "a c b", "b c a a b")
         dict <- c("a", "b")
 
-        freqs <- kgram_freqs_fast(text = input, N = 2, dict = dict,
-                                      erase = "", lower_case = FALSE, EOS = "")
+        freqs <- kgram_freqs_fast(corpus = input, N = 2, dict = dict,
+                                      erase = "", tolower = FALSE, EOS = "")
         actual_1grams <- arrange(freqs[[1]], w2)
         actual_2grams <- arrange(freqs[[2]], w1, w2)
 
@@ -64,8 +64,8 @@ test_that("correct 1-gram and 2-gram with some preprocessing", {
         input <- c("a A b A", "a B b a", "a C B", "b c A a b")
         dict <- c("a", "b")
 
-        freqs <- kgram_freqs_fast(text = input, N = 2, dict = dict,
-                                      erase = "", lower_case = TRUE, EOS = "")
+        freqs <- kgram_freqs_fast(corpus = input, N = 2, dict = dict,
+                                      erase = "", tolower = TRUE, EOS = "")
         actual_1grams <- arrange(freqs[[1]], w2)
         actual_2grams <- arrange(freqs[[2]], w1, w2)
 
@@ -77,8 +77,8 @@ test_that("correct 1-gram and 2-gram counts with EOS token", {
         input <- c("/ a a b a / a b b a / a c b / b c a a b /")
         dict <- c("a", "b")
 
-        freqs <- kgram_freqs_fast(text = input, N = 2, dict = dict,
-                                      erase = "", lower_case = FALSE, EOS = "/")
+        freqs <- kgram_freqs_fast(corpus = input, N = 2, dict = dict,
+                                      erase = "", tolower = FALSE, EOS = "/")
         actual_1grams <- arrange(freqs[[1]], w2)
         actual_2grams <- arrange(freqs[[2]], w1, w2)
 
@@ -89,8 +89,8 @@ test_that("correct 1-gram and 2-gram counts with EOS token", {
 test_that("build dictionary on the fly", {
         input <- c("a a b a", "a b b a", "a c b", "b c a a b")
         
-        freqs <- kgram_freqs_fast(text = input, N = 2, dict = 2,
-                                      erase = "", lower_case = FALSE, EOS = "")
+        freqs <- kgram_freqs_fast(corpus = input, N = 2, dict = max_size ~ 2,
+                                      erase = "", tolower = FALSE, EOS = "")
         actual_1grams <- arrange(freqs[[1]], w2)
         actual_2grams <- arrange(freqs[[2]], w1, w2)
         
@@ -100,22 +100,22 @@ test_that("build dictionary on the fly", {
 
 test_that("Argument dict = Inf works", {
         input <- c("a a b a", "a b b a", "a c b", "b c a a b")
-        freqsInf <- kgram_freqs_fast(text = input, N = 2, dict = Inf,
-                                      erase = "", lower_case = FALSE, EOS = "")
-        freqs3 <- kgram_freqs_fast(text = input, N = 2, dict = 3,
-                                      erase = "", lower_case = FALSE, EOS = "")
+        freqsInf <- kgram_freqs_fast(corpus = input, N = 2, dict = max_size ~ Inf,
+                                      erase = "", tolower = FALSE, EOS = "")
+        freqs3 <- kgram_freqs_fast(corpus = input, N = 2, dict = max_size ~ 3,
+                                      erase = "", tolower = FALSE, EOS = "")
         attr(freqs3, ".preprocess") <- attr(freqsInf, ".preprocess") 
-        expect_identical(freqs3, freqsInf)
+        expect_equal(freqs3, freqsInf)
 })
 
 rm(expected_1grams, expected_2grams)
 
 test_that("Error on 'dict' argument not character or numeric", {
         input <- c("a a b a", "a b b a", "a c b", "b c a a b")
-        expect_error(kgram_freqs_fast(text = input, N = 2, dict = TRUE))
+        expect_error(kgram_freqs_fast(corpus = input, N = 2, dict = TRUE))
 })
 
 test_that("Error on 'dict' argument negative numeric", {
         input <- c("a a b a", "a b b a", "a c b", "b c a a b")
-        expect_error(kgram_freqs_fast(text = input, N = 2, dict = -1))
+        expect_error(kgram_freqs_fast(corpus = input, N = 2, dict = max_size ~ -1))
 })

@@ -34,7 +34,7 @@ test_that("Scores correctly assigned: 2-gram model predictions",{
                         x <- filter(x, completion != "<UNK>")
                         return(arrange(x, desc(probability)))
                 })
-        f <- kgram_freqs(text = train, N = 2, dict = dict,
+        f <- kgram_freqs(corpus = train, N = 2, dict = dict,
                              .preprocess = identity, EOS = "")
         actual <- lapply(c(" ", "a", "b", "x"), 
                          function(input) predict(f, input))
@@ -76,8 +76,8 @@ test_that("Scores correctly assigned: 3-gram model predictions",{
                         x <- filter(x, completion != "<UNK>")
                         return(arrange(x, desc(probability)))
                 })
-        f <- kgram_freqs(text = train, N = 3, dict = dict,
-                             .preprocess = identity, EOS = "")
+        f <- kgram_freqs(corpus = train, N = 3, dict = dict,
+                         .preprocess = identity, EOS = "")
         actual <- lapply(c(" ", "a", "b", "x"), 
                          function(input) predict(f, input))
         names(actual) <- names(expected)

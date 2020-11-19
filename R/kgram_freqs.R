@@ -31,8 +31,8 @@ kgram_freqs <- function(corpus, N, dict, .preprocess = identity, EOS = ""){
         } else if (is.character(dict)) {
                 dict <- as_sbo_dictionary(dict, .preprocess, EOS)
         } else if (class(dict)[1] == "formula") {
-                dict <- deparse(dict) %>% strsplit(" ~ ")
-                args <- list(corpus = corpus, dict[2], 
+                dict <- deparse(dict) %>% strsplit(" ~ ") %>% unlist
+                args <- list(corpus = corpus, as.numeric(dict[2]), 
                              .preprocess = identity, EOS = "")
                 names(args)[2] <- dict[1]
                 dict <- do.call(what = sbo_dictionary, args)

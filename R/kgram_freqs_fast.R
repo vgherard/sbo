@@ -10,8 +10,8 @@
 #' freqs
 #' }
 ################################################################################
-fast_kgram_freqs <- function(corpus, N, dict, 
-                             erase = "", tolower = TRUE, EOS = ""){
+kgram_freqs_fast <- function(corpus, N, dict, 
+                             erase = "", tolower = FALSE, EOS = ""){
         if (!is.character(corpus))
                 stop("'corpus' must be a character vector.")
         N <- as.integer(N)
@@ -30,8 +30,8 @@ fast_kgram_freqs <- function(corpus, N, dict,
         } else if (is.character(dict)) {
                 dict <- as_sbo_dictionary(dict, .preprocess, EOS)
         } else if (class(dict)[1] == "formula") {
-                dict <- deparse(dict) %>% strsplit(" ~ ")
-                args <- list(corpus = corpus, dict[2], 
+                dict <- deparse(dict) %>% strsplit(" ~ ") %>% unlist
+                args <- list(corpus = corpus, as.numeric(dict[2]), 
                              .preprocess = .preprocess, EOS = "")
                 names(args)[2] <- dict[1]
                 dict <- do.call(what = sbo_dictionary, args)
@@ -43,7 +43,7 @@ fast_kgram_freqs <- function(corpus, N, dict,
                 colnames(x) <- c(paste0("w", (N + 2 - ncol(x)):N), "n")
                 as_tibble(x)
         }
-        freqs <- lapply(fast_kgram_freqs(corpus, N, dict[], erase, tolower, EOS),
+        freqs <- lapply(kgram_freqs_fast_cpp(corpus, N, dict[], erase, tolower, EOS),
                         format_raw_freqs)
 
         return(new_kgram_freqs(freqs = freqs, N = N, dict = dict,
