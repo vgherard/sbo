@@ -17,3 +17,4 @@ cran-comments.md
 ^appveyor\.yml$
 ^\.circleci$
 ^\.circleci/config\.yml$
+^\.github$

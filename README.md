@@ -9,6 +9,8 @@
 status](https://ci.appveyor.com/api/projects/status/github/vgherard/sbo?branch=master&svg=true)](https://ci.appveyor.com/project/vgherard/sbo)
 [![CircleCI build
 status](https://circleci.com/gh/vgherard/sbo.svg?style=svg)](https://circleci.com/gh/vgherard/sbo)
+[![GitHub Actions build
+status](https://github.com/vgherard/sbo/workflows/R-CMD-check/badge.svg)](https://github.com/vgherard/sbo/actions)
 [![Codecov test
 coverage](https://codecov.io/gh/vgherard/sbo/branch/master/graph/badge.svg)](https://codecov.io/gh/vgherard/sbo?branch=master)
 [![CRAN
