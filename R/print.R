@@ -1,9 +1,17 @@
 #' @export
 
-print.kgram_freqs <- function(x, ...){
+print.sbo_dictionary <- function(x, ...){
+        cat(paste0("A dictionary.", "\n\n"))
+        paste0("See summary() for more details.\n") %>% (cli::col_green) %>% cat
+        return(invisible(x))
+}
+
+#' @export
+
+print.sbo_kgram_freqs <- function(x, ...){
         cat(paste0("A k-gram frequency table.", "\n\n"))
         paste0("See summary() for more details; ",
-               "?predict.kgram_freqs for usage help.\n"
+               "?predict.sbo_kgram_freqs for usage help.\n"
                ) %>%
                 (cli::col_green) %>%
                 cat
@@ -21,5 +29,12 @@ print.sbo_predictions <- function(x, ...){
         ) %>%
                 (cli::col_green) %>%
                 cat
+        return(invisible(x))
+}
+
+#' @export
+print.word_coverage <- function(x, ...){
+        cat("A 'word_coverage' object.\n\n")
+        paste0("See summary() for more details.\n") %>% (cli::col_green) %>% cat
         return(invisible(x))
 }

@@ -11,8 +11,10 @@ void get_word_freqsC(const std::string& sentence,
                 freqs[word]++;
                 start = sentence.find_first_not_of(" ", end);
         }
-        std::string last_word = sentence.substr(start);
-        freqs[last_word]++;
+        if(start != std::string::npos){
+                std::string last_word = sentence.substr(start);
+                freqs[last_word]++;
+        }
 }
 
 // [[Rcpp::export]]

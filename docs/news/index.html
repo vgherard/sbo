@@ -127,18 +127,18 @@
 <ul>
 <li>Former <code>sbo_preds</code> S3 class is now substituted by two classes. - <code>sbo_predictor</code>: for interactive use - <code>sbo_predtable</code>: for storing text predictors out of memory (e.g. <code><a href="https://rdrr.io/r/base/save.html">save()</a></code> to file)</li>
 <li>
-<code>sbo_predictor</code> and <code>sbo_predtable</code> objects are obtained by <code><a href="../reference/build_predtable.html">train_predictor()</a></code> and <code><a href="../reference/build_predtable.html">build_predtable()</a></code> respectively.</li>
+<code>sbo_predictor</code> and <code>sbo_predtable</code> objects are obtained by <code>train_predictor()</code> and <code><a href="../reference/sbo_predictions.html">sbo_predtable()</a></code> respectively.</li>
 <li>
-<code><a href="../reference/load_predictor.html">load_predictor()</a></code> allows to rapidly recover a <code>sbo_predictor</code> from a <code>sbo_predtable</code>.</li>
+<code><a href="../reference/sbo_predictions.html">sbo_predictor()</a></code> allows to rapidly recover a <code>sbo_predictor</code> from a <code>sbo_predtable</code>.</li>
 <li>The <code>sbo_predictor</code> implementation dramatically improves the speed of <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> (by a factor of x10). A single call to <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> now allocates a few kBs of RAM (whereas it previously allocated few MBs, c.f. issue <a href='https://github.com/vgherard/sbo/issues/10'>#10</a>)</li>
-<li>metadata of <code>kgram_freqs</code> and <code>sbo_pred*</code> objects are now attributes (<a href='https://github.com/vgherard/sbo/issues/11'>#11</a>).</li>
+<li>metadata of <code>sbo_kgram_freqs</code> and <code>sbo_pred*</code> objects are now attributes (<a href='https://github.com/vgherard/sbo/issues/11'>#11</a>).</li>
 </ul>
 </div>
 <div id="new-features" class="section level4">
 <h4 class="hasAnchor">
 <a href="#new-features" class="anchor"></a>New features</h4>
 <ul>
-<li>Added <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> methods for <code>kgram_freqs</code> and <code>sbo_pred*</code> objects; correspondingly, the output of <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> has been simplified considerably (<a href='https://github.com/vgherard/sbo/issues/5'>#5</a>).</li>
+<li>Added <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> methods for <code>sbo_kgram_freqs</code> and <code>sbo_pred*</code> objects; correspondingly, the output of <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> has been simplified considerably (<a href='https://github.com/vgherard/sbo/issues/5'>#5</a>).</li>
 </ul>
 </div>
 <div id="patches" class="section level4">
@@ -161,7 +161,7 @@
 <a href="#sbo-032" class="anchor"></a>sbo 0.3.2<small> 2020-11-09 </small>
 </h1>
 <ul>
-<li>Patch addressing unexpected behaviour of <code>erase</code> argument in <code><a href="../reference/preprocess.html">preprocess()</a></code> and <code><a href="../reference/get_kgram_freqs.html">get_kgram_freqs_fast()</a></code>, c.f. issue <a href='https://github.com/vgherard/sbo/issues/17'>#17</a>.</li>
+<li>Patch addressing unexpected behaviour of <code>erase</code> argument in <code><a href="../reference/preprocess.html">preprocess()</a></code> and <code><a href="../reference/kgram_freqs.html">kgram_freqs_fast()</a></code>, c.f. issue <a href='https://github.com/vgherard/sbo/issues/17'>#17</a>.</li>
 </ul>
 </div>
     <div id="sbo-031" class="section level1">
@@ -178,7 +178,7 @@
 <a href="#sbo-030" class="anchor"></a>sbo 0.3.0<small> 2020-11-04 </small>
 </h1>
 <ul>
-<li>Added <code><a href="../reference/get_kgram_freqs.html">get_kgram_freqs_fast()</a></code> for fast and memory efficient kgram tokenization using the default text preprocessing utility.</li>
+<li>Added <code><a href="../reference/kgram_freqs.html">kgram_freqs_fast()</a></code> for fast and memory efficient kgram tokenization using the default text preprocessing utility.</li>
 </ul>
 </div>
     <div id="sbo-020" class="section level1">
@@ -186,10 +186,10 @@
 <a href="#sbo-020" class="anchor"></a>sbo 0.2.0<small> Unreleased </small>
 </h1>
 <ul>
-<li>The infrastructure of <code><a href="../reference/get_kgram_freqs.html">get_kgram_freqs()</a></code>, <code><a href="../reference/get_word_freqs.html">get_word_freqs()</a></code>, <code><a href="../reference/preprocess.html">preprocess()</a></code>, and <code>predict.sbo_preds()</code> has been entirely rewritten in C++.</li>
+<li>The infrastructure of <code><a href="../reference/kgram_freqs.html">kgram_freqs()</a></code>, <code>get_word_freqs()</code>, <code><a href="../reference/preprocess.html">preprocess()</a></code>, and <code>predict.sbo_preds()</code> has been entirely rewritten in C++.</li>
 <li>Added <code><a href="../reference/tokenize_sentences.html">tokenize_sentences()</a></code> function for sentence level tokenization.</li>
 <li>
-<code><a href="../reference/get_kgram_freqs.html">get_kgram_freqs()</a></code> now accepts any user defined single character EOS token, through the <code>EOS</code> argument.</li>
+<code><a href="../reference/kgram_freqs.html">kgram_freqs()</a></code> now accepts any user defined single character EOS token, through the <code>EOS</code> argument.</li>
 </ul>
 </div>
     <div id="sbo-012" class="section level1">
@@ -197,8 +197,8 @@
 <a href="#sbo-012" class="anchor"></a>sbo 0.1.2<small> Unreleased </small>
 </h1>
 <ul>
-<li>Added <code>preproc</code> argument to <code><a href="../reference/get_kgram_freqs.html">get_kgram_freqs()</a></code> and <code><a href="../reference/get_word_freqs.html">get_word_freqs()</a></code>, for custom training corpus preprocessing.</li>
-<li>The <code>dict</code> argument of <code><a href="../reference/get_kgram_freqs.html">get_kgram_freqs()</a></code> now also accepts numeric values, allowing to build a dictionary directly from the training corpus.</li>
+<li>Added <code>preproc</code> argument to <code><a href="../reference/kgram_freqs.html">kgram_freqs()</a></code> and <code>get_word_freqs()</code>, for custom training corpus preprocessing.</li>
+<li>The <code>dict</code> argument of <code><a href="../reference/kgram_freqs.html">kgram_freqs()</a></code> now also accepts numeric values, allowing to build a dictionary directly from the training corpus.</li>
 </ul>
 </div>
     <div id="sbo-011" class="section level1">
@@ -206,7 +206,7 @@
 <a href="#sbo-011" class="anchor"></a>sbo 0.1.1<small> Unreleased </small>
 </h1>
 <ul>
-<li>Added <code>predict</code> method for <code>kgram_freqs</code> class.</li>
+<li>Added <code>predict</code> method for <code>sbo_kgram_freqs</code> class.</li>
 </ul>
 </div>
   </div>

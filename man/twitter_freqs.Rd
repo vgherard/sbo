@@ -5,7 +5,7 @@
 \alias{twitter_freqs}
 \title{k-gram frequencies from Twitter training set}
 \format{
-A \code{kgram_freqs} object. Contains k-gram frequencies from
+A \code{sbo_kgram_freqs} object. Contains k-gram frequencies from
 the example training set \code{\link[sbo]{twitter_train}}.
 }
 \usage{

@@ -63,8 +63,8 @@ test_that("Scores correctly assigned: 3-gram model predictions",{
                         4  , 2  , 3          , (lambda ^ 0) * (1 / 1)
                 )
         )
-        f <- get_kgram_freqs(text = train, N = 3, dict = dict,
-                             .preprocess = identity, EOS = "")
+        f <- kgram_freqs(corpus = train, N = 3, dict = dict, 
+                         .preprocess = identity, EOS = "")
         actual <- build_pps(f, N = 3, lambda = lambda, filtered = 4, L = 3)
         for (k in 1:3) {
                 t1 <- anti_join(expected[[k]], actual[[k]])

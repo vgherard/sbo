@@ -7,7 +7,7 @@
 #' @author Valerio Gherardi
 #' @md
 #
-#' @param object a \code{kgram_freqs} object.
+#' @param object a \code{sbo_kgram_freqs} object.
 #' @param newdata a length one character vector, containing the input for
 #' next-word prediction.
 #' @param lambda a numeric vector of length one. The back-off penalization
@@ -18,7 +18,7 @@
 #' @examples
 #' predict(twitter_freqs, "i love")
 ################################################################################
-predict.kgram_freqs <- function(object, newdata, lambda = 0.4, ...){
+predict.sbo_kgram_freqs <- function(object, newdata, lambda = 0.4, ...){
         stopifnot(is.character(newdata) & length(newdata) == 1)
         stopifnot(is.numeric(lambda) & length(lambda) == 1)
         N <- attr(object, "N")

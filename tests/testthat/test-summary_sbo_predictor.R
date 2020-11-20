@@ -1,6 +1,6 @@
 context("summary.sbo_predictor")
 
-p <- load_predictor(twitter_predtable)
+p <- sbo_predictor(twitter_predtable)
 
 test_that("returns invisibly the correct value", {
         capture_output({

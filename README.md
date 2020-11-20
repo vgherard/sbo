@@ -5,8 +5,12 @@
 
 <!-- badges: start -->
 
-[![Travis build
-status](https://travis-ci.com/vgherard/sbo.svg?branch=master)](https://travis-ci.com/vgherard/sbo)
+[![AppVeyor build
+status](https://ci.appveyor.com/api/projects/status/github/vgherard/sbo?branch=master&svg=true)](https://ci.appveyor.com/project/vgherard/sbo)
+[![CircleCI build
+status](https://circleci.com/gh/vgherard/sbo.svg?style=svg)](https://circleci.com/gh/vgherard/sbo)
+[![GitHub Actions build
+status](https://github.com/vgherard/sbo/workflows/R-CMD-check/badge.svg)](https://github.com/vgherard/sbo/actions)
 [![Codecov test
 coverage](https://codecov.io/gh/vgherard/sbo/branch/master/graph/badge.svg)](https://codecov.io/gh/vgherard/sbo?branch=master)
 [![CRAN
@@ -21,10 +25,9 @@ Back-off](https://www.aclweb.org/anthology/D07-1090.pdf) [N-gram
 models](https://en.wikipedia.org/wiki/N-gram) in R. It includes
 functions such as:
 
-  - `get_kgram_freqs()`: Extract \(k\)-gram frequency tables from a text
+  - `kgram_freqs()`: Extract \(k\)-gram frequency tables from a text
     corpus
-  - `train_predictor()`: Train a next-word predictor via Stupid
-    Back-off.
+  - `sbo_predictor()`: Train a next-word predictor via Stupid Back-off.
   - `eval_sbo_predictor()`: Test text predictions against an independent
     corpus.
 
@@ -49,31 +52,35 @@ devtools::install_github("vgherard/sbo")
 
 ## Example
 
-This example shows the prototypical workflow for building a
-text-predictor with `sbo`:
+This example shows how to build a text-predictor with `sbo`:
 
 ``` r
 library(sbo)
-## Train a next-word prediction function based on 3-gram Stupid Back-off. 
-train <- sbo::twitter_train # 70k tweets, example dataset from sbo
-word_freqs <- get_word_freqs(train) # word frequencies stored as named integer
-dict <- names(word_freqs)[1:1000] # Build rank-sorted dictionary
-freqs <- get_kgram_freqs(train, N = 3, dict) # Get k-gram frequencies (up to 3-grams)
-p <- train_predictor(freqs, L = 3) # Train next-word predictor, store top L = 3 predictions
+p <- sbo_predictor(sbo::twitter_train, # 70k tweets, example dataset
+                   N = 3, # Train a 3-gram model
+                   dict = sbo::twitter_dict, # Top 1k words appearing in corpus
+                   .preprocess = sbo::preprocess, # Preprocessing transformation 
+                   EOS = ".?!:;" # End-Of-Sentence tokens
+                   )
 ```
 
-The object `p` now stores the next-word prediction tables, which can be
-used to generate predictive text as follows:
+The object `p` can now be used to generate predictive text as follows:
 
 ``` r
 predict(p, "i love") # a character vector
 #> [1] "you" "it"  "the"
 predict(p, "you love") # another character vector
 #> [1] "me"    "<EOS>" "it"
-predict(p, c("i love", "you love")) # a character matrix
+predict(p, 
+        c("i love", "you love", "she loves", "we love", "you love", "they love")
+        ) # a character matrix
 #>      [,1]  [,2]    [,3] 
 #> [1,] "you" "it"    "the"
-#> [2,] "me"  "<EOS>" "it"
+#> [2,] "me"  "<EOS>" "it" 
+#> [3,] "it"  "you"   "me" 
+#> [4,] "you" "our"   "the"
+#> [5,] "me"  "<EOS>" "it" 
+#> [6,] "the" "to"    "you"
 ```
 
 ## Help

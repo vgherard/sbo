@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Stupid Back-off text predictions. — build_predtable • sbo</title>
+<title>Stupid Back-off text predictions — sbo_predictions • sbo</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Stupid Back-off text predictions. — build_predtable" />
+<meta property="og:title" content="Stupid Back-off text predictions — sbo_predictions" />
 <meta property="og:description" content="Train a text predictor via Stupid Back-off" />
 
 
@@ -114,8 +114,8 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Stupid Back-off text predictions.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/vgherard/sbo/blob/master/R/build_predtable.R'><code>R/build_predtable.R</code></a>, <a href='https://github.com/vgherard/sbo/blob/master/R/sbo_predictions.R'><code>R/sbo_predictions.R</code></a>, <a href='https://github.com/vgherard/sbo/blob/master/R/train_predictor.R'><code>R/train_predictor.R</code></a></small>
+    <h1>Stupid Back-off text predictions</h1>
+    <small class="dont-index">Source: <a href='https://github.com/vgherard/sbo/blob/master/R/sbo_predictions.R'><code>R/sbo_predictions.R</code></a>, <a href='https://github.com/vgherard/sbo/blob/master/R/sbo_predictor.R'><code>R/sbo_predictor.R</code></a>, <a href='https://github.com/vgherard/sbo/blob/master/R/sbo_predtable.R'><code>R/sbo_predtable.R</code></a></small>
     <div class="hidden name"><code>sbo_predictions.Rd</code></div>
     </div>
 
@@ -123,18 +123,72 @@
     <p>Train a text predictor via Stupid Back-off</p>
     </div>
 
-    <pre class="usage"><span class='fu'>build_predtable</span><span class='op'>(</span><span class='va'>freqs</span>, lambda <span class='op'>=</span> <span class='fl'>0.4</span>, L <span class='op'>=</span> <span class='fl'>3L</span>, filtered <span class='op'>=</span> <span class='st'>"&lt;UNK&gt;"</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>sbo_predictor</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>train_predictor</span><span class='op'>(</span><span class='va'>freqs</span>, lambda <span class='op'>=</span> <span class='fl'>0.4</span>, L <span class='op'>=</span> <span class='fl'>3L</span>, filtered <span class='op'>=</span> <span class='st'>"&lt;UNK&gt;"</span><span class='op'>)</span></pre>
+<span class='co'># S3 method for character</span>
+<span class='fu'>sbo_predictor</span><span class='op'>(</span>
+  <span class='va'>object</span>,
+  <span class='va'>N</span>,
+  <span class='va'>dict</span>,
+  .preprocess <span class='op'>=</span> <span class='va'>identity</span>,
+  EOS <span class='op'>=</span> <span class='st'>""</span>,
+  lambda <span class='op'>=</span> <span class='fl'>0.4</span>,
+  L <span class='op'>=</span> <span class='fl'>3L</span>,
+  filtered <span class='op'>=</span> <span class='st'>"&lt;UNK&gt;"</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
+
+<span class='co'># S3 method for sbo_kgram_freqs</span>
+<span class='fu'>sbo_predictor</span><span class='op'>(</span><span class='va'>object</span>, lambda <span class='op'>=</span> <span class='fl'>0.4</span>, L <span class='op'>=</span> <span class='fl'>3L</span>, filtered <span class='op'>=</span> <span class='st'>"&lt;UNK&gt;"</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S3 method for sbo_predtable</span>
+<span class='fu'>sbo_predictor</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='fu'>sbo_predtable</span><span class='op'>(</span><span class='va'>object</span>, lambda <span class='op'>=</span> <span class='fl'>0.4</span>, L <span class='op'>=</span> <span class='fl'>3L</span>, filtered <span class='op'>=</span> <span class='st'>"&lt;UNK&gt;"</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S3 method for character</span>
+<span class='fu'>sbo_predtable</span><span class='op'>(</span>
+  <span class='va'>object</span>,
+  <span class='va'>N</span>,
+  <span class='va'>dict</span>,
+  .preprocess <span class='op'>=</span> <span class='va'>identity</span>,
+  EOS <span class='op'>=</span> <span class='st'>""</span>,
+  lambda <span class='op'>=</span> <span class='fl'>0.4</span>,
+  L <span class='op'>=</span> <span class='fl'>3L</span>,
+  filtered <span class='op'>=</span> <span class='st'>"&lt;UNK&gt;"</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
+
+<span class='co'># S3 method for sbo_kgram_freqs</span>
+<span class='fu'>sbo_predtable</span><span class='op'>(</span><span class='va'>object</span>, lambda <span class='op'>=</span> <span class='fl'>0.4</span>, L <span class='op'>=</span> <span class='fl'>3L</span>, filtered <span class='op'>=</span> <span class='st'>"&lt;UNK&gt;"</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>freqs</th>
-      <td><p>a <code>kgram_freqs</code> object obtained with
-<code><a href='get_kgram_freqs.html'>get_kgram_freqs</a></code>, containing k-gram frequencies
-extracted from a training corpus.</p></td>
+      <th>object</th>
+      <td><p>either a character vector or an object inheriting from classes
+<code>sbo_kgram_freqs</code> or <code>sbo_predtable</code>. Defines the method to use for
+training.</p></td>
+    </tr>
+    <tr>
+      <th>N</th>
+      <td><p>a length one integer. Order 'N' of the N-gram model.</p></td>
+    </tr>
+    <tr>
+      <th>dict</th>
+      <td><p>a <code>sbo_dictionary</code>, a character vector or a formula. For
+more details see <code><a href='kgram_freqs.html'>kgram_freqs</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>.preprocess</th>
+      <td><p>a function for corpus preprocessing. For
+more details see <code><a href='kgram_freqs.html'>kgram_freqs</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>EOS</th>
+      <td><p>a length one character vector. String listing End-Of-Sentence
+characters. For more details see <code><a href='kgram_freqs.html'>kgram_freqs</a></code>.</p></td>
     </tr>
     <tr>
       <th>lambda</th>
@@ -156,24 +210,26 @@ referring to the Unknown-Word and End-Of-Sentence tokens, respectively.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>sbo_predictor</code> object for <code>train_predictor()</code>, a
-<code>sbo_predtable</code> object for <code>build_predtable()</code>.</p>
+    <p>A <code>sbo_predictor</code> object for <code>sbo_predictor()</code>, a
+<code>sbo_predtable</code> object for <code>sbo_predtable()</code>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>These functions are used to train a text predictor using Stupid
-Back-Off. The <code>sbo_predictor</code> data structure carries all information
+    <p>These functions are generics used to train a text predictor
+with Stupid Back-Off. The <code>sbo_predictor</code> data structure carries
+all information
 required for prediction in a compact and efficient (upon retrieval) way,
 by directly storing the top <code>L</code> next-word predictions for each
 k-gram prefix observed in the training corpus.</p>
-<p>The function <code>train_predictor()</code> is for interactive use. If the training
-process is computationally heavy, one can obtain a "raw" version of the
-text predictor through <code>build_predtable()</code>, which can be safely
+<p>The <code>sbo_predictor</code> objects are for interactive use. If the training
+process is computationally heavy, one can store a "raw" version of the
+text predictor in a <code>sbo_predtable</code> class object, which can be safely
 saved out of memory (with e.g. <code><a href='https://rdrr.io/r/base/save.html'>save()</a></code>).
-The resulting object (a <code>sbo_predtable</code>) can be restored
+The resulting object can be restored
 in another R session, and the corresponding <code>sbo_predictor</code> object
-can be loaded rapidly using <code><a href='load_predictor.html'>load_predictor()</a></code> (see the example below).</p>
+can be loaded rapidly using again the generic constructor
+<code>sbo_predictor()</code> (see example below).</p>
 <p>The returned objects are a <code>sbo_predictor</code> and a <code>sbo_predtable</code>
-object, for <code>train_predictor</code> and <code>build_predtable</code> respectively.
+objects.
 The latter contains Stupid Back-Off prediction tables, storing next-word
 prediction for each k-gram prefix observed in the text, whereas the former
 is an external pointer to an equivalent (but processed) C++ structure.</p>
@@ -190,30 +246,45 @@ end-of-sentence tokens.</p></li>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='predict.sbo_predictor.html'>predict.sbo_predictor</a></code>,
-<code><a href='load_predictor.html'>load_predictor</a></code></p></div>
+    <div class='dont-index'><p><code><a href='predict.sbo_predictor.html'>predict.sbo_predictor</a></code></p></div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Valerio Gherardi</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
-<span class='co'># Build Stupid Back-Off prediction tables</span>
-<span class='va'>t</span> <span class='op'>&lt;-</span> <span class='fu'>build_predtable</span><span class='op'>(</span><span class='va'>twitter_freqs</span><span class='op'>)</span>
-<span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'><a href='load_predictor.html'>load_predictor</a></span><span class='op'>(</span><span class='va'>t</span><span class='op'>)</span> <span class='co'># Load text predictor</span>
-<span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>p</span>, <span class='st'>"i love"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "you" "it"  "the"</div><div class='input'><span class='co'>## Use `save(t)` to save prediction tables for the next R session</span>
+<span class='co'># Train a text predictor directly from corpus</span>
+<span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'>sbo_predictor</span><span class='op'>(</span><span class='va'>twitter_train</span>, N <span class='op'>=</span> <span class='fl'>3</span>, dict <span class='op'>=</span> <span class='va'>max_size</span> <span class='op'>~</span> <span class='fl'>1000</span>,
+                   .preprocess <span class='op'>=</span> <span class='va'>preprocess</span>, EOS <span class='op'>=</span> <span class='st'>".?!:;"</span><span class='op'>)</span>
 <span class='co'># }</span>
 <span class='co'># \donttest{</span>
-<span class='co'># Train a text predictor with Stupid Back-Off</span>
-<span class='co'>## Get Stupid Back-off prediction tables</span>
-<span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'>train_predictor</span><span class='op'>(</span><span class='va'>twitter_freqs</span><span class='op'>)</span>
-<span class='va'>p</span>
-</div><div class='output co'>#&gt; A Stupid Back-Off text predictor .
-#&gt; 
-#&gt; <span style='color: #00BB00;'>See summary() for more details; ?predict.sbo_predictor for usage help.</span><span> </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>p</span>, <span class='st'>"i love"</span><span class='op'>)</span>
+<span class='co'># Train a text predictor from previously computed 'kgram_freqs' object</span>
+<span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'>sbo_predictor</span><span class='op'>(</span><span class='va'>twitter_freqs</span><span class='op'>)</span>
+<span class='co'># }</span>
+<span class='co'># \donttest{</span>
+<span class='co'># Load a text predictor from a Stupid Back-Off prediction table</span>
+<span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'>sbo_predictor</span><span class='op'>(</span><span class='va'>twitter_predtable</span><span class='op'>)</span>
+<span class='co'># }</span>
+<span class='co'># \donttest{</span>
+<span class='co'># Predict from Stupid Back-Off text predictor</span>
+<span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'>sbo_predictor</span><span class='op'>(</span><span class='va'>twitter_predtable</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>p</span>, <span class='st'>"i love"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "you" "it"  "the"</div><div class='input'><span class='co'># }</span>
-</div></span></pre>
+<span class='co'># \donttest{</span>
+<span class='co'># Build Stupid Back-Off prediction tables directly from corpus</span>
+<span class='va'>t</span> <span class='op'>&lt;-</span> <span class='fu'>sbo_predtable</span><span class='op'>(</span><span class='va'>twitter_train</span>, N <span class='op'>=</span> <span class='fl'>3</span>, dict <span class='op'>=</span> <span class='va'>max_size</span> <span class='op'>~</span> <span class='fl'>1000</span>, 
+                   .preprocess <span class='op'>=</span> <span class='va'>preprocess</span>, EOS <span class='op'>=</span> <span class='st'>".?!:;"</span><span class='op'>)</span>
+<span class='co'># }</span>
+<span class='co'># \donttest{</span>
+<span class='co'># Build Stupid Back-Off prediction tables from kgram_freqs object</span>
+<span class='va'>t</span> <span class='op'>&lt;-</span> <span class='fu'>sbo_predtable</span><span class='op'>(</span><span class='va'>twitter_freqs</span><span class='op'>)</span>
+<span class='co'># }</span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='co'># Save and reload a 'sbo_predtable' object with base::save()</span>
+<span class='fu'><a href='https://rdrr.io/r/base/save.html'>save</a></span><span class='op'>(</span><span class='va'>t</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span><span class='op'>(</span><span class='st'>"t.rda"</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
