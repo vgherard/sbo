@@ -47,6 +47,21 @@ sbo_predtable(object, lambda = 0.4, L = 3L, filtered = "<UNK>", ...)
 \method{sbo_predtable}{sbo_kgram_freqs}(object, lambda = 0.4, L = 3L, filtered = "<UNK>", ...)
 }
 \arguments{
+\item{object}{either a character vector or an object inheriting from classes
+\code{sbo_kgram_freqs} or \code{sbo_predtable}. Defines the method to use for
+training.}
+
+\item{N}{a length one integer. Order 'N' of the N-gram model.}
+
+\item{dict}{a \code{sbo_dictionary}, a character vector or a formula. For
+more details see \code{\link[sbo]{kgram_freqs}}.}
+
+\item{.preprocess}{a function for corpus preprocessing. For
+more details see \code{\link[sbo]{kgram_freqs}}.}
+
+\item{EOS}{a length one character vector. String listing End-Of-Sentence
+characters. For more details see \code{\link[sbo]{kgram_freqs}}.}
+
 \item{lambda}{a length one numeric. Penalization in the
 Stupid Back-off algorithm.}
 
@@ -56,13 +71,9 @@ for a given input (top scoring predictions are retained).}
 \item{filtered}{a character vector. Words to exclude from next-word
 predictions. The strings '<UNK>' and '<EOS>' are reserved keywords
 referring to the Unknown-Word and End-Of-Sentence tokens, respectively.}
-
-\item{freqs}{a \code{sbo_kgram_freqs} object obtained with
-\code{\link[sbo]{kgram_freqs}}, containing k-gram frequencies
-extracted from a training corpus.}
 }
 \value{
-A \code{sbo_predictor} object for \code{train_predictor()}, a
+A \code{sbo_predictor} object for \code{sbo_predictor()}, a
 \code{sbo_predtable} object for \code{sbo_predtable()}.
 }
 \description{

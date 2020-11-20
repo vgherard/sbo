@@ -6,9 +6,16 @@
 #' @author Valerio Gherardi
 #' @md
 #'
-#' @param freqs a \code{sbo_kgram_freqs} object obtained with 
-#' \code{\link[sbo]{kgram_freqs}}, containing k-gram frequencies 
-#' extracted from a training corpus.
+#' @param object either a character vector or an object inheriting from classes 
+#' \code{sbo_kgram_freqs} or \code{sbo_predtable}. Defines the method to use for
+#' training.
+#' @param N a length one integer. Order 'N' of the N-gram model.
+#' @param dict a \code{sbo_dictionary}, a character vector or a formula. For
+#' more details see \code{\link[sbo]{kgram_freqs}}.
+#' @param .preprocess a function for corpus preprocessing. For
+#' more details see \code{\link[sbo]{kgram_freqs}}.
+#' @param EOS a length one character vector. String listing End-Of-Sentence
+#' characters. For more details see \code{\link[sbo]{kgram_freqs}}.
 #' @param lambda a length one numeric. Penalization in the
 #' Stupid Back-off algorithm.
 #' @param L a length one integer. Maximum number of next-word predictions
@@ -16,7 +23,7 @@
 #' @param filtered a character vector. Words to exclude from next-word 
 #' predictions. The strings '<UNK>' and '<EOS>' are reserved keywords 
 #' referring to the Unknown-Word and End-Of-Sentence tokens, respectively.
-#' @return A \code{sbo_predictor} object for \code{train_predictor()}, a 
+#' @return A \code{sbo_predictor} object for \code{sbo_predictor()}, a 
 #' \code{sbo_predtable} object for \code{sbo_predtable()}.
 #' @details These functions are generics used to train a text predictor 
 #' with Stupid Back-Off. The \code{sbo_predictor} data structure carries 
