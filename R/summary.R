@@ -1,5 +1,21 @@
 #' @export
 
+summary.sbo_dictionary <- function(object, ...){
+        format_title <- . %>% (cli::style_underline) %>% (cli::style_bold)
+        format_item <- . %>% (cli::col_silver) %>% (cli::style_italic)
+        format_help <- . %>% (cli::col_green)
+        
+        "Dictionary\n\n" %>% format_title %>% cat
+        
+        "A `sbo_dictionary` of length:" %>% format_item %>% cat(length(object))
+        cat("\n")
+        head(object, 10) %>% (cli::style_italic) %>% cat("...", sep = ", ")
+        
+        return(invisible(object))
+}
+
+#' @export
+
 summary.sbo_kgram_freqs <- function(object, ...){
         format_title <- . %>% (cli::style_underline) %>% (cli::style_bold)
         format_item <- . %>% (cli::col_silver) %>% (cli::style_italic)
@@ -52,4 +68,25 @@ summary.sbo_predictions <- function(object, ...){
         "See ?predict.sbo_predictor for usage help.\n" %>% format_help %>% cat
         
         return(invisible(object))
+}
+
+#' @export
+summary.word_coverage <- function(x, ...){
+        format_title <- . %>% (cli::style_underline) %>% (cli::style_bold)
+        format_item <- . %>% (cli::col_silver) %>% (cli::style_italic)
+        format_help <- . %>% (cli::col_green)
+        
+        "Word coverage fraction\n\n" %>% format_title %>% cat
+        
+        f_w_EOS <- format(100 * last(x), digits = 3)
+        f_wo_EOS <- 
+                ((last(x) - x[[1]]) / (1 - x[[1]])) %>% 
+                multiply_by(100) %>% 
+                format(digits = 3) 
+        
+        "Dictionary length:" %>% format_item %>% cat(length(x) - 1, "\n")
+        "Coverage fraction (w/ EOS):" %>% format_item %>% cat(f_w_EOS, "%\n")
+        "Coverage fraction (w/o EOS):" %>% format_item %>% cat(f_wo_EOS, "%\n")
+        
+        return(invisible(x))
 }
