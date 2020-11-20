@@ -83,9 +83,9 @@ word_coverage_sbo_generic <- function(object, corpus, ...) {
 #' @rdname word_coverage
 #' @export
 word_coverage.sbo_kgram_freqs <- function(object, corpus, ...)
-        return(word_coverage_sbo_generic(dict, corpus = corpus))
+        return(word_coverage_sbo_generic(object, corpus = corpus))
 
 #' @rdname word_coverage
 #' @export
 word_coverage.sbo_predictions <- function(object, corpus, ...)
-        return(word_coverage_sbo_generic(dict, corpus = corpus))
+        return(word_coverage_sbo_generic(object, corpus = corpus))

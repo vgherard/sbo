@@ -80,9 +80,7 @@ summary.word_coverage <- function(x, ...){
         
         f_w_EOS <- format(100 * last(x), digits = 3)
         f_wo_EOS <- 
-                ((last(x) - x[[1]]) / (1 - x[[1]])) %>% 
-                multiply_by(100) %>% 
-                format(digits = 3) 
+                (100 * (last(x) - x[[1]]) / (1 - x[[1]])) %>% format(digits = 3)
         
         "Dictionary length:" %>% format_item %>% cat(length(x) - 1, "\n")
         "Coverage fraction (w/ EOS):" %>% format_item %>% cat(f_w_EOS, "%\n")
