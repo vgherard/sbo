@@ -12,7 +12,7 @@ kgram_freqs_fast(corpus, N, dict, erase = "", lower_case = FALSE, EOS = "")
 }
 \arguments{
 \item{N}{a length one integer. The maximum order of k-grams
-for which frequencies are sought.}
+for which frequencies are to be extracted.}
 
 \item{dict}{either a \code{sbo_dictionary} object, a character vector,
 or a formula (see details). The language model dictionary.}

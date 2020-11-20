@@ -10,7 +10,7 @@
 #' @param text a character vector. The training corpus from which to extract
 #' k-gram frequencies.
 #' @param N a length one integer. The maximum order of k-grams
-#' for which frequencies are sought.
+#' for which frequencies are to be extracted.
 #' @param dict either a \code{sbo_dictionary} object, a character vector, 
 #' or a formula (see details). The language model dictionary.
 #' @param .preprocess a function to apply before k-gram
