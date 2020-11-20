@@ -79,7 +79,7 @@
                   <a class="author_email" href="mailto:#"></a><a href="mailto:vgherard@sissa.it" class="email">vgherard@sissa.it</a>
       
                   
-            <h4 class="date">2020-11-19</h4>
+            <h4 class="date">2020-11-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/vgherard/sbo/blob/master/vignettes/sbo.Rmd"><code>vignettes/sbo.Rmd</code></a></small>
       <div class="hidden name"><code>sbo.Rmd</code></div>
@@ -99,10 +99,13 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://vgherard.github.io/sbo/">sbo</a></span><span class="op">)</span></code></pre></div>
 </div>
-<div id="building-a-text-predictor-with-sbo" class="section level2">
+<div id="building-text-predictors-with-sbo" class="section level2">
 <h2 class="hasAnchor">
-<a href="#building-a-text-predictor-with-sbo" class="anchor"></a>Building a text predictor with <code>sbo</code>
+<a href="#building-text-predictors-with-sbo" class="anchor"></a>Building text predictors with <code>sbo</code>
 </h2>
+<div id="building-a-text-predictor" class="section level3">
+<h3 class="hasAnchor">
+<a href="#building-a-text-predictor" class="anchor"></a>Building a text predictor</h3>
 <p>In this and the next section we will employ the <code><a href="../reference/twitter_train.html">sbo::twitter_train</a></code> example dataset<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>, each entry of which consists in a single tweet in English, <em>e.g.</em>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu">sbo</span><span class="fu">::</span><span class="va"><a href="../reference/twitter_train.html">twitter_train</a></span>, <span class="fl">3</span><span class="op">)</span>
@@ -164,6 +167,7 @@
 <span class="co">#&gt; [1] "room is a very interesting about it is."</span>
 <span class="fu"><a href="../reference/babble.html">babble</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>
 <span class="co">#&gt; [1] "sharing is a good time."</span></code></pre></div>
+</div>
 <div id="out-of-memory-use" class="section level3">
 <h3 class="hasAnchor">
 <a href="#out-of-memory-use" class="anchor"></a>Out of memory use</h3>
@@ -285,7 +289,7 @@
                 <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">rank</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_histogram</a></span><span class="op">(</span>binwidth <span class="op">=</span> <span class="fl">25</span><span class="op">)</span>
 <span class="op">}</span>
 <span class="co">#&gt; Carico il pacchetto richiesto: ggplot2</span></code></pre></div>
-<p><img src="sbo_files/figure-html/unnamed-chunk-17-1.png" width="700"></p>
+<p><img src="sbo_files/figure-html/unnamed-chunk-17-1.png" width="700" style="display: block; margin: auto;"></p>
 <p>Apparently, the large majority of correct predictions come from the first ~ 300 words of the dictionary, so that if we prune the dictionary excluding words with rank greater than, <em>e.g.</em>, 500 we can reduce the size of our model without seriously affecting its prediction accuracy.</p>
 </div>
 <div id="other-functionalities" class="section level2">
@@ -305,11 +309,34 @@
 <p>constructs a dictionary applying the most restrictive of the two constraint <code>max_size = 100</code> or <code>target = 0.5</code>, where <code>target</code> denotes the coverage fraction of <code>corpus</code>. The arguments <code>.preprocess</code> and <code>EOS</code> work as described above.</p>
 <p>The output is an object of class <code>sbo_dictionary</code>, which stores, along with a vector of words (sorted by decreasing frequency), also the original values of <code>.preprocess</code> and <code>EOS</code>.</p>
 </div>
+<div id="word-coverage" class="section level3">
+<h3 class="hasAnchor">
+<a href="#word-coverage" class="anchor"></a>Word coverage</h3>
+<p>The word coverage fraction of a dictionary can be computed through the generic function <code><a href="../reference/word_coverage.html">word_coverage()</a></code>. This accepts as argument any object containing a dictionary, along with a preprocessing function and a list of End-Of-Sentence characters. This includes all <code>sbo</code> main classes: <code>sbo_dictionary</code>, <code>sbo_kgram_freqs</code>, <code>sbo_predtable</code> and <code>sbo_predictor</code>. For instance:</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="op">(</span><span class="va">c</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/word_coverage.html">word_coverage</a></span><span class="op">(</span><span class="va">p</span>, <span class="fu">sbo</span><span class="fu">::</span><span class="va"><a href="../reference/twitter_train.html">twitter_train</a></span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; A 'word_coverage' object.</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; See summary() for more details.</span></code></pre></div>
+<p>Computes the coverage fraction of the dictionary used by the predictor <code>p</code>, on the original training corpus.</p>
+<p>This can be conveniently summarized with:</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">c</span><span class="op">)</span>
+<span class="co">#&gt; Word coverage fraction</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Dictionary length: 1011 </span>
+<span class="co">#&gt; Coverage fraction (w/ EOS): 78.1 %</span>
+<span class="co">#&gt; Coverage fraction (w/o EOS): 75 %</span></code></pre></div>
+<p>or visualized with:</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">c</span><span class="op">)</span></code></pre></div>
+<p><img src="sbo_files/figure-html/unnamed-chunk-21-1.png" width="480" style="display: block; margin: auto;"></p>
+</div>
 <div id="k-gram-tokenization" class="section level3">
 <h3 class="hasAnchor">
 <a href="#k-gram-tokenization" class="anchor"></a><span class="math inline">\(k\)</span>-gram tokenization</h3>
 <p><span class="math inline">\(k\)</span>-gram frequency tables form the building blocks of <em>any</em> <span class="math inline">\(N\)</span>-gram based language model. The function <code><a href="../reference/kgram_freqs.html">sbo::kgram_freqs()</a></code> extracts frequency tables from a training corpus and stores them into a class <code>sbo_kgram_freq</code> object. For example:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/kgram_freqs.html">kgram_freqs</a></span><span class="op">(</span>corpus <span class="op">=</span> <span class="fu">sbo</span><span class="fu">::</span><span class="va"><a href="../reference/twitter_train.html">twitter_train</a></span>, 
                  N <span class="op">=</span> <span class="fl">3</span>, 
                  dict <span class="op">=</span> <span class="va">target</span> <span class="op">~</span> <span class="fl">0.75</span>,
@@ -317,7 +344,7 @@
                  EOS <span class="op">=</span> <span class="st">".?!:;"</span>
                  <span class="op">)</span></code></pre></div>
 <p>stores <span class="math inline">\(k\)</span>-gram frequency tables into <code>f</code>. This object can itself be used for text prediction:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">f</span>, <span class="st">"i love"</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 1,012 x 2</span>
 <span class="co">#&gt;    completion probability</span>
@@ -334,14 +361,14 @@
 <span class="co">#&gt; 10 &lt;EOS&gt;           0.0135</span>
 <span class="co">#&gt; # … with 1,002 more rows</span></code></pre></div>
 <p>The output contains the full language model information, i.e. the probabilities<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a> for each possible word completion. Compare this with:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">p</span>, <span class="st">"i love"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "you" "it"  "the"</span></code></pre></div>
 <p>The extra information contained in <code>f</code> comes at a price. In fact, the advantage provided by <code>sbo_predictor</code>/<code>sbo_predtable</code> objects for simple text prediction is two-fold:</p>
 <ol style="list-style-type: decimal">
 <li>Memory compression:</li>
 </ol>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">size_in_MB</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span><span class="op">(</span><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/object.size.html">object.size</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, units <span class="op">=</span> <span class="st">"MB"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>sbo_predtable <span class="op">=</span> <span class="va">t</span>, kgram_freqs <span class="op">=</span> <span class="va">f</span><span class="op">)</span>, <span class="va">size_in_MB</span><span class="op">)</span>
 <span class="co">#&gt; sbo_predtable   kgram_freqs </span>
@@ -349,16 +376,16 @@
 <ol start="2" style="list-style-type: decimal">
 <li>Fast query:</li>
 </ol>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">chrono_predict</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"i love"</span><span class="op">)</span>, gcFirst <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>sbo_predictor <span class="op">=</span> <span class="va">p</span>, kgram_freqs <span class="op">=</span> <span class="va">f</span><span class="op">)</span>, <span class="va">chrono_predict</span><span class="op">)</span>
 <span class="co">#&gt; $sbo_predictor</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.001   0.000   0.000 </span>
+<span class="co">#&gt;   0.000   0.000   0.001 </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $kgram_freqs</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.134   0.000   0.134</span></code></pre></div>
+<span class="co">#&gt;   0.119   0.000   0.119</span></code></pre></div>
 </div>
 <div id="text-preprocessing" class="section level3">
 <h3 class="hasAnchor">

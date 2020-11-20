@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Dictionaries — sbo_dictionary • sbo</title>
+<title>Word coverage fraction — word_coverage • sbo</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Dictionaries — sbo_dictionary" />
-<meta property="og:description" content="Build dictionary from training corpus." />
+<meta property="og:title" content="Word coverage fraction — word_coverage" />
+<meta property="og:description" content="Compute total and cumulative corpus coverage fraction of a dictionary." />
 
 
 
@@ -114,90 +114,98 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Dictionaries</h1>
-    <small class="dont-index">Source: <a href='https://github.com/vgherard/sbo/blob/master/R/sbo_dictionary.R'><code>R/sbo_dictionary.R</code></a></small>
-    <div class="hidden name"><code>sbo_dictionary.Rd</code></div>
+    <h1>Word coverage fraction</h1>
+    <small class="dont-index">Source: <a href='https://github.com/vgherard/sbo/blob/master/R/word_coverage.R'><code>R/word_coverage.R</code></a></small>
+    <div class="hidden name"><code>word_coverage.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Build dictionary from training corpus.</p>
+    <p>Compute total and cumulative corpus coverage fraction of a dictionary.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>sbo_dictionary</span><span class='op'>(</span>
-  <span class='va'>corpus</span>,
-  max_size <span class='op'>=</span> <span class='cn'>Inf</span>,
-  target <span class='op'>=</span> <span class='fl'>1</span>,
-  .preprocess <span class='op'>=</span> <span class='va'>identity</span>,
-  EOS <span class='op'>=</span> <span class='st'>""</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>word_coverage</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>corpus</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S3 method for sbo_dictionary</span>
+<span class='fu'>word_coverage</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>corpus</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S3 method for character</span>
+<span class='fu'>word_coverage</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>corpus</span>, .preprocess <span class='op'>=</span> <span class='va'>identity</span>, EOS <span class='op'>=</span> <span class='st'>""</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S3 method for sbo_kgram_freqs</span>
+<span class='fu'>word_coverage</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>corpus</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S3 method for sbo_predictions</span>
+<span class='fu'>word_coverage</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>corpus</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>object</th>
+      <td><p>either a character vector, or an object inheriting from one of
+the classes <code>sbo_dictionary</code>, <code>sbo_kgram_freqs</code>,
+<code>sbo_predtable</code> or <code>sbo_predictor</code>.
+The object storing the dictionary for which corpus coverage is to be
+computed.</p></td>
+    </tr>
+    <tr>
       <th>corpus</th>
-      <td><p>a character vector. The training corpus from which to extract
-the dictionary.</p></td>
-    </tr>
-    <tr>
-      <th>max_size</th>
-      <td><p>a length one numeric. If less than <code>Inf</code>, only the most
-frequent <code>max_size</code> words are retained in the dictionary.</p></td>
-    </tr>
-    <tr>
-      <th>target</th>
-      <td><p>a length one numeric within 0,1. If less than one, retains
-only as many words as needed to cover a fraction <code>target</code> of the
-training corpus.</p></td>
+      <td><p>a character vector.</p></td>
     </tr>
     <tr>
       <th>.preprocess</th>
-      <td><p>a function for corpus preprocessing. Takes a character
-vector as input and returns a character vector.</p></td>
+      <td><p>preprocessing function for training corpus. See
+<code><a href='kgram_freqs.html'>kgram_freqs</a></code> and <code><a href='sbo_dictionary.html'>sbo_dictionary</a></code> for
+further details.</p></td>
     </tr>
     <tr>
       <th>EOS</th>
-      <td><p>a length one character vector listing all (single character)
-end-of-sentence tokens.</p></td>
+      <td><p>a length one character vector. String containing End-Of-Sentence
+characters, see  <code><a href='kgram_freqs.html'>kgram_freqs</a></code> and
+<code><a href='sbo_dictionary.html'>sbo_dictionary</a></code> for further details.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>sbo_dictionary</code> object.</p>
+    <p>a <code>word_coverage</code> object.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This function builds a dictionary using the most frequent words in a
-training corpus. Two pruning criterions can be applied:</p><ol>
-<li><p>Dictionary size, as implemented by the <code>max_size</code> argument.</p></li>
-<li><p>Target coverage fraction, as implemented by the <code>target</code> argument.</p></li>
-</ol>
+    <p>This function computes the corpus coverage fraction of a dictionary,
+that is the fraction of words appearing in corpus which are contained in the
+original dictionary.</p>
+<p>This function is a generic, accepting as <code>object</code> argument any object
+storing a dictionary, along with a preprocessing function and a list
+of End-Of-Sentence characters. This includes all <code>sbo</code> main classes:
+<code>sbo_dictionary</code>, <code>sbo_kgram_freqs</code>, <code>sbo_predtable</code> and
+<code>sbo_predictor</code>. When <code>object</code> is a character vector, the preprocessing
+function and the End-Of-Sentence characters must be specified explicitly.</p>
+<p>The coverage fraction is computed cumulatively, and the dependence of
+coverage with respect to maximal rank can be explored through <code><a href='https://rdrr.io/r/graphics/plot.default.html'>plot()</a></code>
+(see examples below)</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-<p>If both these criterions imply non-trivial cuts, the most restrictive
-critierion applies.</p>
-<p>The <code>.preprocess</code> argument allows the user to apply a custom
-transformation to the training corpus, before word tokenization. The
-<code>EOS</code> argument allows to specify a set of characters to be identified
-as End-Of-Sentence tokens (and thus not part of words).</p>
-<p>The returned object is a <code>sbo_dictionary</code> object, which is a
-character vector containing words sorted by decreasing corpus frequency.
-Furthermore, the object stores as attributes the original values of
-<code>.preprocess</code> and <code>EOS</code> (i.e. the function used in corpus
-preprocessing and the End-Of-Sentence characters for sentence tokenization).</p>
+    <div class='dont-index'><p><code><a href='predict.sbo_predictor.html'>predict.sbo_predictor</a></code></p></div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Valerio Gherardi</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
-<span class='co'># Extract dictionary from `twitter_train` corpus (all words)</span>
-<span class='va'>dict</span> <span class='op'>&lt;-</span> <span class='fu'>sbo_dictionary</span><span class='op'>(</span><span class='va'>twitter_train</span><span class='op'>)</span>
-<span class='co'># Extract dictionary from `twitter_train` corpus (top 1000 words)</span>
-<span class='va'>dict</span> <span class='op'>&lt;-</span> <span class='fu'>sbo_dictionary</span><span class='op'>(</span><span class='va'>twitter_train</span>, max_size <span class='op'>=</span> <span class='fl'>1000</span><span class='op'>)</span>
-<span class='co'># Extract dictionary from `twitter_train` corpus (coverage target = 50%)</span>
-<span class='va'>dict</span> <span class='op'>&lt;-</span> <span class='fu'>sbo_dictionary</span><span class='op'>(</span><span class='va'>twitter_train</span>, target <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span>
-<span class='co'># }</span>
-</div></pre>
+<span class='va'>c</span> <span class='op'>&lt;-</span> <span class='fu'>word_coverage</span><span class='op'>(</span><span class='va'>twitter_dict</span>, <span class='va'>twitter_train</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>c</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; A 'word_coverage' object.
+#&gt; 
+#&gt; <span style='color: #00BB00;'>See summary() for more details.
+#&gt; </span><span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>c</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='font-weight: bold;text-decoration: underline;'>Word coverage fraction
+#&gt; 
+#&gt; </span><span style='color: #555555;font-style: italic;'>Dictionary length:</span><span> 1000 
+#&gt; </span><span style='color: #555555;font-style: italic;'>Coverage fraction (w/ EOS):</span><span> 78 %
+#&gt; </span><span style='color: #555555;font-style: italic;'>Coverage fraction (w/o EOS):</span><span> 74.9 %</div><div class='input'><span class='co'># Plot coverage fraction, including the End-Of-Sentence in word counts.</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>c</span>, include_EOS <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='img'><img src='word_coverage-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

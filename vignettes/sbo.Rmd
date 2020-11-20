@@ -29,7 +29,9 @@ The `sbo` package provides utilities for building and evaluating next-word predi
 library(sbo)
 ```
 
-## Building a text predictor with `sbo`
+## Building text predictors with `sbo`
+
+### Building a text predictor
 
 In this and the next section we will employ the `sbo::twitter_train` example dataset[^1], each entry of which consists in a single tweet in English, *e.g.*:
 
@@ -204,7 +206,7 @@ evaluation %>% # Accuracy for in-sentence predictions
 In trying to reduce the size (in physical memory) of your text-predictor, it might be useful to prune the model dictionary. The following command plots an histogram of the distribution of correct predictions in our test.
 
 
-```{r}
+```{r, fig.align = "center"}
 if (require(ggplot2)) {
         evaluation %>%
                 filter(correct, true != "<EOS>") %>%
@@ -236,6 +238,31 @@ constructs a dictionary applying the most restrictive of the two constraint `max
 
 The output is an object of class `sbo_dictionary`, which stores,
 along with a vector of words (sorted by decreasing frequency), also the original values of `.preprocess` and `EOS`.
+
+### Word coverage
+
+The word coverage fraction of a dictionary can be computed through the generic
+function `word_coverage()`. This accepts as argument any object containing a
+dictionary, along with a preprocessing function and a list of End-Of-Sentence characters. This includes all `sbo` main classes: `sbo_dictionary`, `sbo_kgram_freqs`, `sbo_predtable` and `sbo_predictor`. For instance:
+
+```{r}
+(c <- word_coverage(p, sbo::twitter_train))
+```
+
+Computes the coverage fraction of the dictionary used by the predictor `p`, on
+the original training corpus.
+
+This can be conveniently summarized with:
+
+```{r}
+summary(c)
+```
+
+or visualized with:
+
+```{r, fig.align = "center", fig.width=5}
+plot(c)
+```
 
 ### $k$-gram tokenization
 
