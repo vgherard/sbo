@@ -19,11 +19,10 @@ status](https://www.r-pkg.org/badges/version/sbo)](https://CRAN.R-project.org/pa
 downloads](http://cranlogs.r-pkg.org/badges/grand-total/sbo)](https://CRAN.R-project.org/package=sbo)
 <!-- badges: end -->
 
-`sbo` provides utilities for building and evaluating next-word
-prediction functions based on [Stupid
-Back-off](https://www.aclweb.org/anthology/D07-1090.pdf) [N-gram
-models](https://en.wikipedia.org/wiki/N-gram) in R. It includes
-functions such as:
+`sbo` provides utilities for building and evaluating text predictors
+based on [Stupid
+Back-off](https://www.aclweb.org/anthology/D07-1090.pdf) N-gram models
+in R. It includes functions such as:
 
   - `kgram_freqs()`: Extract \(k\)-gram frequency tables from a text
     corpus
@@ -52,7 +51,7 @@ devtools::install_github("vgherard/sbo")
 
 ## Example
 
-This example shows how to build a text-predictor with `sbo`:
+This example shows how to build a text predictor with `sbo`:
 
 ``` r
 library(sbo)
@@ -85,4 +84,4 @@ predict(p,
 
 ## Help
 
-For help, see the `sbo` [website](https://vgherard.github.io/sbo/)
+For help, see the `sbo` [website](https://vgherard.github.io/sbo/).

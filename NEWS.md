@@ -1,22 +1,43 @@
 # sbo (development version)
 
 #### API and UI changes 
-* Former `sbo_preds` S3 class is now substituted by two classes.
+* Former `kgram_freqs` class is now formally called `sbo_kgram_freqs`.
+* Former `sbo_preds` S3 class is now substituted by two classes:
+        
         - `sbo_predictor`: for interactive use
-        - `sbo_predtable`: for storing text predictors out of memory (e.g. `save()` to file)
-* `sbo_predictor` and `sbo_predtable` objects are obtained by `train_predictor()` and `sbo_predtable()` respectively.
-* `sbo_predictor()` allows to rapidly recover a `sbo_predictor` from a `sbo_predtable`.
-* The `sbo_predictor` implementation dramatically improves the speed of `predict()` (by a factor of x10). A single call to `predict()` now allocates a few kBs of RAM (whereas it previously allocated few MBs, c.f. issue #10)
-* metadata of `sbo_kgram_freqs` and `sbo_pred*` objects are now attributes (#11).
+        - `sbo_predtable`: for storing text predictors out of memory (e.g. 
+        `save()` to file)
+        
+* `sbo_predictor` and `sbo_predtable` objects are obtained by the homonym 
+constructors, which are now S3 generics accepting `character` input, as well as
+`sbo_kgram_freqs` and `sbo_predtable` (for the `sbo_predictor()` constructor) 
+class objects. In particular, these allow to directly train a text predictor
+without storing the intermediate `sbo_dictionary`, and `kgram_freqs` objects.
+* The interface for building dictionaries on the fly in `kgram_freqs()` (as well
+as with `sbo_predictor()`) has been greatly simplified.
+* The `sbo_predictor` implementation dramatically improves the speed of 
+`predict()` (by a factor of x10). A single call to `predict()` now allocates a 
+few kBs of RAM (whereas it previously allocated few MBs, c.f. issue #10).
+* Metadata of `sbo_kgram_freqs` and `sbo_pred*` objects is now stored via 
+attributes (#11).
 
 #### New features
-* Added `summary()` methods for `sbo_kgram_freqs` and `sbo_pred*` objects; correspondingly, the output of `print()` has been simplified considerably (#5).
+* New S3 class `sbo_dictionary`.
+* New S3 class `word_coverage` with generic constructors and a preconfigured
+`plot()` method. 
+* Dictionaries in `kgram_freqs()` and `sbo_pred*()` can now
+be built also with a fixed target coverage fraction of training corpus.
+* Added `summary()` methods for `sbo_kgram_freqs` and `sbo_pred*` objects; 
+correspondingly, the output of `print()` has been simplified considerably (#5).
 
-#### Patches
+#### Other improvements and patches
+* The Stupid Back-Off algorithm is now thoroughly tested, and small 
+inconsistencies between the `predict.kgram_freqs()` and 
+`predict.sbo_predictor()` methods have been fixed, including:
+        - Proper handling of unknown words
+        - Consistent handling of ties in prediction probabilities.
 * Removed unnecessary `Depends` from DESCRIPTION.
-
-#### Documentation
-* Added package entry.
+* Removed various avoidable `Imports`.
 
 # sbo 0.3.2
 * Patch addressing unexpected behaviour of `erase` argument in 

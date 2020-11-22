@@ -125,34 +125,36 @@
 <h4 class="hasAnchor">
 <a href="#api-and-ui-changes" class="anchor"></a>API and UI changes</h4>
 <ul>
-<li>Former <code>sbo_preds</code> S3 class is now substituted by two classes. - <code>sbo_predictor</code>: for interactive use - <code>sbo_predtable</code>: for storing text predictors out of memory (e.g. <code><a href="https://rdrr.io/r/base/save.html">save()</a></code> to file)</li>
+<li><p>Former <code>kgram_freqs</code> class is now formally called <code>sbo_kgram_freqs</code>.</p></li>
 <li>
-<code>sbo_predictor</code> and <code>sbo_predtable</code> objects are obtained by <code>train_predictor()</code> and <code><a href="../reference/sbo_predictions.html">sbo_predtable()</a></code> respectively.</li>
-<li>
-<code><a href="../reference/sbo_predictions.html">sbo_predictor()</a></code> allows to rapidly recover a <code>sbo_predictor</code> from a <code>sbo_predtable</code>.</li>
-<li>The <code>sbo_predictor</code> implementation dramatically improves the speed of <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> (by a factor of x10). A single call to <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> now allocates a few kBs of RAM (whereas it previously allocated few MBs, c.f. issue <a href='https://github.com/vgherard/sbo/issues/10'>#10</a>)</li>
-<li>metadata of <code>sbo_kgram_freqs</code> and <code>sbo_pred*</code> objects are now attributes (<a href='https://github.com/vgherard/sbo/issues/11'>#11</a>).</li>
+<p>Former <code>sbo_preds</code> S3 class is now substituted by two classes:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>  <span class="op">-</span><span class="st"> `</span><span class="dt">sbo_predictor</span><span class="st">`</span><span class="op">:</span><span class="st"> </span><span class="cf">for</span> interactive use</span>
+<span id="cb1-2"><a href="#cb1-2"></a>  <span class="op">-</span><span class="st"> `</span><span class="dt">sbo_predtable</span><span class="st">`</span><span class="op">:</span><span class="st"> </span><span class="cf">for</span> storing text predictors out of <span class="kw">memory</span> (e.g. </span>
+<span id="cb1-3"><a href="#cb1-3"></a>  <span class="st">`</span><span class="dt">save()</span><span class="st">`</span> to file)</span></code></pre></div>
+</li>
+<li><p><code>sbo_predictor</code> and <code>sbo_predtable</code> objects are obtained by the homonym constructors, which are now S3 generics accepting <code>character</code> input, as well as <code>sbo_kgram_freqs</code> and <code>sbo_predtable</code> (for the <code><a href="../reference/sbo_predictions.html">sbo_predictor()</a></code> constructor) class objects. In particular, these allow to directly train a text predictor without storing the intermediate <code>sbo_dictionary</code>, and <code>kgram_freqs</code> objects.</p></li>
+<li><p>The interface for building dictionaries on the fly in <code><a href="../reference/kgram_freqs.html">kgram_freqs()</a></code> (as well as with <code><a href="../reference/sbo_predictions.html">sbo_predictor()</a></code>) has been greatly simplified.</p></li>
+<li><p>The <code>sbo_predictor</code> implementation dramatically improves the speed of <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> (by a factor of x10). A single call to <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> now allocates a few kBs of RAM (whereas it previously allocated few MBs, c.f. issue <a href='https://github.com/vgherard/sbo/issues/10'>#10</a>).</p></li>
+<li><p>Metadata of <code>sbo_kgram_freqs</code> and <code>sbo_pred*</code> objects is now stored via attributes (<a href='https://github.com/vgherard/sbo/issues/11'>#11</a>).</p></li>
 </ul>
 </div>
 <div id="new-features" class="section level4">
 <h4 class="hasAnchor">
 <a href="#new-features" class="anchor"></a>New features</h4>
 <ul>
+<li>New S3 class <code>sbo_dictionary</code>.</li>
+<li>New S3 class <code>word_coverage</code> with generic constructors and a preconfigured <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> method.</li>
+<li>Dictionaries in <code><a href="../reference/kgram_freqs.html">kgram_freqs()</a></code> and <code>sbo_pred*()</code> can now be built also with a fixed target coverage fraction of training corpus.</li>
 <li>Added <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> methods for <code>sbo_kgram_freqs</code> and <code>sbo_pred*</code> objects; correspondingly, the output of <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> has been simplified considerably (<a href='https://github.com/vgherard/sbo/issues/5'>#5</a>).</li>
 </ul>
 </div>
-<div id="patches" class="section level4">
+<div id="other-improvements-and-patches" class="section level4">
 <h4 class="hasAnchor">
-<a href="#patches" class="anchor"></a>Patches</h4>
+<a href="#other-improvements-and-patches" class="anchor"></a>Other improvements and patches</h4>
 <ul>
+<li>The Stupid Back-Off algorithm is now thoroughly tested, and small inconsistencies between the <code>predict.kgram_freqs()</code> and <code><a href="../reference/predict.sbo_predictor.html">predict.sbo_predictor()</a></code> methods have been fixed, including: - Proper handling of unknown words - Consistent handling of ties in prediction probabilities.</li>
 <li>Removed unnecessary <code>Depends</code> from DESCRIPTION.</li>
-</ul>
-</div>
-<div id="documentation" class="section level4">
-<h4 class="hasAnchor">
-<a href="#documentation" class="anchor"></a>Documentation</h4>
-<ul>
-<li>Added package entry.</li>
+<li>Removed various avoidable <code>Imports</code>.</li>
 </ul>
 </div>
 </div>
