@@ -12,6 +12,8 @@ as_sbo_dictionary(x, ...)
 \arguments{
 \item{x}{object to be coerced.}
 
+\item{...}{further arguments passed to or from other methods.}
+
 \item{.preprocess}{a function for corpus preprocessing.}
 
 \item{EOS}{a length one character vector listing all (single character)

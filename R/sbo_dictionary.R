@@ -12,7 +12,8 @@
 #' the dictionary.
 #' @param max_size a length one numeric. If less than \code{Inf}, only the most 
 #' frequent \code{max_size} words are retained in the dictionary.
-#' @param target a length one numeric within [0,1]. If less than one, retains 
+#' @param target a length one numeric between \code{0} and \code{1}. 
+#' If less than one, retains 
 #' only as many words as needed to cover a fraction \code{target} of the 
 #' training corpus.
 #' @param .preprocess a function for corpus preprocessing. Takes a character

@@ -9,6 +9,7 @@
 #' @param .preprocess a function for corpus preprocessing.
 #' @param EOS a length one character vector listing all (single character)
 #' end-of-sentence tokens.
+#' @param ... further arguments passed to or from other methods.
 #' @return A \code{sbo_dictionary} object.
 #' @details This function is an S3 generic for coercing existing objects to
 #' \code{sbo_dictionary} class objects. Currently, only a method for character

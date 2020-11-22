@@ -11,6 +11,9 @@ kgram_freqs(corpus, N, dict, .preprocess = identity, EOS = "")
 kgram_freqs_fast(corpus, N, dict, erase = "", lower_case = FALSE, EOS = "")
 }
 \arguments{
+\item{corpus}{a character vector. The training corpus from which to extract
+k-gram frequencies.}
+
 \item{N}{a length one integer. The maximum order of k-grams
 for which frequencies are to be extracted.}
 
@@ -30,9 +33,6 @@ alphanumeric, white space, apostrophes or punctuation characters
 
 \item{lower_case}{a length one logical vector. If TRUE, puts everything to
 lower case.}
-
-\item{text}{a character vector. The training corpus from which to extract
-k-gram frequencies.}
 }
 \value{
 A \code{sbo_kgram_freqs} object, containing the k-gram
@@ -128,9 +128,6 @@ freqs <- kgram_freqs_fast(twitter_train, N = 3, dict = twitter_dict)
 ## Print result
 freqs
 }
-}
-\seealso{
-\code{\link[sbo]{get_word_freqs}}
 }
 \author{
 Valerio Gherardi

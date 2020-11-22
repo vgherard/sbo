@@ -34,13 +34,13 @@ sbo_predtable(object, lambda = 0.4, L = 3L, filtered = "<UNK>", ...)
 
 \method{sbo_predtable}{character}(
   object,
+  lambda = 0.4,
+  L = 3L,
+  filtered = "<UNK>",
   N,
   dict,
   .preprocess = identity,
   EOS = "",
-  lambda = 0.4,
-  L = 3L,
-  filtered = "<UNK>",
   ...
 )
 
@@ -50,6 +50,8 @@ sbo_predtable(object, lambda = 0.4, L = 3L, filtered = "<UNK>", ...)
 \item{object}{either a character vector or an object inheriting from classes
 \code{sbo_kgram_freqs} or \code{sbo_predtable}. Defines the method to use for
 training.}
+
+\item{...}{further arguments passed to or from other methods.}
 
 \item{N}{a length one integer. Order 'N' of the N-gram model.}
 

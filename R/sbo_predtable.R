@@ -23,8 +23,9 @@ sbo_predtable <- function(object, lambda = 0.4, L = 3L, filtered = "<UNK>", ...)
 #'                    .preprocess = preprocess, EOS = ".?!:;")
 #' }
 sbo_predtable.character <- 
-        function(object, N, dict, .preprocess = identity, EOS = "", 
-                 lambda = 0.4, L = 3L, filtered = "<UNK>", ...) {
+        function(object, lambda = 0.4, L = 3L, filtered = "<UNK>",
+                 N, dict, .preprocess = identity, EOS = "", ...) 
+{
         freqs <- kgram_freqs(object, N = N, dict = dict, 
                              .preprocess = .preprocess, EOS = EOS)
         return(sbo_predtable(freqs, lambda, L, filtered))

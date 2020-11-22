@@ -27,6 +27,8 @@ computed.}
 
 \item{corpus}{a character vector.}
 
+\item{...}{further arguments passed to or from other methods.}
+
 \item{.preprocess}{preprocessing function for training corpus. See
 \code{\link[sbo]{kgram_freqs}} and \code{\link[sbo]{sbo_dictionary}} for
 further details.}

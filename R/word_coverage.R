@@ -18,6 +18,7 @@
 #' @param EOS a length one character vector. String containing End-Of-Sentence
 #' characters, see  \code{\link[sbo]{kgram_freqs}} and 
 #' \code{\link[sbo]{sbo_dictionary}} for further details.
+#' @param ... further arguments passed to or from other methods.
 #' @return a \code{word_coverage} object.
 
 #' @details This function computes the corpus coverage fraction of a dictionary,

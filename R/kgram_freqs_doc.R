@@ -7,7 +7,7 @@
 #' @md
 #'
 #'
-#' @param text a character vector. The training corpus from which to extract
+#' @param corpus a character vector. The training corpus from which to extract
 #' k-gram frequencies.
 #' @param N a length one integer. The maximum order of k-grams
 #' for which frequencies are to be extracted.
@@ -86,8 +86,6 @@
 #' preprocessing functions defined in the global environment 
 #' (for instance, \code{base::identity} is preferred to \code{function(x) x}).
 #' 
-#'
-#' @seealso \code{\link[sbo]{get_word_freqs}}
 #' @name kgram_freqs
 ################################################################################
 NULL

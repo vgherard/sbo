@@ -71,20 +71,21 @@ summary.sbo_predictions <- function(object, ...){
 }
 
 #' @export
-summary.word_coverage <- function(x, ...){
+summary.word_coverage <- function(object, ...){
         format_title <- . %>% (cli::style_underline) %>% (cli::style_bold)
         format_item <- . %>% (cli::col_silver) %>% (cli::style_italic)
         format_help <- . %>% (cli::col_green)
         
         "Word coverage fraction\n\n" %>% format_title %>% cat
         
-        f_w_EOS <- format(100 * last(x), digits = 3)
+        f_w_EOS <- format(100 * last(object), digits = 3)
         f_wo_EOS <- 
-                (100 * (last(x) - x[[1]]) / (1 - x[[1]])) %>% format(digits = 3)
+                (100 * (last(object) - object[[1]]) / (1 - object[[1]])) %>% 
+                format(digits = 3)
         
-        "Dictionary length:" %>% format_item %>% cat(length(x) - 1, "\n")
+        "Dictionary length:" %>% format_item %>% cat(length(object) - 1, "\n")
         "Coverage fraction (w/ EOS):" %>% format_item %>% cat(f_w_EOS, "%\n")
         "Coverage fraction (w/o EOS):" %>% format_item %>% cat(f_wo_EOS, "%\n")
         
-        return(invisible(x))
+        return(invisible(object))
 }

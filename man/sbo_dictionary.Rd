@@ -19,7 +19,8 @@ the dictionary.}
 \item{max_size}{a length one numeric. If less than \code{Inf}, only the most
 frequent \code{max_size} words are retained in the dictionary.}
 
-\item{target}{a length one numeric within \link{0,1}. If less than one, retains
+\item{target}{a length one numeric between \code{0} and \code{1}.
+If less than one, retains
 only as many words as needed to cover a fraction \code{target} of the
 training corpus.}
 

@@ -23,6 +23,7 @@
 #' @param filtered a character vector. Words to exclude from next-word 
 #' predictions. The strings '<UNK>' and '<EOS>' are reserved keywords 
 #' referring to the Unknown-Word and End-Of-Sentence tokens, respectively.
+#' @param ... further arguments passed to or from other methods.
 #' @return A \code{sbo_predictor} object for \code{sbo_predictor()}, a 
 #' \code{sbo_predtable} object for \code{sbo_predtable()}.
 #' @details These functions are generics used to train a text predictor 
