@@ -61,5 +61,5 @@ plot.word_coverage <- function(
         if (show_limit) abline(h = last(x), col = "red", lty = "dashed")
         axis(1, at = xticks, las = 1)
         axis(2, at = yticks, las = 1)
-        return(invisbile(NULL))
+        return(invisible(NULL))
 }
