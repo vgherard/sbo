@@ -1,6 +1,40 @@
+################################################################################
+#' Plot method for word_coverage objects
+#'
+#' Plot cumulative corpus coverage fraction of a dictionary.
+#'
 #' @export
+#'
+#' @author Valerio Gherardi
+#' @md
+#'
+#' @param x a \code{word_coverage} object.
+#' @param include_EOS length one logical. Should End-Of-Sentence tokens be 
+#' considered in the computation of coverage fraction?
+#' @param show_limit length one logical. If \code{TRUE}, plots an horizontal
+#' line corresponding to the total coverage fraction.
+#' @param type what type of plot should be drawn, as detailed in \code{?plot}.
+#' @param xlim length two numeric. Extremes of the x-range.
+#' @param ylim length two numeric. Extremes of the y-range.
+#' @param xticks numeric vector. position of the x-axis ticks.
+#' @param yticks numeric vector. position of the y-axis ticks. 
+#' @param xlab length one character. The x-axis label.
+#' @param ylab length one character. The y-axis label.
+#' @param title length one character. Plot title.
+#' @param title length one character. Plot subtitle; if "_default_", prints
+#' dictionary length and total covered fraction.
+#' @param ... further arguments passed to or from other methods.
+#' @details This function generates nice plots of cumulative corpus coverage
+#' fractions. The \code{x} coordinate in the resulting plot is the word rank in the
+#' underlying dictionary; the \code{y} coordinate at 
+#' \code{x} is the cumulative coverage fraction for \code{rank <= x}.
+#' @examples
+#' \donttest{
+#' c <- word_coverage(twitter_dict, twitter_test)
+#' plot(c)
+#' }
 plot.word_coverage <- function(
-        x, y, include_EOS = FALSE, show_limit = TRUE, type = "l",
+        x, include_EOS = FALSE, show_limit = TRUE, type = "l",
         xlim = c(0, length(x)), ylim = c(0, 1), 
         xticks = seq(from = 0, to = length(x), by = length(x) / 5),
         yticks = seq(from = 0, to = 1, by = 0.25),
@@ -9,7 +43,6 @@ plot.word_coverage <- function(
         subtitle = "_default_",
         ...)
 {
-        if (!missing(y)) warning("'y' argument ignored.")
         if (include_EOS) {
                 x <- x[-1]
         } else {
@@ -28,4 +61,5 @@ plot.word_coverage <- function(
         if (show_limit) abline(h = last(x), col = "red", lty = "dashed")
         axis(1, at = xticks, las = 1)
         axis(2, at = yticks, las = 1)
+        return(invisbile(NULL))
 }
