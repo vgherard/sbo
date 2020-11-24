@@ -43,7 +43,9 @@ line corresponding to the total coverage fraction.}
 
 \item{ylab}{length one character. The y-axis label.}
 
-\item{title}{length one character. Plot subtitle; if "\emph{default}", prints
+\item{title}{length one character. Plot title.}
+
+\item{subtitle}{length one character. Plot subtitle; if "\emph{default}", prints
 dictionary length and total covered fraction.}
 
 \item{...}{further arguments passed to or from other methods.}

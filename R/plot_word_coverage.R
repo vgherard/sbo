@@ -21,7 +21,7 @@
 #' @param xlab length one character. The x-axis label.
 #' @param ylab length one character. The y-axis label.
 #' @param title length one character. Plot title.
-#' @param title length one character. Plot subtitle; if "_default_", prints
+#' @param subtitle length one character. Plot subtitle; if "_default_", prints
 #' dictionary length and total covered fraction.
 #' @param ... further arguments passed to or from other methods.
 #' @details This function generates nice plots of cumulative corpus coverage
