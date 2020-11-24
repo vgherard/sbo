@@ -22,41 +22,54 @@
 ################################################################################
 
 kgram_freqs <- function(corpus, N, dict, .preprocess = identity, EOS = ""){
-        if (!is.character(corpus))
-                stop("'corpus' must be a character vector.")
         N <- as.integer(N)
-        if (length(N) != 1 || is.na(N))
-                stop("'N' must be a length one integer.")
-        if (N < 1L)
-                stop("'N' must be greater than one.")
-        if (!is.function(.preprocess))
-                stop("'preprocess' is not a function.")
-        if (!is.character(EOS) || length(EOS) > 1)
-                stop("'EOS' must be a length one character vector.")
-
+        checkargs_kgram_freqs()
+        
         corpus <- .preprocess(corpus)
         if (EOS != "") corpus <- tokenize_sentences(corpus, EOS = EOS)
         
-        if (is_sbo_dictionary(dict)) {
-        } else if (is.character(dict)) {
-                dict <- as_sbo_dictionary(dict, .preprocess, EOS)
-        } else if (class(dict)[1] == "formula") {
-                dict <- deparse(dict) %>% strsplit(" ~ ") %>% unlist
-                args <- list(corpus = corpus, as.numeric(dict[2]), 
-                             .preprocess = identity, EOS = "")
-                names(args)[2] <- dict[1]
-                dict <- do.call(what = sbo_dictionary, args)
-        } else {
-                stop("Unexpected input for 'dict' argument.")
-        }
+        dict <- make_dict(object = dict, .preprocess = identity, EOS = EOS,
+                          corpus = corpus)
         
+        freqs <- kgram_freqs_cpp(corpus, N, dict[])
         format_raw_freqs <- function(x){
                 colnames(x) <- c(paste0("w", (N + 2 - ncol(x)):N), "n")
                 as_tibble(x)
         }
-        freqs <- lapply(kgram_freqs_cpp(corpus, N, dict[]), format_raw_freqs)
+        freqs <- lapply(freqs, format_raw_freqs)
         
         return(new_kgram_freqs(freqs = freqs, N = N, dict = dict,
                                .preprocess = .preprocess, EOS = EOS)
         )
+}
+
+checkargs_kgram_freqs <- function() {
+        evalq({
+                if (!is.character(corpus))
+                        stop("'corpus' must be a character vector.")
+                if (length(N) != 1 || is.na(N))
+                        stop("'N' must be a length one integer.")
+                if (N < 1L)
+                        stop("'N' must be greater than one.")
+                if (exists(".preprocess") && !is.function(.preprocess))
+                        stop("'.preprocess' must be a function.")
+                if (exists("erase") && 
+                    !(is.character(erase) && length(erase) == 1)
+                    ) 
+                        stop("'erase' must be a length one character vector.")
+                if (exists("lower_case") && 
+                    !(is.logical(lower_case) && length(lower_case) == 1)
+                    ) 
+                        stop("'lower_case' must be a length one logical.")
+                if (!is.character(EOS) || length(EOS) > 1)
+                        stop("'EOS' must be a length one character vector.")
+                if (!is_sbo_dictionary(dict) && 
+                    !is.character(dict) && 
+                    class(dict)[1] != "formula"
+                    )
+                        stop("'dict' must be either a 'sbo_dictionary', a
+                             character vector or a formula.")
+                }, 
+              rlang::caller_env()
+              )
 }

@@ -9,44 +9,31 @@
 #' freqs
 #' }
 ################################################################################
-kgram_freqs_fast <- function(corpus, N, dict, 
-                             erase = "", lower_case = FALSE, EOS = ""){
-        if (!is.character(corpus))
-                stop("'corpus' must be a character vector.")
+kgram_freqs_fast <- 
+        function(corpus, N, dict, erase = "", lower_case = FALSE, EOS = ""){
         N <- as.integer(N)
-        if (length(N) != 1 || is.na(N))
-                stop("'N' must be a length one integer.")
-        if (N < 1L)
-                stop("'N' must be greater than one.")
-        if (!is.logical(lower_case) || length(lower_case) > 1)
-                stop("'lower_case' must be a length one logical vector.")
-        if (!is.character(EOS) || length(EOS) > 1)
-                stop("'EOS' must be a length one character vector.")
+        .preprocess <- default_preprocess(erase, lower_case)
+        checkargs_kgram_freqs()
         
-        .preprocess <- function(x) preprocess(x, erase, lower_case)
+        dict <- make_dict(object = dict, .preprocess = .preprocess, EOS = EOS,
+                          corpus = corpus)
         
-        if (is_sbo_dictionary(dict)) {
-        } else if (is.character(dict)) {
-                dict <- as_sbo_dictionary(dict, .preprocess, EOS)
-        } else if (class(dict)[1] == "formula") {
-                dict <- deparse(dict) %>% strsplit(" ~ ") %>% unlist
-                args <- list(corpus = corpus, as.numeric(dict[2]), 
-                             .preprocess = .preprocess, EOS = "")
-                names(args)[2] <- dict[1]
-                dict <- do.call(what = sbo_dictionary, args)
-        } else {
-                stop("Unexpected input for 'dict' argument.")
-        }
-        
+        freqs <- kgram_freqs_fast_cpp(corpus, N, dict[], erase, lower_case, EOS)
         format_raw_freqs <- function(x){
                 colnames(x) <- c(paste0("w", (N + 2 - ncol(x)):N), "n")
                 as_tibble(x)
         }
-        freqs <- lapply(kgram_freqs_fast_cpp(corpus, N, dict[], erase, 
-                                             lower_case, EOS),
-                        format_raw_freqs)
+        freqs <- lapply(freqs, format_raw_freqs)
 
         return(new_kgram_freqs(freqs = freqs, N = N, dict = dict,
                                .preprocess = .preprocess, EOS = EOS)
                )
+}
+
+default_preprocess <- function(erase, lower_case) {
+        FUN <- function(x) preprocess(x, erase, lower_case)
+        rlang::fn_env(FUN) <- rlang::env_clone(rlang::fn_env(preprocess))
+        rlang::fn_env(FUN)[["erase"]] <- erase
+        rlang::fn_env(FUN)[["lower_case"]] <- lower_case
+        return(FUN)
 }
