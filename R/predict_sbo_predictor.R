@@ -9,9 +9,9 @@
 #' @md
 #'
 #' @param object a \code{sbo_predictor} object.
-#' @param newdata a character vector, containing the input for next-word prediction.
+#' @param input a character vector, containing the input for next-word prediction.
 #' @param ... further arguments passed to or from other methods.
-#' @return A character vector if \code{length(newdata) == 1}, otherwise a
+#' @return A character vector if \code{length(input) == 1}, otherwise a
 #' character matrix.
 #' @details This method returns the top \code{L} next-word predictions from a
 #' text predictor trained with Stupid Back-Off.
@@ -28,17 +28,17 @@
 #' #N.B. the top predictions here are x[1], followed by x[2] and x[3].
 #' predict(p, c("i love", "you love")) # Behaviour with length()>1 input.
 ################################################################################
-predict.sbo_predictor <- function(object, newdata, ...){
-        stopifnot(is.character(newdata) & length(newdata) > 0)
+predict.sbo_predictor <- function(object, input, ...){
+        stopifnot(is.character(input) & length(input) > 0)
         .preprocess <- attr(object, ".preprocess")
-        newdata <- .preprocess(newdata)
-        output <- predict_sbo_predictor(object, newdata)
+        input <- .preprocess(input)
+        output <- predict_sbo_predictor(object, input)
         if (nrow(output) == 1) return(as.character(output))
         else return(output)
 }
 
 #' @export
-predict.sbo_predtable <- function(object, newdata, ...){
-        error("Cannot predict() from 'sbo_predtable' class object.",
-              "Use 'sbo_predictor()' to set up a 'sbo_predictor' object.")
+predict.sbo_predtable <- function(object, input, ...){
+        stop("Cannot predict() from 'sbo_predtable' class object. ",
+             "Use 'sbo_predictor()' to set up a 'sbo_predictor' object.")
 }

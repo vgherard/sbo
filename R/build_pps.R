@@ -12,7 +12,7 @@ build_pps <- function(freqs, N, lambda, filtered, L) {
                 group_by_at(all_of(prefixes)) %>%
                 mutate(score = n / sum(n)) %>%
                 ungroup %>%
-                select(prefixes, prediction, score)
+                select(prefixes, .data$prediction, .data$score)
         
         pps_lower <- build_pps(freqs[-k], N, lambda, filtered, L)
         
@@ -22,15 +22,18 @@ build_pps <- function(freqs, N, lambda, filtered, L) {
                 mutate(across(any_of("score"), function(x) lambda * x)) %>%
                 left_join(distinct(select(pps, any_of(prefixes))), 
                           by = tail(prefixes, -1)) %>%
-                anti_join(select(pps, -score), by = c("prediction", prefixes))
+                anti_join(select(pps, -.data$score), 
+                          by = c("prediction", prefixes)
+                          )
 
         pps %>% 
                 bind_rows(pps_backoff) %>%
                 group_by_at(all_of(prefixes)) %>%
-                filter(!(prediction %in% filtered)) %>%
-                slice_max(score, n = L, with_ties = TRUE) %>%
-                arrange(desc(score), prediction, .by_group = TRUE) %>%
-                slice_max(score, n = L, with_ties = FALSE) %>%
+                filter(!(.data$prediction %in% filtered)) %>%
+                slice_max(.data$score, n = L, with_ties = TRUE) %>%
+                arrange(desc(.data$score), .data$prediction, 
+                        .by_group = TRUE) %>%
+                slice_max(.data$score, n = L, with_ties = FALSE) %>%
                 ungroup -> pps
         
         if (k == 1) pps_lower <- list()

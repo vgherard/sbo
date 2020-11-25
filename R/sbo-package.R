@@ -8,8 +8,10 @@ NULL
 NULL
 
 #' @import dplyr
+#' @importFrom rlang .data
 #' @importFrom stats predict
 #' @importFrom utils head tail
+#' @importFrom graphics abline axis mtext
 NULL
 
 #' @description

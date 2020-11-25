@@ -58,13 +58,13 @@ sbo_predtable.sbo_kgram_freqs <- function(object,
                           nomatch = -1)
         
         extract_preds <- . %>% 
-                select(-score) %>%
-                group_by_at(vars(-prediction)) %>%
+                select(-.data$score) %>%
+                group_by_at(vars(-.data$prediction)) %>%
                 mutate(rank = row_number()) %>%
                 ungroup %>%
-                tidyr::pivot_wider(names_from = rank, 
+                tidyr::pivot_wider(names_from = .data$rank, 
                                    names_prefix = "prediction", 
-                                   values_from = prediction
+                                   values_from = .data$prediction
                 ) %>%
                 as.matrix
         

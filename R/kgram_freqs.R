@@ -44,6 +44,7 @@ kgram_freqs <- function(corpus, N, dict, .preprocess = identity, EOS = ""){
 }
 
 checkargs_kgram_freqs <- function() {
+        corpus <- N <- .preprocess <- erase <- lower_case <- EOS <- dict <- NULL 
         evalq({
                 if (!is.character(corpus))
                         stop("'corpus' must be a character vector.")

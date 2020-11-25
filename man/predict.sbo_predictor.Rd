@@ -4,17 +4,17 @@
 \alias{predict.sbo_predictor}
 \title{Predict method for Stupid Back-off text predictor}
 \usage{
-\method{predict}{sbo_predictor}(object, newdata, ...)
+\method{predict}{sbo_predictor}(object, input, ...)
 }
 \arguments{
 \item{object}{a \code{sbo_predictor} object.}
 
-\item{newdata}{a character vector, containing the input for next-word prediction.}
+\item{input}{a character vector, containing the input for next-word prediction.}
 
 \item{...}{further arguments passed to or from other methods.}
 }
 \value{
-A character vector if \code{length(newdata) == 1}, otherwise a
+A character vector if \code{length(input) == 1}, otherwise a
 character matrix.
 }
 \description{

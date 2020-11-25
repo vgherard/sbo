@@ -131,6 +131,11 @@
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>corpus</th>
+      <td><p>a character vector. The training corpus from which to extract
+k-gram frequencies.</p></td>
+    </tr>
+    <tr>
       <th>N</th>
       <td><p>a length one integer. The maximum order of k-grams
 for which frequencies are to be extracted.</p></td>
@@ -161,11 +166,6 @@ alphanumeric, white space, apostrophes or punctuation characters
       <th>lower_case</th>
       <td><p>a length one logical vector. If TRUE, puts everything to
 lower case.</p></td>
-    </tr>
-    <tr>
-      <th>text</th>
-      <td><p>a character vector. The training corpus from which to extract
-k-gram frequencies.</p></td>
     </tr>
     </table>
 
@@ -229,9 +229,6 @@ in memory.
 For this reason, for non interactive use, it is advisable to avoid using
 preprocessing functions defined in the global environment
 (for instance, <code><a href='https://rdrr.io/r/base/identity.html'>base::identity</a></code> is preferred to <code>function(x) x</code>).</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code>get_word_freqs</code></p></div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Valerio Gherardi</p>

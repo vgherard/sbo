@@ -55,7 +55,7 @@ word_coverage.sbo_dictionary <- function(object, corpus, ...) {
         .preprocess <- attr(object, ".preprocess")
         EOS <- attr(object, "EOS")
         wfreqs <- kgram_freqs(corpus, 1, object, .preprocess, EOS)[[1]]
-        wfreqs <- arrange(wfreqs, w1)[["n"]]
+        wfreqs <- arrange(wfreqs, .data$w1)[["n"]]
         names(wfreqs) <- c(object[], "<EOS>", "<UNK>")
         wfreqs <- c("<EOS>" = wfreqs[["<EOS>"]], wfreqs[-(length(wfreqs) - 1)])
         wfreqs <- cumsum(wfreqs / sum(wfreqs))

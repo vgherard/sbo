@@ -71,10 +71,10 @@ eval_sbo_predictor <- function(model, test, L = attr(model, "L")){
                         tibble(input = input, true = x[i + N - 1])
                 }) %>%
                 bind_rows %>%
-                mutate(input = gsub("<BOS>", "", input)) %>%
+                mutate(input = gsub("<BOS>", "", .data$input)) %>%
                 group_by(row_number()) %>%
-                mutate(preds = matrix(predict(model, input), ncol = L),
-                       correct = true %in% preds) %>%
+                mutate(preds = matrix(predict(model, .data$input), ncol = L),
+                       correct = .data$true %in% .data$preds) %>%
                 ungroup %>%
-                select(input, true, preds, correct)
+                select(.data$input, .data$true, .data$preds, .data$correct)
 }
