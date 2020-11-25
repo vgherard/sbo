@@ -11,10 +11,10 @@
 ################################################################################
 kgram_freqs_fast <- 
         function(corpus, N, dict, erase = "", lower_case = FALSE, EOS = ""){
-        .preprocess <- default_preprocess(erase, lower_case)
         argcheck_kgram_freqs()
+                
         N <- as.integer(N)
-        
+        .preprocess <- default_preprocess(erase, lower_case)
         dict <- make_dict(object = dict, .preprocess = .preprocess, EOS = EOS,
                           corpus = corpus)
         
