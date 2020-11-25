@@ -4,12 +4,12 @@
 \alias{predict.sbo_kgram_freqs}
 \title{Predict method for k-gram frequency tables}
 \usage{
-\method{predict}{sbo_kgram_freqs}(object, newdata, lambda = 0.4, ...)
+\method{predict}{sbo_kgram_freqs}(object, input, lambda = 0.4, ...)
 }
 \arguments{
 \item{object}{a \code{sbo_kgram_freqs} object.}
 
-\item{newdata}{a length one character vector, containing the input for
+\item{input}{a length one character vector, containing the input for
 next-word prediction.}
 
 \item{lambda}{a numeric vector of length one. The back-off penalization

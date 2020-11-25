@@ -124,7 +124,7 @@
     </div>
 
     <pre class="usage"><span class='co'># S3 method for sbo_predictor</span>
-<span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>newdata</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>input</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -134,7 +134,7 @@
       <td><p>a <code>sbo_predictor</code> object.</p></td>
     </tr>
     <tr>
-      <th>newdata</th>
+      <th>input</th>
       <td><p>a character vector, containing the input for next-word prediction.</p></td>
     </tr>
     <tr>
@@ -145,7 +145,7 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A character vector if <code>length(newdata) == 1</code>, otherwise a
+    <p>A character vector if <code>length(input) == 1</code>, otherwise a
 character matrix.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
