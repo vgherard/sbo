@@ -8,7 +8,7 @@
 #' @md
 #
 #' @param object a \code{sbo_kgram_freqs} object.
-#' @param newdata a length one character vector, containing the input for
+#' @param input a length one character vector, containing the input for
 #' next-word prediction.
 #' @param lambda a numeric vector of length one. The back-off penalization
 #' in Stupid Back-off algorithm.
@@ -18,8 +18,8 @@
 #' @examples
 #' predict(twitter_freqs, "i love")
 ################################################################################
-predict.sbo_kgram_freqs <- function(object, newdata, lambda = 0.4, ...){
-        stopifnot(is.character(newdata) & length(newdata) == 1)
+predict.sbo_kgram_freqs <- function(object, input, lambda = 0.4, ...){
+        stopifnot(is.character(input) & length(input) == 1)
         stopifnot(is.numeric(lambda) & length(lambda) == 1)
         N <- attr(object, "N")
         dict <- attr(object, "dict")
@@ -27,32 +27,31 @@ predict.sbo_kgram_freqs <- function(object, newdata, lambda = 0.4, ...){
         .preprocess <- attr(object, ".preprocess")
         V <- length(dict) + 3
 
-        newdata <- .preprocess(newdata)
-        newdata %>% 
-                get_kgram_prefix(N, dict, EOS) %>%
-                `names<-`(paste0("w", 1:(N - 1))) -> newdata
+        input <- .preprocess(input) %>% get_kgram_prefix(N, dict, EOS)
+        for (j in seq_along(input)) names(input)[[j]] <- paste0("w", j) 
 
-        FUN <- function(x){ x == newdata[[cur_column()]] }
+        FUN <- function(x){ x == input[[cur_column()]] }
         lapply(1:N, function(k)
                 {object[[k]] %>%
-                        filter(across(any_of(names(newdata)), FUN)
-                               ) %>%
+                        filter(across(any_of(names(input)), FUN)) %>%
                         mutate(score = lambda^(N - k) * n / sum(n), k = k) %>%
-                        select(all_of(paste0("w", N)), score, k )
+                        select(all_of(paste0("w", N)), .data$score, k )
                 }
                ) %>%
                 bind_rows %>%
                 group_by_at(vars(paste0("w",N))) %>%
-                slice_max(order_by = k, n = 1, with_ties = FALSE) %>%
+                slice_max(order_by = .data$k, n = 1, with_ties = FALSE) %>%
                 ungroup %>%
-                mutate(prob = score/sum(score)) %>%
-                select(all_of(paste0("w",N)), prob) %>%
-                arrange(desc(prob)) %>%
+                mutate(prob = .data$score/sum(.data$score)) %>%
+                select(all_of(paste0("w",N)), .data$prob) %>%
+                arrange(desc(.data$prob)) %>%
                 mutate(across(all_of(paste0("w",N)),
                                      function(x) c(dict,"<EOS>", "<UNK>")[x]
                                      )
                        ) %>%
                 `colnames<-`(c("completion", "probability")) %>%
-                filter(completion != "<UNK>") %>%
-                arrange(desc(probability), match(completion, c(dict, "<EOS>")))
+                filter(.data$completion != "<UNK>") %>%
+                arrange(desc(.data$probability), 
+                        match(.data$completion, c(dict, "<EOS>"))
+                        )
 }
