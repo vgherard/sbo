@@ -52,20 +52,7 @@
 ################################################################################
 sbo_dictionary <- function(corpus, max_size = Inf, target = 1,
                            .preprocess = identity, EOS = "") {
-        if (!is.character(corpus)) 
-                stop("'corpus' must be a character vector.")
-        if (!is.numeric(max_size) || length(max_size) > 1)
-                stop("'size' must be a length one numeric.")
-        if (max_size < 0) 
-                stop("'size' must be positive.")
-        if (!is.numeric(target) || length(target) > 1)
-                stop("'size' must be a length one numeric.")
-        if (!(0 <= target && target <= 1))
-                stop("'coverage' must lie in the [0,1] interval.")
-        if (!is.function(.preprocess))
-                stop("'.preprocess' is not a function.")
-        if (!is.character(EOS) || length(EOS) > 1) 
-                stop("'EOS' must be a length one character vector.")
+        argcheck_sbo_dictionary()
         corpus <- .preprocess(corpus)
         if (EOS != "") corpus <- tokenize_sentences(corpus, EOS = EOS)
         wfreqs <- sort(get_word_freqsC(corpus), decreasing = TRUE)
