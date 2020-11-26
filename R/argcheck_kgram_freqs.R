@@ -11,18 +11,18 @@ argcheck_kgram_freqs <- function() {
                         "'.preprocess' must be a function."
                 } else if (exists("erase") && 
                            !(is.character(erase) && length(erase) == 1)
-                ) {
+                           ) {
                         "'erase' must be a length one character vector."
                 } else if (exists("lower_case") &&
                            !(is.logical(lower_case) && length(lower_case) == 1)
-                ) {
+                           ) {
                         "'lower_case' must be a length one logical."
                 } else if (!is.character(EOS) || length(EOS) > 1) {
                         "'EOS' must be a length one character vector."
                 } else if (!is_sbo_dictionary(dict) &&
                            !is.character(dict) &&
                            class(dict)[1] != "formula"
-                ) {
+                           ) {
                         paste("'dict' must be either a 'sbo_dictionary',",
                               "a character vector or a formula.")
                 }
