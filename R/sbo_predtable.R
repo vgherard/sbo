@@ -5,7 +5,7 @@ sbo_predtable <- function(object, lambda = 0.4, L = 3L, filtered = "<UNK>", ...)
                 stop("'lambda' must be a length one numeric.")
         if (lambda < 0 || lambda > 1)
                 stop("'lambda' must be in the interval [0,1].")
-        if (length(L <- as.integer(L)) != 1 || is.na(L))
+        if (!is.numeric(L) || length(L) != 1)
                 stop("'L' must be a length one integer.")
         if (L < 1) 
                 stop("'L' must be greater than one.")
@@ -48,6 +48,7 @@ sbo_predtable.sbo_kgram_freqs <- function(object,
                                           L = 3L, filtered = "<UNK>", ...) {
         N <- attr(object, "N")
         dict <- attr(object, "dict")
+        L <- as.integer(L)
         if (L > length(dict))
                 stop("'L' must be less than the dictionary size.")
         
