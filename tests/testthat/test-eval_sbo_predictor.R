@@ -30,3 +30,24 @@ test_that("correctly identifies correct prediction",{
         }
         expect_identical(correct, p_eval[["correct"]])
 })
+
+test_that("error on invalid 'model'",{
+        expect_error(eval_sbo_predictor(twitter_freqs, test = "i love"), 
+                     class = "sbo_domain_error")
+})
+
+test_that("error on invalid 'test'",{
+        p <- sbo_predictor("a b c d", N = 2, dict = c("a", "b"))
+        expect_error(eval_sbo_predictor(p, test = 1:10), 
+                     class = "sbo_domain_error")
+})
+
+test_that("errors on invalid 'L'",{
+        p <- sbo_predictor("a b c d", N = 2, dict = c("a", "b"))
+        expect_error(eval_sbo_predictor(p, test = "d c a b", L = TRUE), 
+                     class = "sbo_domain_error")
+        expect_error(eval_sbo_predictor(p, test = "d c a b", L = c(1,2)), 
+                     class = "sbo_domain_error")
+        expect_error(eval_sbo_predictor(p, test = "d c a b", L = 0), 
+                     class = "sbo_domain_error")
+})
