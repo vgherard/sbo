@@ -10,18 +10,25 @@
 #' @export
 #'
 #' @param model a \code{sbo_predictor} object.
-#' @param test a character vector. Test corpus for model evaluation.
+#' @param test a character vector. Perform a single prediction on each entry of
+#' this vector (see details). 
 #' @param L Maximum number of predictions for each input sentence
 #' (maximum allowed is \code{attr(model, "L")})
 #' @return A tibble, containing the input $(N-1)$-grams, the true completions,
 #' the predicted completions and a column indicating whether one of the
 #' predictions were correct or not.
-#' @details This function allows to obtain information on Stupid Back-off model
-#' predictions, such as next-word prediction accuracy, or the word-rank
-#' distribution of correct prediction, by direct test against a test set corpus.
+#' @details This function allows to obtain information on the quality of 
+#' Stupid Back-off model predictions, such as next-word prediction accuracy, 
+#' or the word-rank distribution of correct prediction, by direct test against 
+#' a test set corpus. For a reasonable estimate of prediction accuracy, the
+#' different entries of the \code{test} vector should be uncorrelated 
+#' documents (e.g. separate tweets, as in the \code{\link[sbo]{twitter_test}} 
+#' example dataset).
 #'
-#' \code{eval_sbo_predictor} performs the following operations:
-#' 1. Sample a single $N$-gram from each sentence of test corpus.
+#' More in detail, \code{eval_sbo_predictor} performs the following operations:
+#' 1. Sample a single sentence from each entry of the character vector 
+#' \code{test}.
+#' 1. Sample a single $N$-gram from each sentence obtained in the previous step.  
 #' 1. Predict next words from the $(N-1)$-gram prefix.
 #' 1. Return all predictions, together with the true word completions.
 #' @examples
@@ -50,31 +57,44 @@
 ################################################################################
 
 eval_sbo_predictor <- function(model, test, L = attr(model, "L")){
-        stopifnot(is.character(test))
-        if (is.na(L <- as.integer(L)) | L < 1L)
-                stop("L could not be coerced to a positive integer")
-        N <- attr(model, "N")
-        dict <- attr(model, "dict")
-        .preprocess <- attr(model, ".preprocess")
-        EOS <- attr(model, "EOS")
-        wrap <- c(paste0(rep("<BOS>", N - 1), collapse = " "), "<EOS>")
-        test %>%
-                .preprocess %>%
-                tokenize_sentences(EOS = EOS) %>%
-                paste(wrap[[1]], ., wrap[[2]], sep = " ") %>%
-                lapply(function(x){
-                        x <- stringi::stri_split_fixed(x, " ", omit_empty = TRUE
-                                                       ) %>% unlist
-                        if (length(x) < N + 1) return(tibble())
-                        i <- sample(1:(length(x) - N + 1), 1)
-                        input <- paste0(x[i:(i + N - 2)], collapse = " ")
-                        tibble(input = input, true = x[i + N - 1])
-                }) %>%
-                bind_rows %>%
-                mutate(input = gsub("<BOS>", "", .data$input)) %>%
+        msg <- if (!is.character(test)) {
+                "'test' must be a character vector"
+        } else if (!is.numeric(L) | length(L) != 1) {
+                "'L' must be a length one integer."
+        } else if (L < 1) {
+                "'L' must be greater than one."
+        } 
+        if (!is.null(msg)) 
+                rlang::abort(class = "sbo_domain_error", message = msg)
+        
+        sample_kgrams(model, test) %>%
                 group_by(row_number()) %>%
                 mutate(preds = matrix(predict(model, .data$input), ncol = L),
                        correct = .data$true %in% .data$preds) %>%
                 ungroup %>%
                 select(.data$input, .data$true, .data$preds, .data$correct)
+}
+
+sample_kgrams <- function(model, test) {
+        N <- attr(model, "N")
+        wrap <- c(paste0(rep("<BOS>", N - 1), collapse = " "), "<EOS>")
+        
+        test <- attr(model, ".preprocess")(test)
+        
+        lapply(test, function(x) {
+                x <- tokenize_sentences(x, EOS = attr(model, "EOS"))
+                if (length(x) == 0) return(tibble())
+                x <- sample(x, 1) %>% # sample one sentence
+                        paste(wrap[[1]], ., wrap[[2]], sep = " ") %>%
+                        strsplit(" ", fixed = TRUE) %>%
+                        unlist %>%
+                        .[. != ""]
+                if (length(x) < N + 1) return(tibble())
+                i <- sample(1:(length(x) - N + 1), 1) # sample one N-gram
+                input <- paste0(x[i:(i + N - 2)], collapse = " ")
+                tibble(input = input, true = x[i + N - 1])
+                }
+               ) %>% # end lapply
+                bind_rows %>%
+                mutate(input = gsub("<BOS>", "", .data$input)) # return
 }
