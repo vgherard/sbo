@@ -34,8 +34,11 @@ correspondingly, the output of `print()` has been simplified considerably (#5).
 * The Stupid Back-Off algorithm is now thoroughly tested, and small 
 inconsistencies between the `predict.kgram_freqs()` and 
 `predict.sbo_predictor()` methods have been fixed, including:
+
         - Proper handling of unknown words
         - Consistent handling of ties in prediction probabilities.
+* Model evaluation in `eval_sbo_predictor()` is now carried out by sampling
+a single sentence from each document in test corpus.
 * Removed unnecessary `Depends` from DESCRIPTION.
 * Removed various avoidable `Imports`.
 

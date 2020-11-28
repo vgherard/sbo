@@ -9,7 +9,8 @@ eval_sbo_predictor(model, test, L = attr(model, "L"))
 \arguments{
 \item{model}{a \code{sbo_predictor} object.}
 
-\item{test}{a character vector. Test corpus for model evaluation.}
+\item{test}{a character vector. Perform a single prediction on each entry of
+this vector (see details).}
 
 \item{L}{Maximum number of predictions for each input sentence
 (maximum allowed is \code{attr(model, "L")})}
@@ -24,13 +25,19 @@ Evaluate next-word predictions based on Stupid Back-off N-gram
 model on a test corpus.
 }
 \details{
-This function allows to obtain information on Stupid Back-off model
-predictions, such as next-word prediction accuracy, or the word-rank
-distribution of correct prediction, by direct test against a test set corpus.
+This function allows to obtain information on the quality of
+Stupid Back-off model predictions, such as next-word prediction accuracy,
+or the word-rank distribution of correct prediction, by direct test against
+a test set corpus. For a reasonable estimate of prediction accuracy, the
+different entries of the \code{test} vector should be uncorrelated
+documents (e.g. separate tweets, as in the \code{\link[sbo]{twitter_test}}
+example dataset).
 
-\code{eval_sbo_predictor} performs the following operations:
+More in detail, \code{eval_sbo_predictor} performs the following operations:
 \enumerate{
-\item Sample a single $N$-gram from each sentence of test corpus.
+\item Sample a single sentence from each entry of the character vector
+\code{test}.
+\item Sample a single $N$-gram from each sentence obtained in the previous step.
 \item Predict next words from the $(N-1)$-gram prefix.
 \item Return all predictions, together with the true word completions.
 }

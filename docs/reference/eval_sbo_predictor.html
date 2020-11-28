@@ -136,7 +136,8 @@ model on a test corpus.</p>
     </tr>
     <tr>
       <th>test</th>
-      <td><p>a character vector. Test corpus for model evaluation.</p></td>
+      <td><p>a character vector. Perform a single prediction on each entry of
+this vector (see details).</p></td>
     </tr>
     <tr>
       <th>L</th>
@@ -152,11 +153,17 @@ the predicted completions and a column indicating whether one of the
 predictions were correct or not.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This function allows to obtain information on Stupid Back-off model
-predictions, such as next-word prediction accuracy, or the word-rank
-distribution of correct prediction, by direct test against a test set corpus.</p>
-<p><code>eval_sbo_predictor</code> performs the following operations:</p><ol>
-<li><p>Sample a single $N$-gram from each sentence of test corpus.</p></li>
+    <p>This function allows to obtain information on the quality of
+Stupid Back-off model predictions, such as next-word prediction accuracy,
+or the word-rank distribution of correct prediction, by direct test against
+a test set corpus. For a reasonable estimate of prediction accuracy, the
+different entries of the <code>test</code> vector should be uncorrelated
+documents (e.g. separate tweets, as in the <code><a href='twitter_test.html'>twitter_test</a></code>
+example dataset).</p>
+<p>More in detail, <code>eval_sbo_predictor</code> performs the following operations:</p><ol>
+<li><p>Sample a single sentence from each entry of the character vector
+<code>test</code>.</p></li>
+<li><p>Sample a single $N$-gram from each sentence obtained in the previous step.</p></li>
 <li><p>Predict next words from the $(N-1)$-gram prefix.</p></li>
 <li><p>Return all predictions, together with the true word completions.</p></li>
 </ol>

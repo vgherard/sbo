@@ -170,17 +170,26 @@ This Section leverages, for convenience, on:
 library(dplyr) # installed with `sbo`
 ```
 
-Once we have built our next-word predictor, we may want to directly test its predictions on an independent corpus. For this purpose, `sbo` offers the function `eval_sbo_predictor`, which performs the following test:
+Once we have built our next-word predictor, we may want to directly test its predictions on an independent corpus. For this purpose, `sbo` offers the function `eval_sbo_predictor()`, 
+which samples $N$-grams from a test corpus and compares the predictions from
+the $(N-1)$-gram prefixes with the true completions.
 
-1. Sample a single $N$-gram from each sentence of test corpus.
+More in detail, given a character vector `test`, where each entry of `test`
+represents a single document, `eval_sbo_predictor()` performs the 
+following steps:
+
+1. Sample a single sentence from each entry of `test`, i.e. from each document.
+1. Sample a single $N$-gram from each sentence obtained in the previous step.
 1. Predict next words from the $(N-1)$-gram prefix.
 1. Return all predictions, together with the true word completions.
 
-As a concrete example, we test the text-predictor trained in the previous section over the example dataset `sbo::twitter_test`.
+For a reasonable estimate of prediction accuracy, the various entries of `test`
+should be independent documents, e.g. single tweets as in the `sbo::twitter_test` example dataset, which we use below to test the previously
+trained predictor `p`.
 
 ```{r}
 set.seed(840)
-(evaluation <- eval_sbo_predictor(p, sbo::twitter_test)) # test <- sbo::twitter_test
+(evaluation <- eval_sbo_predictor(p, test = sbo::twitter_test))
 ```
 
 As it is seen, `eval_sbo_predictor()` returns a tibble containing the input $(N-1)$-grams, the true completions, the predicted completions and a column indicating whether one of the predictions were correct or not.
