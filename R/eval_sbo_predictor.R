@@ -57,7 +57,9 @@
 ################################################################################
 
 eval_sbo_predictor <- function(model, test, L = attr(model, "L")){
-        msg <- if (!is.character(test)) {
+        msg <- if (!is.object(model) || class(model)[1] != "sbo_predictor") {
+                "'model' must be a 'sbo_predictor' class object."
+        } else if (!is.character(test)) {
                 "'test' must be a character vector"
         } else if (!is.numeric(L) | length(L) != 1) {
                 "'L' must be a length one integer."
