@@ -60,7 +60,9 @@ eval_sbo_predictor <- function(model, test, L = attr(model, "L")){
         msg <- if (!is.object(model) || class(model)[1] != "sbo_predictor") {
                 "'model' must be a 'sbo_predictor' class object."
         } else if (!is.character(test)) {
-                "'test' must be a character vector"
+                "'test' must be a character vector."
+        } else if (length(test) < 1) {
+                "'test' must be of length at least 1."
         } else if (!is.numeric(L) | length(L) != 1) {
                 "'L' must be a length one integer."
         } else if (L < 1) {
@@ -69,7 +71,16 @@ eval_sbo_predictor <- function(model, test, L = attr(model, "L")){
         if (!is.null(msg)) 
                 rlang::abort(class = "sbo_domain_error", message = msg)
         
-        sample_kgrams(model, test) %>%
+        test_kgrams <- sample_kgrams(model, test)
+        
+        if (nrow(test_kgrams) == 0) {
+                return(tibble(input = character(), true = character(),
+                              preds = matrix(nrow = 0, ncol = 3),
+                              correct = logical(0))
+                       )
+        }
+        
+        test_kgrams %>%        
                 group_by(row_number()) %>%
                 mutate(preds = matrix(predict(model, .data$input), ncol = L),
                        correct = .data$true %in% .data$preds) %>%
@@ -85,13 +96,15 @@ sample_kgrams <- function(model, test) {
         
         lapply(test, function(x) {
                 x <- tokenize_sentences(x, EOS = attr(model, "EOS"))
-                if (length(x) == 0) return(tibble())
+                if (length(x) == 0) 
+                        return(tibble(input = character(0), true = input))
                 x <- sample(x, 1) %>% # sample one sentence
                         paste(wrap[[1]], ., wrap[[2]], sep = " ") %>%
                         strsplit(" ", fixed = TRUE) %>%
                         unlist %>%
                         .[. != ""]
-                if (length(x) < N + 1) return(tibble())
+                if (length(x) < N + 1) 
+                        return(tibble(input = character(0), true = input))
                 i <- sample(1:(length(x) - N + 1), 1) # sample one N-gram
                 input <- paste0(x[i:(i + N - 2)], collapse = " ")
                 tibble(input = input, true = x[i + N - 1])

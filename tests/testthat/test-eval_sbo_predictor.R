@@ -40,6 +40,8 @@ test_that("error on invalid 'test'",{
         p <- sbo_predictor("a b c d", N = 2, dict = c("a", "b"))
         expect_error(eval_sbo_predictor(p, test = 1:10), 
                      class = "sbo_domain_error")
+        expect_error(eval_sbo_predictor(p, test = character(0)), 
+                     class = "sbo_domain_error")
 })
 
 test_that("errors on invalid 'L'",{
@@ -50,4 +52,14 @@ test_that("errors on invalid 'L'",{
                      class = "sbo_domain_error")
         expect_error(eval_sbo_predictor(p, test = "d c a b", L = 0), 
                      class = "sbo_domain_error")
+})
+
+test_that("no error on no sentences",{
+        p <- sbo_predictor("a b c d", N = 2, dict = c("a", "b"), EOS = ".")
+        expect_error(eval_sbo_predictor(p, test = ""), NA)
+})
+
+test_that("no error on empty sentence only",{
+        p <- sbo_predictor("a b c d", N = 2, dict = c("a", "b"), EOS = "")
+        expect_error(eval_sbo_predictor(p, test = ""), NA)
 })
