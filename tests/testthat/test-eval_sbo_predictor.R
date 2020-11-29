@@ -14,9 +14,10 @@ test_that("output has the correct structure",{
         expect_true(nrow(p_eval) == n_test)
         classes <- list(input = "character", 
                         true = "character", 
-                        preds = c("matrix", "array"), 
+                        preds = "matrix", 
                         correct = "logical")
-        expect_identical(lapply(p_eval, class), classes)
+        expect_identical(lapply(p_eval, function(x) class(x)[[1]]), 
+                         classes)
 })
 
 test_that("correctly identifies correct prediction",{
