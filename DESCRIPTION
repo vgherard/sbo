@@ -11,7 +11,7 @@ LazyData: true
 RoxygenNote: 7.1.1.9000
 Depends: R (>= 3.5.0)
 LinkingTo: Rcpp, testthat
-Imports: Rcpp, rlang, tidyr, dplyr, stringi, utils, stats, graphics
+Imports: Rcpp, rlang, tidyr, dplyr, utils, stats, graphics
 Suggests: 
     ggplot2,
     knitr,
