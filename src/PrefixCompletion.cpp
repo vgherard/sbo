@@ -1,10 +1,12 @@
 #include "sbo.h"
 using namespace Rcpp;
 
-PrefixCompletion::PrefixCompletion(const Rcpp::List & object) : 
-        N{object.attr("N")}, L{object.attr("L")}, EOS{object.attr("EOS")}
+PrefixCompletion::PrefixCompletion(const Rcpp::List & object)
 {
-        dict = as<std::vector<std::string>>(object.attr("dict"));
+        N = object.attr("N"); 
+        L = object.attr("L"); 
+        EOS = as<std::string>(object.attr("EOS"));
+        dict = as<std::vector<std::string> >(object.attr("dict"));
         dict_ext = dict;
         dict_ext.push_back("<EOS>");
         dict_ext.push_back("<UNK>");
