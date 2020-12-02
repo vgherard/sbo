@@ -91,11 +91,12 @@ eval_sbo_predictor <- function(model, test, L = attr(model, "L")){
 sample_kgrams <- function(model, test) {
         N <- attr(model, "N")
         wrap <- c(paste0(rep("<BOS>", N - 1), collapse = " "), "<EOS>")
-        
+        EOS <- attr(model, "EOS")
         test <- attr(model, ".preprocess")(test)
         
         lapply(test, function(x) {
-                x <- tokenize_sentences(x, EOS = attr(model, "EOS"))
+                if (EOS != "") 
+                        x <- tokenize_sentences(x, EOS = EOS)
                 if (length(x) == 0) 
                         return(tibble(input = character(0), true = input))
                 x <- sample(x, 1) %>% # sample one sentence
