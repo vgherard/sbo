@@ -28,14 +28,12 @@ build_pps <- function(freqs, N, lambda, filtered, L) {
 
         pps %>% 
                 bind_rows(pps_backoff) %>%
-                group_by_at(all_of(prefixes)) %>%
                 filter(!(.data$prediction %in% filtered)) %>%
-                slice_max(.data$score, n = L, with_ties = TRUE) %>%
-                arrange(desc(.data$score), .data$prediction, 
-                        .by_group = TRUE) %>%
-                slice_max(.data$score, n = L, with_ties = FALSE) %>%
+                arrange(desc(.data$score), .data$prediction, .by_group = TRUE
+                        ) %>%
+                group_by_at(all_of(prefixes)) %>%
+                filter(row_number() <= L) %>%
                 ungroup -> pps
-        
         if (k == 1) pps_lower <- list()
         return(append(pps_lower, list(pps)))
 }
