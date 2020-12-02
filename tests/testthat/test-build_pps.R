@@ -3,7 +3,7 @@ context("Stupid Back-Off algorithm: build_pps()")
 test_that("Scores correctly assigned: 3-gram model predictions",{
         train <- c("a a b a", "a b b a", "a c b", "b c a a b")
         dict <- c("a", "b")
-        lambda <- 0.4
+        lambda <- 0.3
         expected <- list(
                 tribble(
                         ~prediction, ~score,

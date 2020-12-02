@@ -37,7 +37,7 @@ test_that("Scores correctly assigned: 2-gram model predictions",{
         f <- kgram_freqs(corpus = train, N = 2, dict = dict,
                              .preprocess = identity, EOS = "")
         actual <- lapply(c(" ", "a", "b", "x"), 
-                         function(input) predict(f, input))
+                         function(input) predict(f, input, lambda = lambda))
         names(actual) <- names(expected)
         expect_equal(expected, actual)
 })
@@ -79,7 +79,7 @@ test_that("Scores correctly assigned: 3-gram model predictions",{
         f <- kgram_freqs(corpus = train, N = 3, dict = dict,
                          .preprocess = identity, EOS = "")
         actual <- lapply(c(" ", "a", "b", "x"), 
-                         function(input) predict(f, input))
+                         function(input) predict(f, input, lambda = lambda))
         names(actual) <- names(expected)
         expect_equal(expected, actual)
 })
