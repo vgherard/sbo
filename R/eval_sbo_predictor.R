@@ -80,9 +80,12 @@ eval_sbo_predictor <- function(model, test, L = attr(model, "L")){
                        )
         }
         
+        
+        
         test_kgrams %>%        
                 group_by(row_number()) %>%
-                mutate(preds = matrix(predict(model, .data$input), ncol = L),
+                mutate(preds = matrix(predict(model, .data$input)[1:L], ncol = L
+                                      ),
                        correct = .data$true %in% .data$preds) %>%
                 ungroup %>%
                 select(.data$input, .data$true, .data$preds, .data$correct)
