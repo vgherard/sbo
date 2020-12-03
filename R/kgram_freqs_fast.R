@@ -31,9 +31,6 @@ kgram_freqs_fast <-
 }
 
 default_preprocess <- function(erase, lower_case) {
-        FUN <- function(x) preprocess(x, erase, lower_case)
-        rlang::fn_env(FUN) <- rlang::env_clone(rlang::fn_env(preprocess))
-        rlang::fn_env(FUN)[["erase"]] <- erase
-        rlang::fn_env(FUN)[["lower_case"]] <- lower_case
+        FUN <- function(x) preprocess(x, erase = erase, lower_case = lower_case)
         return(FUN)
 }
