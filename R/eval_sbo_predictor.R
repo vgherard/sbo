@@ -110,7 +110,7 @@ sample_kgrams <- function(model, test) {
                 if (length(x) < N + 1) 
                         return(tibble(input = character(0), true = input))
                 i <- sample(1:(length(x) - N + 1), 1) # sample one N-gram
-                input <- paste0(x[i:(i + N - 2)], collapse = " ")
+                input <- paste0(x[i + seq_len(N - 1) - 1], collapse = " ")
                 tibble(input = input, true = x[i + N - 1])
                 }
                ) %>% # end lapply
