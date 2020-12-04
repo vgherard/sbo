@@ -153,7 +153,7 @@
 <h4 class="hasAnchor">
 <a href="#other-improvements-and-patches" class="anchor"></a>Other improvements and patches</h4>
 <ul>
-<li><p><code>sbo</code> now depends on <code>R (&gt;= 3.7.0)</code> and has <code>SystemRequirements: C++11</code>, for correct integration with C++11 code (in particular <code>std::unordered_map</code>).</p></li>
+<li><p><code>sbo</code> now has <code>SystemRequirements: C++11</code>, for correct integration with C++11 code (in particular <code>std::unordered_map</code>).</p></li>
 <li><p>Model training (with <code><a href="../reference/sbo_predictions.html">sbo_predictor()</a></code>) is now considerably faster, due to optimizations in the algorithm for building Stupid Back-Off prediction tables.</p></li>
 <li>
 <p>The Stupid Back-Off algorithm is now thoroughly tested, and small inconsistencies between the <code>predict.kgram_freqs()</code> and <code><a href="../reference/predict.sbo_predictor.html">predict.sbo_predictor()</a></code> methods have been fixed, including:</p>

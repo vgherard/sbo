@@ -33,8 +33,7 @@ be built also with a fixed target coverage fraction of training corpus.
 correspondingly, the output of `print()` has been simplified considerably (#5).
 
 #### Other improvements and patches
-* `sbo` now depends on `R (>= 3.7.0)` and has `SystemRequirements: C++11`, for
-correct integration with C++11 code (in particular `std::unordered_map`).
+* `sbo` now has `SystemRequirements: C++11`, for correct integration with C++11 code (in particular `std::unordered_map`).
 * Model training (with `sbo_predictor()`) is now considerably faster, due to
 optimizations in the algorithm for building Stupid Back-Off prediction tables.
 * The Stupid Back-Off algorithm is now thoroughly tested, and small 
