@@ -27,10 +27,16 @@ attributes (#11).
 `plot()` method. 
 * Dictionaries in `kgram_freqs()` and `sbo_pred*()` can now
 be built also with a fixed target coverage fraction of training corpus.
+* Added `prune()` generic function for reducing -gram order of 
+`kgram_freqs` and `sbo_predtable`'s.
 * Added `summary()` methods for `sbo_kgram_freqs` and `sbo_pred*` objects; 
 correspondingly, the output of `print()` has been simplified considerably (#5).
 
 #### Other improvements and patches
+* `sbo` now depends on `R (>= 3.7.0)` and has `SystemRequirements: C++11`, for
+correct integration with C++11 code (in particular `std::unordered_map`).
+* Model training (with `sbo_predictor()`) is now considerably faster, due to
+optimizations in the algorithm for building Stupid Back-Off prediction tables.
 * The Stupid Back-Off algorithm is now thoroughly tested, and small 
 inconsistencies between the `predict.kgram_freqs()` and 
 `predict.sbo_predictor()` methods have been fixed, including:
