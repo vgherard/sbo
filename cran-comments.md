@@ -1,6 +1,12 @@
-## Patch release summary
-This is a patch release to address minor issues arisen from CRAN binary builds of
-v0.3.0.
+## New release summary
+This is a major release, introducing important API changes and new functionalities in the package, as well as fixing some bugs and over-specified dependencies in the previous version (v0.3.2). Some highlights:
+
+- *Classes*: the (S3) class structure of the package has been thoroughly reorganized and extended.
+- *Functionalities*: the new version has an extended set of tools, in particular
+related to the creation of word dictionaries.
+- *Tests*: the test-suite has been greatly extended, with special attention to
+probing the correctness of the Stupid Back-Off algorithm implementation.
+- *Dependencies*: many unnecessary dependencies in the previous version have been removed, in favor of `base` R tools.
 
 ## Test environments
 * local Ubuntu 20.04.1 install, R 4.0.2

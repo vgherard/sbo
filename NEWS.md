@@ -1,8 +1,9 @@
-# sbo (development version)
+# sbo 0.5.0
 
 #### API and UI changes 
-* Former `kgram_freqs` class is now formally called `sbo_kgram_freqs`.
-* Former `sbo_preds` S3 class is now substituted by two classes:
+* Former `kgram_freqs` class is now called `sbo_kgram_freqs`. The constructor
+`kgram_freqs()` is still available as an alias to `sbo_kgram_freqs()`.
+* Former `sbo_preds` class is now substituted by two classes:
         
         - `sbo_predictor`: for interactive use
         - `sbo_predtable`: for storing text predictors out of memory (e.g. 
@@ -13,8 +14,7 @@ constructors, which are now S3 generics accepting `character` input, as well as
 `sbo_kgram_freqs` and `sbo_predtable` (for the `sbo_predictor()` constructor) 
 class objects. In particular, these allow to directly train a text predictor
 without storing the intermediate `sbo_dictionary`, and `kgram_freqs` objects.
-* The interface for building dictionaries on the fly in `kgram_freqs()` (as well
-as with `sbo_predictor()`) has been greatly simplified.
+* The behaviour of the `dict` argument in `kgram_freqs()` and `kgram_freqs_fast()`  has changed, now accepting either a `sbo_dictionary`, a `character` or a `formula` (see also 'New features').
 * The `sbo_predictor` implementation dramatically improves the speed of 
 `predict()` (by a factor of x10). A single call to `predict()` now allocates a 
 few kBs of RAM (whereas it previously allocated few MBs, c.f. issue #10).
@@ -31,6 +31,10 @@ be built also with a fixed target coverage fraction of training corpus.
 `kgram_freqs` and `sbo_predtable`'s.
 * Added `summary()` methods for `sbo_kgram_freqs` and `sbo_pred*` objects; 
 correspondingly, the output of `print()` has been simplified considerably (#5).
+* The object of class `sbo_kgram_freqs`, `sbo_dictionary`, `sbo_predictor` and
+`sbo_predtable` can be constructed either through the homonymous constructors,
+or through the aliases `kgram_freqs()`, `dictionary()`, `predictor()`,
+`predtable()`.
 
 #### Other improvements and patches
 * `sbo` now has `SystemRequirements: C++11`, for correct integration with C++11 code (in particular `std::unordered_map`).
@@ -44,8 +48,7 @@ inconsistencies between the `predict.kgram_freqs()` and
         - Consistent handling of ties in prediction probabilities.
 * Model evaluation in `eval_sbo_predictor()` is now carried out by sampling
 a single sentence from each document in test corpus.
-* Removed unnecessary `Depends` from DESCRIPTION.
-* Removed various avoidable `Imports`.
+* Removed unnecessary dependencies from `Depends` and `Imports` package fields.
 
 # sbo 0.3.2
 * Patch addressing unexpected behaviour of `erase` argument in 

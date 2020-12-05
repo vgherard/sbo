@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sbo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -117,23 +117,23 @@
       <small>Source: <a href='https://github.com/vgherard/sbo/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="sbo-development-version" class="section level1">
-<h1 class="page-header" data-toc-text="development version">
-<a href="#sbo-development-version" class="anchor"></a>sbo (development version)<small> Unreleased </small>
+    <div id="sbo-050" class="section level1">
+<h1 class="page-header" data-toc-text="0.5.0">
+<a href="#sbo-050" class="anchor"></a>sbo 0.5.0<small> Unreleased </small>
 </h1>
 <div id="api-and-ui-changes" class="section level4">
 <h4 class="hasAnchor">
 <a href="#api-and-ui-changes" class="anchor"></a>API and UI changes</h4>
 <ul>
-<li><p>Former <code>kgram_freqs</code> class is now formally called <code>sbo_kgram_freqs</code>.</p></li>
+<li><p>Former <code>kgram_freqs</code> class is now called <code>sbo_kgram_freqs</code>. The constructor <code><a href="../reference/kgram_freqs.html">kgram_freqs()</a></code> is still available as an alias to <code><a href="../reference/kgram_freqs.html">sbo_kgram_freqs()</a></code>.</p></li>
 <li>
-<p>Former <code>sbo_preds</code> S3 class is now substituted by two classes:</p>
+<p>Former <code>sbo_preds</code> class is now substituted by two classes:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>  <span class="op">-</span><span class="st"> `</span><span class="dt">sbo_predictor</span><span class="st">`</span><span class="op">:</span><span class="st"> </span><span class="cf">for</span> interactive use</span>
 <span id="cb1-2"><a href="#cb1-2"></a>  <span class="op">-</span><span class="st"> `</span><span class="dt">sbo_predtable</span><span class="st">`</span><span class="op">:</span><span class="st"> </span><span class="cf">for</span> storing text predictors out of <span class="kw">memory</span> (e.g. </span>
 <span id="cb1-3"><a href="#cb1-3"></a>  <span class="st">`</span><span class="dt">save()</span><span class="st">`</span> to file)</span></code></pre></div>
 </li>
 <li><p><code>sbo_predictor</code> and <code>sbo_predtable</code> objects are obtained by the homonym constructors, which are now S3 generics accepting <code>character</code> input, as well as <code>sbo_kgram_freqs</code> and <code>sbo_predtable</code> (for the <code><a href="../reference/sbo_predictions.html">sbo_predictor()</a></code> constructor) class objects. In particular, these allow to directly train a text predictor without storing the intermediate <code>sbo_dictionary</code>, and <code>kgram_freqs</code> objects.</p></li>
-<li><p>The interface for building dictionaries on the fly in <code><a href="../reference/kgram_freqs.html">kgram_freqs()</a></code> (as well as with <code><a href="../reference/sbo_predictions.html">sbo_predictor()</a></code>) has been greatly simplified.</p></li>
+<li><p>The behaviour of the <code>dict</code> argument in <code><a href="../reference/kgram_freqs.html">kgram_freqs()</a></code> and <code><a href="../reference/kgram_freqs.html">kgram_freqs_fast()</a></code> has changed, now accepting either a <code>sbo_dictionary</code>, a <code>character</code> or a <code>formula</code> (see also ‘New features’).</p></li>
 <li><p>The <code>sbo_predictor</code> implementation dramatically improves the speed of <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> (by a factor of x10). A single call to <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> now allocates a few kBs of RAM (whereas it previously allocated few MBs, c.f. issue <a href='https://github.com/vgherard/sbo/issues/10'>#10</a>).</p></li>
 <li><p>Metadata of <code>sbo_kgram_freqs</code> and <code>sbo_pred*</code> objects is now stored via attributes (<a href='https://github.com/vgherard/sbo/issues/11'>#11</a>).</p></li>
 </ul>
@@ -147,6 +147,7 @@
 <li>Dictionaries in <code><a href="../reference/kgram_freqs.html">kgram_freqs()</a></code> and <code>sbo_pred*()</code> can now be built also with a fixed target coverage fraction of training corpus.</li>
 <li>Added <code><a href="../reference/prune.html">prune()</a></code> generic function for reducing -gram order of <code>kgram_freqs</code> and <code>sbo_predtable</code>’s.</li>
 <li>Added <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> methods for <code>sbo_kgram_freqs</code> and <code>sbo_pred*</code> objects; correspondingly, the output of <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> has been simplified considerably (<a href='https://github.com/vgherard/sbo/issues/5'>#5</a>).</li>
+<li>The object of class <code>sbo_kgram_freqs</code>, <code>sbo_dictionary</code>, <code>sbo_predictor</code> and <code>sbo_predtable</code> can be constructed either through the homonymous constructors, or through the aliases <code><a href="../reference/kgram_freqs.html">kgram_freqs()</a></code>, <code><a href="../reference/sbo_dictionary.html">dictionary()</a></code>, <code><a href="../reference/sbo_predictions.html">predictor()</a></code>, <code><a href="../reference/sbo_predictions.html">predtable()</a></code>.</li>
 </ul>
 </div>
 <div id="other-improvements-and-patches" class="section level4">
@@ -161,8 +162,7 @@
 <span id="cb2-2"><a href="#cb2-2"></a>  <span class="op">-</span><span class="st"> </span>Consistent handling of ties <span class="cf">in</span> prediction probabilities.</span></code></pre></div>
 </li>
 <li><p>Model evaluation in <code><a href="../reference/eval_sbo_predictor.html">eval_sbo_predictor()</a></code> is now carried out by sampling a single sentence from each document in test corpus.</p></li>
-<li><p>Removed unnecessary <code>Depends</code> from DESCRIPTION.</p></li>
-<li><p>Removed various avoidable <code>Imports</code>.</p></li>
+<li><p>Removed unnecessary dependencies from <code>Depends</code> and <code>Imports</code> package fields.</p></li>
 </ul>
 </div>
 </div>
