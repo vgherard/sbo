@@ -57,11 +57,11 @@ This example shows how to build a text predictor with `sbo`:
 
 ```{r example, message=FALSE, warning=FALSE}
 library(sbo)
-p <- sbo_predictor(sbo::twitter_train, # 70k tweets, example dataset
+p <- sbo_predictor(sbo::twitter_train, # 50k tweets, example dataset
                    N = 3, # Train a 3-gram model
                    dict = sbo::twitter_dict, # Top 1k words appearing in corpus
-                   .preprocess = sbo::preprocess, # Preprocessing transformation 
-                   EOS = ".?!:;" # End-Of-Sentence tokens
+                   .preprocess = sbo::preprocess, # Preprocessing transformation
+                   EOS = ".?!:;" # End-Of-Sentence characters
                    )
 ```
 

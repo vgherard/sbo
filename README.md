@@ -55,11 +55,11 @@ This example shows how to build a text predictor with `sbo`:
 
 ``` r
 library(sbo)
-p <- sbo_predictor(sbo::twitter_train, # 70k tweets, example dataset
+p <- sbo_predictor(sbo::twitter_train, # 50k tweets, example dataset
                    N = 3, # Train a 3-gram model
                    dict = sbo::twitter_dict, # Top 1k words appearing in corpus
-                   .preprocess = sbo::preprocess, # Preprocessing transformation 
-                   EOS = ".?!:;" # End-Of-Sentence tokens
+                   .preprocess = sbo::preprocess, # Preprocessing transformation
+                   EOS = ".?!:;" # End-Of-Sentence characters
                    )
 ```
 
@@ -67,19 +67,19 @@ The object `p` can now be used to generate predictive text as follows:
 
 ``` r
 predict(p, "i love") # a character vector
-#> [1] "you" "it"  "the"
+#> [1] "you" "it"  "my"
 predict(p, "you love") # another character vector
-#> [1] "me"    "<EOS>" "it"
+#> [1] "<EOS>" "me"    "the"
 predict(p, 
         c("i love", "you love", "she loves", "we love", "you love", "they love")
         ) # a character matrix
-#>      [,1]  [,2]    [,3] 
-#> [1,] "you" "it"    "the"
-#> [2,] "me"  "<EOS>" "it" 
-#> [3,] "it"  "you"   "me" 
-#> [4,] "you" "our"   "the"
-#> [5,] "me"  "<EOS>" "it" 
-#> [6,] "the" "to"    "you"
+#>      [,1]    [,2]  [,3] 
+#> [1,] "you"   "it"  "my" 
+#> [2,] "<EOS>" "me"  "the"
+#> [3,] "you"   "my"  "me" 
+#> [4,] "you"   "our" "it" 
+#> [5,] "<EOS>" "me"  "the"
+#> [6,] "to"    "you" "and"
 ```
 
 ## Help

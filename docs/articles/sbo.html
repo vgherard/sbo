@@ -79,7 +79,7 @@
                   <a class="author_email" href="mailto:#"></a><a href="mailto:vgherard@sissa.it" class="email">vgherard@sissa.it</a>
       
                   
-            <h4 class="date">2020-11-29</h4>
+            <h4 class="date">2020-12-05</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/vgherard/sbo/blob/master/vignettes/sbo.Rmd"><code>vignettes/sbo.Rmd</code></a></small>
       <div class="hidden name"><code>sbo.Rmd</code></div>
@@ -109,9 +109,9 @@
 <p>In this and the next section we will employ the <code><a href="../reference/twitter_train.html">sbo::twitter_train</a></code> example dataset<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>, each entry of which consists in a single tweet in English, <em>e.g.</em>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu">sbo</span><span class="fu">::</span><span class="va"><a href="../reference/twitter_train.html">twitter_train</a></span>, <span class="fl">3</span><span class="op">)</span>
-<span class="co">#&gt; [1] "Just realized that Cedar Block is equal parts nutjob conspiracy theorist and pragmatic skeptic. Which side will win? Stay tuned."</span>
-<span class="co">#&gt; [2] "Doesn't get any stricter than a book set in the past!"                                                                           </span>
-<span class="co">#&gt; [3] "Hunger Games! So excited! Want go!"</span></code></pre></div>
+<span class="co">#&gt; [1] "FOX NEWS TODAY: \"Energizer Bunny Arrested, Charged With Battery!\""                 </span>
+<span class="co">#&gt; [2] "Today is a good day! Excluding today, I only have 9 days of class left. Awww yeaaahh"</span>
+<span class="co">#&gt; [3] "I will be at broadway bar tonight"</span></code></pre></div>
 <p>Given the training corpus, the typical workflow for building a text-predictor consists of the following steps:</p>
 <ol style="list-style-type: decimal">
 <li>
@@ -138,7 +138,7 @@
 <p>This creates an object <code>p</code> of class <code>sbo_predictor</code>, which can be used to generate text predictions as follows:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">p</span>, <span class="st">"i love"</span><span class="op">)</span>
-<span class="co">#&gt; [1] "you" "it"  "the"</span></code></pre></div>
+<span class="co">#&gt; [1] "you" "it"  "my"</span></code></pre></div>
 <p>Let us comment the various arguments in the previous call to <code><a href="../reference/sbo_predictions.html">sbo_predictor()</a></code>:</p>
 <ul>
 <li>
@@ -162,11 +162,11 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">840</span><span class="op">)</span>
 <span class="fu"><a href="../reference/babble.html">babble</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>
-<span class="co">#&gt; [1] "who's ready."</span>
+<span class="co">#&gt; [1] "mine too many."</span>
 <span class="fu"><a href="../reference/babble.html">babble</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>
-<span class="co">#&gt; [1] "room is a very interesting about it is."</span>
+<span class="co">#&gt; [1] "anyone have a new book and do it."</span>
 <span class="fu"><a href="../reference/babble.html">babble</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>
-<span class="co">#&gt; [1] "sharing is a good time."</span></code></pre></div>
+<span class="co">#&gt; [1] "easy for the rt love your work."</span></code></pre></div>
 </div>
 <div id="out-of-memory-use" class="section level3">
 <h3 class="hasAnchor">
@@ -202,7 +202,7 @@
 <span class="co">#&gt; Next-word text predictor from Stupid Back-off N-gram model</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Order (N): 3 </span>
-<span class="co">#&gt; Dictionary size: 1011  words</span>
+<span class="co">#&gt; Dictionary size: 1008  words</span>
 <span class="co">#&gt; Back-off penalization (lambda): 0.4 </span>
 <span class="co">#&gt; Maximum number of predictions (L): 3 </span>
 <span class="co">#&gt; </span>
@@ -213,18 +213,18 @@
 <p>Here are some details on the current (still under development) implementation of <code>sbo_predictor</code> and <code>sbo_predtable</code> objects. For clarity, I will refer to the <code>sbo_predtable</code> instance <code>t</code> created above:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">t</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
-<span class="co">#&gt;      w1 w2 prediction1 prediction2 prediction3</span>
-<span class="co">#&gt; [1,]  0  0           3        1012          43</span>
-<span class="co">#&gt; [2,]  0  1         105         110         126</span>
-<span class="co">#&gt; [3,]  0  2           1          16          30</span>
-<span class="co">#&gt; [4,]  0  3          36          78          98</span>
-<span class="co">#&gt; [5,]  0  4        1012         292          54</span>
-<span class="co">#&gt; [6,]  0  5          23          51          44</span></code></pre></div>
+<span class="co">#&gt;       w1  w2 prediction1 prediction2 prediction3</span>
+<span class="co">#&gt; [1,]   4 749           1          68          33</span>
+<span class="co">#&gt; [2,] 472  62           1           4          28</span>
+<span class="co">#&gt; [3,]  98 288           1           4           5</span>
+<span class="co">#&gt; [4,] 428 262           1          13           4</span>
+<span class="co">#&gt; [5,] 193  17           1         415        1009</span>
+<span class="co">#&gt; [6,] 333 738           1        1009          16</span></code></pre></div>
 <p>The first two columns correspond to the word codes<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> of <span class="math inline">\(2\)</span>-gram prefixes observed in the training corpus, and the other columns code the top <span class="math inline">\(L=3\)</span> predictions for these <span class="math inline">\(2\)</span>-grams. When a <span class="math inline">\(2\)</span>-gram <span class="math inline">\(w_1 w_2\)</span> is given as input for text prediction, it is first looked for in the prefix columns of <code>t[[3]]</code>. If not found, <span class="math inline">\(w_2\)</span> is looked for in the prefix column of <code>t[[2]]</code>. If this also fails, the prediction is performed without any prefix, that is, we simply predict the <code>L</code> most frequent words, stored in:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">t</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>
 <span class="co">#&gt;      prediction1 prediction2 prediction3</span>
-<span class="co">#&gt; [1,]        1012           1           2</span></code></pre></div>
+<span class="co">#&gt; [1,]        1009           1           2</span></code></pre></div>
 </div>
 </div>
 </div>
@@ -247,18 +247,18 @@
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">840</span><span class="op">)</span>
 <span class="op">(</span><span class="va">evaluation</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/eval_sbo_predictor.html">eval_sbo_predictor</a></span><span class="op">(</span><span class="va">p</span>, test <span class="op">=</span> <span class="fu">sbo</span><span class="fu">::</span><span class="va"><a href="../reference/twitter_test.html">twitter_test</a></span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 10,000 x 4</span>
-<span class="co">#&gt;    input             true     preds[,1] [,2]    [,3]   correct</span>
-<span class="co">#&gt;    &lt;chr&gt;             &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;   &lt;chr&gt;  &lt;lgl&gt;  </span>
-<span class="co">#&gt;  1 "how you"         doin'    been      feel    can    FALSE  </span>
-<span class="co">#&gt;  2 " "               s        i         &lt;EOS&gt;   thanks FALSE  </span>
-<span class="co">#&gt;  3 " what"           ya       is        a       are    FALSE  </span>
-<span class="co">#&gt;  4 "term for"        zero     the       a       you    FALSE  </span>
-<span class="co">#&gt;  5 "for sharing"     &lt;EOS&gt;    &lt;EOS&gt;     your    the    TRUE   </span>
-<span class="co">#&gt;  6 " lol"            &lt;EOS&gt;    &lt;EOS&gt;     i       i'm    TRUE   </span>
-<span class="co">#&gt;  7 "all of"          our      the       you     us     FALSE  </span>
-<span class="co">#&gt;  8 " "               but      i         &lt;EOS&gt;   thanks FALSE  </span>
-<span class="co">#&gt;  9 " promagentotuts" &lt;EOS&gt;    &lt;EOS&gt;     is      i      TRUE   </span>
-<span class="co">#&gt; 10 " happy"          birthday birthday  mothers new    TRUE   </span>
+<span class="co">#&gt;    input             true      preds[,1] [,2]   [,3]  correct</span>
+<span class="co">#&gt;    &lt;chr&gt;             &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;  &lt;chr&gt; &lt;lgl&gt;  </span>
+<span class="co">#&gt;  1 "come back"       to        to        &lt;EOS&gt;  and   TRUE   </span>
+<span class="co">#&gt;  2 "amazing should"  have      post      be     have  TRUE   </span>
+<span class="co">#&gt;  3 "u at"            &lt;EOS&gt;     &lt;EOS&gt;     the    next  TRUE   </span>
+<span class="co">#&gt;  4 "they'll be"      respected a         with   in    FALSE  </span>
+<span class="co">#&gt;  5 " everyone"       follow    is        should loves FALSE  </span>
+<span class="co">#&gt;  6 "luck this"       weekend   weekend   season is    TRUE   </span>
+<span class="co">#&gt;  7 "atlanta weather" is        &lt;EOS&gt;     in     to    FALSE  </span>
+<span class="co">#&gt;  8 "iphone 4s"       just      &lt;EOS&gt;     the    me    FALSE  </span>
+<span class="co">#&gt;  9 "is it"           working   &lt;EOS&gt;     that   just  FALSE  </span>
+<span class="co">#&gt; 10 "did you"         listen    know      get    see   FALSE  </span>
 <span class="co">#&gt; # … with 9,990 more rows</span></code></pre></div>
 <p>As it is seen, <code><a href="../reference/eval_sbo_predictor.html">eval_sbo_predictor()</a></code> returns a tibble containing the input <span class="math inline">\((N-1)\)</span>-grams, the true completions, the predicted completions and a column indicating whether one of the predictions were correct or not.</p>
 <p>We can estimate predictive accuracy as follows (the uncertainty in the estimate is approximated by the binomial formula <span class="math inline">\(\sigma = \sqrt{\frac{p(1-p)}{M}}\)</span>, where <span class="math inline">\(M\)</span> is the number of trials):</p>
@@ -269,7 +269,7 @@
 <span class="co">#&gt; # A tibble: 1 x 2</span>
 <span class="co">#&gt;   accuracy uncertainty</span>
 <span class="co">#&gt;      &lt;dbl&gt;       &lt;dbl&gt;</span>
-<span class="co">#&gt; 1    0.332     0.00471</span></code></pre></div>
+<span class="co">#&gt; 1    0.316     0.00465</span></code></pre></div>
 <p>We may want to exclude from the test <span class="math inline">\(N\)</span>-grams ending by the End-Of-Sentence token (here represented by <code>"&lt;EOS&gt;"</code>):</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">evaluation</span> <span class="op">%&gt;%</span> <span class="co"># Accuracy for in-sentence predictions</span>
@@ -280,7 +280,7 @@
 <span class="co">#&gt; # A tibble: 1 x 2</span>
 <span class="co">#&gt;   accuracy uncertainty</span>
 <span class="co">#&gt;      &lt;dbl&gt;       &lt;dbl&gt;</span>
-<span class="co">#&gt; 1    0.203     0.00444</span></code></pre></div>
+<span class="co">#&gt; 1    0.184     0.00427</span></code></pre></div>
 <p>In trying to reduce the size (in physical memory) of your text-predictor, it might be useful to prune the model dictionary. The following command plots an histogram of the distribution of correct predictions in our test.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
@@ -326,7 +326,7 @@
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">c</span><span class="op">)</span>
 <span class="co">#&gt; Word coverage fraction</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Dictionary length: 1011 </span>
+<span class="co">#&gt; Dictionary length: 1008 </span>
 <span class="co">#&gt; Coverage fraction (w/ EOS): 78.2 %</span>
 <span class="co">#&gt; Coverage fraction (w/o EOS): 75 %</span></code></pre></div>
 <p>or visualized with:</p>
@@ -348,24 +348,24 @@
 <p>stores <span class="math inline">\(k\)</span>-gram frequency tables into <code>f</code>. This object can itself be used for text prediction:</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">f</span>, <span class="st">"i love"</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1,012 x 2</span>
+<span class="co">#&gt; # A tibble: 1,009 x 2</span>
 <span class="co">#&gt;    completion probability</span>
 <span class="co">#&gt;    &lt;chr&gt;            &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 you             0.215 </span>
-<span class="co">#&gt;  2 it              0.0625</span>
-<span class="co">#&gt;  3 the             0.0541</span>
-<span class="co">#&gt;  4 my              0.0482</span>
-<span class="co">#&gt;  5 that            0.0406</span>
-<span class="co">#&gt;  6 how             0.0372</span>
-<span class="co">#&gt;  7 u               0.0346</span>
-<span class="co">#&gt;  8 your            0.0279</span>
-<span class="co">#&gt;  9 this            0.0211</span>
-<span class="co">#&gt; 10 &lt;EOS&gt;           0.0135</span>
-<span class="co">#&gt; # … with 1,002 more rows</span></code></pre></div>
+<span class="co">#&gt;  1 you             0.222 </span>
+<span class="co">#&gt;  2 it              0.0573</span>
+<span class="co">#&gt;  3 my              0.0549</span>
+<span class="co">#&gt;  4 the             0.0524</span>
+<span class="co">#&gt;  5 your            0.0312</span>
+<span class="co">#&gt;  6 this            0.0312</span>
+<span class="co">#&gt;  7 that            0.0287</span>
+<span class="co">#&gt;  8 how             0.0249</span>
+<span class="co">#&gt;  9 u               0.0175</span>
+<span class="co">#&gt; 10 when            0.0150</span>
+<span class="co">#&gt; # … with 999 more rows</span></code></pre></div>
 <p>The output contains the full language model information, i.e. the probabilities<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a> for each possible word completion. Compare this with:</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">p</span>, <span class="st">"i love"</span><span class="op">)</span>
-<span class="co">#&gt; [1] "you" "it"  "the"</span></code></pre></div>
+<span class="co">#&gt; [1] "you" "it"  "my"</span></code></pre></div>
 <p>The extra information contained in <code>f</code> comes at a price. In fact, the advantage provided by <code>sbo_predictor</code>/<code>sbo_predtable</code> objects for simple text prediction is two-fold:</p>
 <ol style="list-style-type: decimal">
 <li>Memory compression:</li>
@@ -374,7 +374,7 @@
 <code class="sourceCode R"><span class="va">size_in_MB</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span><span class="op">(</span><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/object.size.html">object.size</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, units <span class="op">=</span> <span class="st">"MB"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>sbo_predtable <span class="op">=</span> <span class="va">t</span>, kgram_freqs <span class="op">=</span> <span class="va">f</span><span class="op">)</span>, <span class="va">size_in_MB</span><span class="op">)</span>
 <span class="co">#&gt; sbo_predtable   kgram_freqs </span>
-<span class="co">#&gt;      "1.7 Mb"      "5.9 Mb"</span></code></pre></div>
+<span class="co">#&gt;      "1.4 Mb"      "4.7 Mb"</span></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>Fast query:</li>
 </ol>
@@ -383,11 +383,11 @@
 <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>sbo_predictor <span class="op">=</span> <span class="va">p</span>, kgram_freqs <span class="op">=</span> <span class="va">f</span><span class="op">)</span>, <span class="va">chrono_predict</span><span class="op">)</span>
 <span class="co">#&gt; $sbo_predictor</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.001   0.000   0.001 </span>
+<span class="co">#&gt;   0.000   0.000   0.001 </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $kgram_freqs</span>
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.165   0.000   0.165</span></code></pre></div>
+<span class="co">#&gt;   0.183   0.000   0.184</span></code></pre></div>
 </div>
 <div id="text-preprocessing" class="section level3">
 <h3 class="hasAnchor">
@@ -405,7 +405,7 @@
 <div class="footnotes">
 <hr>
 <ol>
-<li id="fn1"><p>This is a small samples of <span class="math inline">\(7·10^4\)</span> entries from the “Tweets” Swiftkey dataset fully available <a href="https://www.kaggle.com/crmercado/tweets-blogs-news-swiftkey-dataset-4million">here</a>.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn1"><p>This is a small samples of <span class="math inline">\(5·10^4\)</span> entries from the “Tweets” Swiftkey dataset fully available <a href="https://www.kaggle.com/crmercado/tweets-blogs-news-swiftkey-dataset-4million">here</a>.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
 <li id="fn2"><p>At the present stage of development, this cannot be done directly for the <code>sbo_predictor</code> object created above. Technically, this is because <code>sbo_predictor</code> objects are external pointers to a convenient C++ class, optimized for fast <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code>ions. Such a class instance exists only during a single R session.<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
 <li id="fn3"><p>As this example makes clear, both <code><a href="../reference/sbo_predictions.html">sbo_predictor()</a></code> and <code><a href="../reference/sbo_predictions.html">sbo_predtable()</a></code> are S3 generics. The corresponding available methods are listed under <code><a href="../reference/sbo_predictions.html">?sbo_predictions</a></code>.<a href="#fnref3" class="footnote-back">↩︎</a></p></li>
 <li id="fn4"><p>Coded with respect to the rank sorted dictionary <code>dict</code> (the codes <code>0</code>, <code>length(dict) + 1</code> and <code>length(dict) + 2</code> correspond to the Begin-Of-Sentence, End-Of-Sentence and Unknown-Word tokens, respectively).<a href="#fnref4" class="footnote-back">↩︎</a></p></li>

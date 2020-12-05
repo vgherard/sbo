@@ -5,7 +5,7 @@
 \alias{twitter_train}
 \title{Twitter training set}
 \format{
-A collection of 70'000 Twitter posts in English.
+A collection of 50'000 Twitter posts in English.
 }
 \source{
 \url{https://www.kaggle.com/crmercado/tweets-blogs-news-swiftkey-dataset-4million}

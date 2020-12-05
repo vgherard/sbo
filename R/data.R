@@ -1,7 +1,7 @@
 #' Twitter training set
 #'
 #' @source \url{https://www.kaggle.com/crmercado/tweets-blogs-news-swiftkey-dataset-4million}
-#' @format A collection of 70'000 Twitter posts in English.
+#' @format A collection of 50'000 Twitter posts in English.
 #' @seealso \code{\link[sbo]{twitter_test}}, \code{\link[sbo]{twitter_dict}},
 #' \code{\link[sbo]{twitter_freqs}}, \code{\link[sbo]{twitter_predtable}}
 #' @examples

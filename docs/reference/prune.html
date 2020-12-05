@@ -179,10 +179,10 @@ unchanged.</p>
 #&gt; </span><span style='color: #555555;font-style: italic;'>Dictionary size:</span><span> 1000  words
 #&gt; 
 #&gt; </span><span style='color: #555555;font-style: italic;'># of unique 1-grams:</span><span> 1002 
-#&gt; </span><span style='color: #555555;font-style: italic;'># of unique 2-grams:</span><span> 85677 
-#&gt; </span><span style='color: #555555;font-style: italic;'># of unique 3-grams:</span><span> 318410 
+#&gt; </span><span style='color: #555555;font-style: italic;'># of unique 2-grams:</span><span> 71608 
+#&gt; </span><span style='color: #555555;font-style: italic;'># of unique 3-grams:</span><span> 247080 
 #&gt; </span><span style='color: #555555;font-style: italic;'>
-#&gt; Object size:</span><span> 5.9 Mb 
+#&gt; Object size:</span><span> 4.7 Mb 
 #&gt; 
 #&gt; </span><span style='color: #00BB00;'>See ?predict.sbo_kgram_freqs for usage help.</span><span> </div><div class='input'><span class='va'>freqs</span> <span class='op'>&lt;-</span> <span class='fu'>prune</span><span class='op'>(</span><span class='va'>freqs</span>, N <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>freqs</span><span class='op'>)</span>
@@ -192,9 +192,9 @@ unchanged.</p>
 #&gt; </span><span style='color: #555555;font-style: italic;'>Dictionary size:</span><span> 1000  words
 #&gt; 
 #&gt; </span><span style='color: #555555;font-style: italic;'># of unique 1-grams:</span><span> 1002 
-#&gt; </span><span style='color: #555555;font-style: italic;'># of unique 2-grams:</span><span> 85677 
+#&gt; </span><span style='color: #555555;font-style: italic;'># of unique 2-grams:</span><span> 71608 
 #&gt; </span><span style='color: #555555;font-style: italic;'>
-#&gt; Object size:</span><span> 1.1 Mb 
+#&gt; Object size:</span><span> 0.9 Mb 
 #&gt; 
 #&gt; </span><span style='color: #00BB00;'>See ?predict.sbo_kgram_freqs for usage help.</span><span> </div><div class='input'><span class='co'># Extract a 2-gram model from a larger 3-gram model </span>
 <span class='va'>pt</span> <span class='op'>&lt;-</span> <span class='va'>twitter_predtable</span>
@@ -206,7 +206,7 @@ unchanged.</p>
 #&gt; </span><span style='color: #555555;font-style: italic;'>Back-off penalization (lambda):</span><span> 0.4 
 #&gt; </span><span style='color: #555555;font-style: italic;'>Maximum number of predictions (L):</span><span> 3 
 #&gt; 
-#&gt; </span><span style='color: #555555;font-style: italic;'>Object size:</span><span> 1.7 Mb 
+#&gt; </span><span style='color: #555555;font-style: italic;'>Object size:</span><span> 1.4 Mb 
 #&gt; 
 #&gt; </span><span style='color: #00BB00;'>See ?predict.sbo_predictor for usage help.
 #&gt; </span><span></div><div class='input'><span class='va'>pt</span> <span class='op'>&lt;-</span> <span class='fu'>prune</span><span class='op'>(</span><span class='va'>pt</span>, N <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>

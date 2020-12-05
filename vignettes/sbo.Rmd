@@ -39,7 +39,7 @@ In this and the next section we will employ the `sbo::twitter_train` example dat
 head(sbo::twitter_train, 3)
 ```
 
-[^1]: This is a small samples of $7·10^4$ entries from the "Tweets" Swiftkey dataset fully available [here](https://www.kaggle.com/crmercado/tweets-blogs-news-swiftkey-dataset-4million).
+[^1]: This is a small samples of $5·10^4$ entries from the "Tweets" Swiftkey dataset fully available [here](https://www.kaggle.com/crmercado/tweets-blogs-news-swiftkey-dataset-4million).
 
 Given the training corpus, the typical workflow for building a text-predictor consists of the following steps:
 
