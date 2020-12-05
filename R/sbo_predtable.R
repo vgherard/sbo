@@ -18,6 +18,10 @@ sbo_predtable <- function(object, lambda = 0.4, L = 3L, filtered = "<UNK>", ...)
 
 #' @rdname sbo_predictions
 #' @export
+predtable <- sbo_predtable
+
+#' @rdname sbo_predictions
+#' @export
 #' @examples
 #' \donttest{
 #' # Build Stupid Back-Off prediction tables directly from corpus

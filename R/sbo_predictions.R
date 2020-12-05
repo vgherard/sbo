@@ -27,7 +27,11 @@
 #' @return A \code{sbo_predictor} object for \code{sbo_predictor()}, a 
 #' \code{sbo_predtable} object for \code{sbo_predtable()}.
 #' @details These functions are generics used to train a text predictor 
-#' with Stupid Back-Off. The \code{sbo_predictor} data structure carries 
+#' with Stupid Back-Off. The functions \code{predictor()} and 
+#' \code{predtable()} are aliases for \code{sbo_predictor()} and 
+#' \code{sbo_predtable()}, respectively.
+#' 
+#' The \code{sbo_predictor} data structure carries 
 #' all information 
 #' required for prediction in a compact and efficient (upon retrieval) way, 
 #' by directly storing the top \code{L} next-word predictions for each

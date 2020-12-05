@@ -3,12 +3,18 @@
 %   R/kgram_freqs_fast.R
 \name{kgram_freqs}
 \alias{kgram_freqs}
+\alias{sbo_kgram_freqs}
 \alias{kgram_freqs_fast}
+\alias{sbo_kgram_freqs_fast}
 \title{k-gram frequency tables}
 \usage{
 kgram_freqs(corpus, N, dict, .preprocess = identity, EOS = "")
 
+sbo_kgram_freqs(corpus, N, dict, .preprocess = identity, EOS = "")
+
 kgram_freqs_fast(corpus, N, dict, erase = "", lower_case = FALSE, EOS = "")
+
+sbo_kgram_freqs_fast(corpus, N, dict, erase = "", lower_case = FALSE, EOS = "")
 }
 \arguments{
 \item{corpus}{a character vector. The training corpus from which to extract
@@ -44,7 +50,9 @@ Get k-gram frequency tables from a training corpus.
 \details{
 These functions extract all k-gram frequency tables from a text
 corpus up to a specified k-gram order N. These are
-the building blocks to train any N-gram model.
+the building blocks to train any N-gram model. The functions
+\code{sbo_kgram_freqs()} and \code{sbo_kgram_freqs_fast()} are aliases for
+\code{kgram_freqs()} and \code{kgram_freqs_fast()}, respectively.
 
 The optimized version \code{kgram_freqs_fast(erase = x, lower_case = y)}
 is equivalent to

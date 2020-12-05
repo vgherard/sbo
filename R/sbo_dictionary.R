@@ -21,7 +21,10 @@
 #' @param EOS a length one character vector listing all (single character)
 #' end-of-sentence tokens.
 #' @return A \code{sbo_dictionary} object.
-#' @details This function builds a dictionary using the most frequent words in a 
+#' @details The function \code{dictionary()} is an alias for 
+#' \code{sbo_dictionary()}. 
+#' 
+#' This function builds a dictionary using the most frequent words in a 
 #' training corpus. Two pruning criterions can be applied:
 #' 
 #' 1. Dictionary size, as implemented by the \code{max_size} argument.
@@ -65,6 +68,10 @@ sbo_dictionary <- function(corpus, max_size = Inf, target = 1,
         dictionary <- names(wfreqs)[seq_len(size)]
         return(new_sbo_dictionary(dictionary, .preprocess, EOS))
 }
+
+#' @rdname sbo_dictionary
+#' @export
+dictionary <- sbo_dictionary
 
 new_sbo_dictionary <- function(dictionary, .preprocess, EOS) {
         stopifnot(is.character(dictionary))

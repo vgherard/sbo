@@ -4,15 +4,19 @@
 \name{sbo_predictions}
 \alias{sbo_predictions}
 \alias{sbo_predictor}
+\alias{predictor}
 \alias{sbo_predictor.character}
 \alias{sbo_predictor.sbo_kgram_freqs}
 \alias{sbo_predictor.sbo_predtable}
 \alias{sbo_predtable}
+\alias{predtable}
 \alias{sbo_predtable.character}
 \alias{sbo_predtable.sbo_kgram_freqs}
 \title{Stupid Back-off text predictions}
 \usage{
 sbo_predictor(object, ...)
+
+predictor(object, ...)
 
 \method{sbo_predictor}{character}(
   object,
@@ -31,6 +35,8 @@ sbo_predictor(object, ...)
 \method{sbo_predictor}{sbo_predtable}(object, ...)
 
 sbo_predtable(object, lambda = 0.4, L = 3L, filtered = "<UNK>", ...)
+
+predtable(object, lambda = 0.4, L = 3L, filtered = "<UNK>", ...)
 
 \method{sbo_predtable}{character}(
   object,
@@ -83,7 +89,11 @@ Train a text predictor via Stupid Back-off
 }
 \details{
 These functions are generics used to train a text predictor
-with Stupid Back-Off. The \code{sbo_predictor} data structure carries
+with Stupid Back-Off. The functions \code{predictor()} and
+\code{predtable()} are aliases for \code{sbo_predictor()} and
+\code{sbo_predtable()}, respectively.
+
+The \code{sbo_predictor} data structure carries
 all information
 required for prediction in a compact and efficient (upon retrieval) way,
 by directly storing the top \code{L} next-word predictions for each

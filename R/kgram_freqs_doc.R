@@ -27,8 +27,10 @@
 #' frequency tables for k = 1, 2, ..., N.
 #' @details These functions extract all k-gram frequency tables from a text
 #' corpus up to a specified k-gram order N. These are
-#' the building blocks to train any N-gram model.
-#'
+#' the building blocks to train any N-gram model. The functions 
+#' \code{sbo_kgram_freqs()} and \code{sbo_kgram_freqs_fast()} are aliases for
+#' \code{kgram_freqs()} and \code{kgram_freqs_fast()}, respectively.
+#' 
 #' The optimized version \code{kgram_freqs_fast(erase = x, lower_case = y)}
 #' is equivalent to
 #' \code{kgram_freqs(.preprocess = preprocess(erase = x, lower_case = y))},

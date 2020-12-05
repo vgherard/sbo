@@ -2,9 +2,18 @@
 % Please edit documentation in R/sbo_dictionary.R
 \name{sbo_dictionary}
 \alias{sbo_dictionary}
+\alias{dictionary}
 \title{Dictionaries}
 \usage{
 sbo_dictionary(
+  corpus,
+  max_size = Inf,
+  target = 1,
+  .preprocess = identity,
+  EOS = ""
+)
+
+dictionary(
   corpus,
   max_size = Inf,
   target = 1,
@@ -37,6 +46,9 @@ A \code{sbo_dictionary} object.
 Build dictionary from training corpus.
 }
 \details{
+The function \code{dictionary()} is an alias for
+\code{sbo_dictionary()}.
+
 This function builds a dictionary using the most frequent words in a
 training corpus. Two pruning criterions can be applied:
 \enumerate{

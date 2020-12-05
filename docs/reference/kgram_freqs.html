@@ -125,7 +125,11 @@
 
     <pre class="usage"><span class='fu'>kgram_freqs</span><span class='op'>(</span><span class='va'>corpus</span>, <span class='va'>N</span>, <span class='va'>dict</span>, .preprocess <span class='op'>=</span> <span class='va'>identity</span>, EOS <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span>
 
-<span class='fu'>kgram_freqs_fast</span><span class='op'>(</span><span class='va'>corpus</span>, <span class='va'>N</span>, <span class='va'>dict</span>, erase <span class='op'>=</span> <span class='st'>""</span>, lower_case <span class='op'>=</span> <span class='cn'>FALSE</span>, EOS <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span></pre>
+<span class='fu'>sbo_kgram_freqs</span><span class='op'>(</span><span class='va'>corpus</span>, <span class='va'>N</span>, <span class='va'>dict</span>, .preprocess <span class='op'>=</span> <span class='va'>identity</span>, EOS <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span>
+
+<span class='fu'>kgram_freqs_fast</span><span class='op'>(</span><span class='va'>corpus</span>, <span class='va'>N</span>, <span class='va'>dict</span>, erase <span class='op'>=</span> <span class='st'>""</span>, lower_case <span class='op'>=</span> <span class='cn'>FALSE</span>, EOS <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span>
+
+<span class='fu'>sbo_kgram_freqs_fast</span><span class='op'>(</span><span class='va'>corpus</span>, <span class='va'>N</span>, <span class='va'>dict</span>, erase <span class='op'>=</span> <span class='st'>""</span>, lower_case <span class='op'>=</span> <span class='cn'>FALSE</span>, EOS <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -177,7 +181,9 @@ frequency tables for k = 1, 2, ..., N.</p>
 
     <p>These functions extract all k-gram frequency tables from a text
 corpus up to a specified k-gram order N. These are
-the building blocks to train any N-gram model.</p>
+the building blocks to train any N-gram model. The functions
+<code>sbo_kgram_freqs()</code> and <code>sbo_kgram_freqs_fast()</code> are aliases for
+<code>kgram_freqs()</code> and <code>kgram_freqs_fast()</code>, respectively.</p>
 <p>The optimized version <code>kgram_freqs_fast(erase = x, lower_case = y)</code>
 is equivalent to
 <code>kgram_freqs(.preprocess = preprocess(erase = x, lower_case = y))</code>,

@@ -34,3 +34,7 @@ default_preprocess <- function(erase, lower_case) {
         FUN <- function(x) preprocess(x, erase = erase, lower_case = lower_case)
         return(FUN)
 }
+
+#' @rdname kgram_freqs
+#' @export
+sbo_kgram_freqs_fast <- kgram_freqs_fast

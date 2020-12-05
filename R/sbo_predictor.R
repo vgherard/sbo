@@ -5,6 +5,10 @@ sbo_predictor <- function(object, ...)
 
 #' @rdname sbo_predictions
 #' @export
+predictor <- sbo_predictor
+
+#' @rdname sbo_predictions
+#' @export
 #' @examples
 #' \donttest{
 #' # Train a text predictor directly from corpus

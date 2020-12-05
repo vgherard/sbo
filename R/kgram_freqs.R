@@ -42,3 +42,7 @@ kgram_freqs <- function(corpus, N, dict, .preprocess = identity, EOS = ""){
                                .preprocess = .preprocess, EOS = EOS)
         )
 }
+
+#' @rdname kgram_freqs
+#' @export
+sbo_kgram_freqs <- kgram_freqs
