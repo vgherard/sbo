@@ -5,20 +5,6 @@
 
 using namespace Rcpp;
 
-// get_kgram_prefix
-IntegerVector get_kgram_prefix(const std::string& line, int N, const std::vector<std::string>& dict, std::string EOS);
-RcppExport SEXP _sbo_get_kgram_prefix(SEXP lineSEXP, SEXP NSEXP, SEXP dictSEXP, SEXP EOSSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const std::string& >::type line(lineSEXP);
-    Rcpp::traits::input_parameter< int >::type N(NSEXP);
-    Rcpp::traits::input_parameter< const std::vector<std::string>& >::type dict(dictSEXP);
-    Rcpp::traits::input_parameter< std::string >::type EOS(EOSSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_kgram_prefix(line, N, dict, EOS));
-    return rcpp_result_gen;
-END_RCPP
-}
 // get_pc_ptr
 SEXP get_pc_ptr(const List& object);
 RcppExport SEXP _sbo_get_pc_ptr(SEXP objectSEXP) {
@@ -42,43 +28,42 @@ BEGIN_RCPP
 END_RCPP
 }
 // kgram_freqs_cpp
-List kgram_freqs_cpp(const std::vector<std::string>& sentences, int N, const std::vector<std::string>& dict);
+SEXP kgram_freqs_cpp(const std::vector<std::string>& sentences, const int N, const std::vector<std::string>& dict);
 RcppExport SEXP _sbo_kgram_freqs_cpp(SEXP sentencesSEXP, SEXP NSEXP, SEXP dictSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const std::vector<std::string>& >::type sentences(sentencesSEXP);
-    Rcpp::traits::input_parameter< int >::type N(NSEXP);
+    Rcpp::traits::input_parameter< const int >::type N(NSEXP);
     Rcpp::traits::input_parameter< const std::vector<std::string>& >::type dict(dictSEXP);
     rcpp_result_gen = Rcpp::wrap(kgram_freqs_cpp(sentences, N, dict));
     return rcpp_result_gen;
 END_RCPP
 }
-// kgram_freqs_fast_cpp
-List kgram_freqs_fast_cpp(std::vector<std::string>& input, int N, const std::vector<std::string>& dict, std::string erase, bool lower_case, std::string EOS);
-RcppExport SEXP _sbo_kgram_freqs_fast_cpp(SEXP inputSEXP, SEXP NSEXP, SEXP dictSEXP, SEXP eraseSEXP, SEXP lower_caseSEXP, SEXP EOSSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::vector<std::string>& >::type input(inputSEXP);
-    Rcpp::traits::input_parameter< int >::type N(NSEXP);
-    Rcpp::traits::input_parameter< const std::vector<std::string>& >::type dict(dictSEXP);
-    Rcpp::traits::input_parameter< std::string >::type erase(eraseSEXP);
-    Rcpp::traits::input_parameter< bool >::type lower_case(lower_caseSEXP);
-    Rcpp::traits::input_parameter< std::string >::type EOS(EOSSEXP);
-    rcpp_result_gen = Rcpp::wrap(kgram_freqs_fast_cpp(input, N, dict, erase, lower_case, EOS));
-    return rcpp_result_gen;
-END_RCPP
-}
-// predict_sbo_predictor
-CharacterMatrix predict_sbo_predictor(SEXP ptr_sexp, std::vector<std::string> input);
-RcppExport SEXP _sbo_predict_sbo_predictor(SEXP ptr_sexpSEXP, SEXP inputSEXP) {
+// query_kgram
+long query_kgram(SEXP ptr_sexp, int k, const std::string& prefix, const std::string& completion);
+RcppExport SEXP _sbo_query_kgram(SEXP ptr_sexpSEXP, SEXP kSEXP, SEXP prefixSEXP, SEXP completionSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type ptr_sexp(ptr_sexpSEXP);
-    Rcpp::traits::input_parameter< std::vector<std::string> >::type input(inputSEXP);
-    rcpp_result_gen = Rcpp::wrap(predict_sbo_predictor(ptr_sexp, input));
+    Rcpp::traits::input_parameter< int >::type k(kSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type prefix(prefixSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type completion(completionSEXP);
+    rcpp_result_gen = Rcpp::wrap(query_kgram(ptr_sexp, k, prefix, completion));
+    return rcpp_result_gen;
+END_RCPP
+}
+// query_sbo_predictor
+std::vector<std::string> query_sbo_predictor(SEXP ptr_sexp, std::string input, int k);
+RcppExport SEXP _sbo_query_sbo_predictor(SEXP ptr_sexpSEXP, SEXP inputSEXP, SEXP kSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type ptr_sexp(ptr_sexpSEXP);
+    Rcpp::traits::input_parameter< std::string >::type input(inputSEXP);
+    Rcpp::traits::input_parameter< int >::type k(kSEXP);
+    rcpp_result_gen = Rcpp::wrap(query_sbo_predictor(ptr_sexp, input, k));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -92,6 +77,31 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< std::string >::type erase(eraseSEXP);
     Rcpp::traits::input_parameter< bool >::type lower_case(lower_caseSEXP);
     rcpp_result_gen = Rcpp::wrap(preprocess(input, erase, lower_case));
+    return rcpp_result_gen;
+END_RCPP
+}
+// sbo_predictor_cpp
+SEXP sbo_predictor_cpp(SEXP freqs_ptr_sexp, double lambda, int L, std::vector<std::string> banned);
+RcppExport SEXP _sbo_sbo_predictor_cpp(SEXP freqs_ptr_sexpSEXP, SEXP lambdaSEXP, SEXP LSEXP, SEXP bannedSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type freqs_ptr_sexp(freqs_ptr_sexpSEXP);
+    Rcpp::traits::input_parameter< double >::type lambda(lambdaSEXP);
+    Rcpp::traits::input_parameter< int >::type L(LSEXP);
+    Rcpp::traits::input_parameter< std::vector<std::string> >::type banned(bannedSEXP);
+    rcpp_result_gen = Rcpp::wrap(sbo_predictor_cpp(freqs_ptr_sexp, lambda, L, banned));
+    return rcpp_result_gen;
+END_RCPP
+}
+// sbo_predictor_size
+int sbo_predictor_size(SEXP preds_ptr_sexp);
+RcppExport SEXP _sbo_sbo_predictor_size(SEXP preds_ptr_sexpSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type preds_ptr_sexp(preds_ptr_sexpSEXP);
+    rcpp_result_gen = Rcpp::wrap(sbo_predictor_size(preds_ptr_sexp));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -109,13 +119,14 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_sbo_get_kgram_prefix", (DL_FUNC) &_sbo_get_kgram_prefix, 4},
     {"_sbo_get_pc_ptr", (DL_FUNC) &_sbo_get_pc_ptr, 1},
     {"_sbo_get_word_freqsC", (DL_FUNC) &_sbo_get_word_freqsC, 1},
     {"_sbo_kgram_freqs_cpp", (DL_FUNC) &_sbo_kgram_freqs_cpp, 3},
-    {"_sbo_kgram_freqs_fast_cpp", (DL_FUNC) &_sbo_kgram_freqs_fast_cpp, 6},
-    {"_sbo_predict_sbo_predictor", (DL_FUNC) &_sbo_predict_sbo_predictor, 2},
+    {"_sbo_query_kgram", (DL_FUNC) &_sbo_query_kgram, 4},
+    {"_sbo_query_sbo_predictor", (DL_FUNC) &_sbo_query_sbo_predictor, 3},
     {"_sbo_preprocess", (DL_FUNC) &_sbo_preprocess, 3},
+    {"_sbo_sbo_predictor_cpp", (DL_FUNC) &_sbo_sbo_predictor_cpp, 4},
+    {"_sbo_sbo_predictor_size", (DL_FUNC) &_sbo_sbo_predictor_size, 1},
     {"_sbo_tokenize_sentences", (DL_FUNC) &_sbo_tokenize_sentences, 2},
     {NULL, NULL, 0}
 };
