@@ -17,6 +17,7 @@ coverage](https://codecov.io/gh/vgherard/sbo/branch/master/graph/badge.svg)](htt
 status](https://www.r-pkg.org/badges/version/sbo)](https://CRAN.R-project.org/package=sbo)
 [![CRAN
 downloads](http://cranlogs.r-pkg.org/badges/grand-total/sbo)](https://CRAN.R-project.org/package=sbo)
+[![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=%7Bsbo%7D:%20Stupid%20Back-Off%20N-gram%20Models%20in%20R&url=https://vgherard.github.io/sbo&via=ValerioGherardi&hashtags=rstats,datastructures,hashtables)
 <!-- badges: end -->
 
 `sbo` provides utilities for building and evaluating text predictors
@@ -24,10 +25,10 @@ based on [Stupid
 Back-off](https://www.aclweb.org/anthology/D07-1090.pdf) N-gram models
 in R. It includes functions such as:
 
-  - `kgram_freqs()`: Extract \(k\)-gram frequency tables from a text
+-   `kgram_freqs()`: Extract *k*-gram frequency tables from a text
     corpus
-  - `sbo_predictor()`: Train a next-word predictor via Stupid Back-off.
-  - `eval_sbo_predictor()`: Test text predictions against an independent
+-   `sbo_predictor()`: Train a next-word predictor via Stupid Back-off.
+-   `eval_sbo_predictor()`: Test text predictions against an independent
     corpus.
 
 ## Installation
@@ -81,6 +82,12 @@ predict(p,
 #> [5,] "<EOS>" "me"  "the"
 #> [6,] "to"    "you" "and"
 ```
+
+## Related packages
+
+For more general purpose utilities to work with *n*-gram models, you can
+also check out my package
+[`{kgrams}`](https://vgherard.github.io/kgrams/).
 
 ## Help
 

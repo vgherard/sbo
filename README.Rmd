@@ -22,6 +22,7 @@ knitr::opts_chunk$set(
 [![Codecov test coverage](https://codecov.io/gh/vgherard/sbo/branch/master/graph/badge.svg)](https://codecov.io/gh/vgherard/sbo?branch=master)
 [![CRAN status](https://www.r-pkg.org/badges/version/sbo)](https://CRAN.R-project.org/package=sbo)
 [![CRAN downloads](http://cranlogs.r-pkg.org/badges/grand-total/sbo)](https://CRAN.R-project.org/package=sbo)
+[![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text={sbo}: Stupid Back-Off N-gram Models in R&url=https://vgherard.github.io/sbo&via=ValerioGherardi&hashtags=rstats,nlp,ngrams)
 <!-- badges: end -->
 
 `sbo` provides utilities for building and evaluating text predictors based on 
@@ -74,6 +75,10 @@ predict(p,
         c("i love", "you love", "she loves", "we love", "you love", "they love")
         ) # a character matrix
 ```
+
+## Related packages
+
+For more general purpose utilities to work with $n$-gram models, you can also check out my package [`{kgrams}`](https://vgherard.github.io/kgrams/).
 
 ## Help
 
